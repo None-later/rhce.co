@@ -1,0 +1,18 @@
+---
+title: Use /proc/sys and sysctl to modify and set kernel runtime parameters.
+objective: 3
+category: System Configuration and Management
+---
+
+Modifying and setting kernel runtime parameters is a simple process. To list the current kernel options you can use <code> sysctl -a </code>
+Once you've found the option you want to set, you'll want to edit /etc/sysctl.conf and add the parameter (you can add parameters temporarily, but for the RHCE exam this is quite pointless since your changes must be persistant).
+
+A common option to modify within the sysctl.conf is net.ipv4.ip_forward, it is the first item on the list for a reason, as it is needed for many applications and is a common setting to modify. To make your changes edit the sysctl.conf, and change <code> net.ipv4.ip_forward = 0 </code> to <code> net.ipv4.ip_forward = 1 </code> (You will need to be root, or use sudo to perform this action)
+
+Once you've edited the file, don't forget to reload sysctly. As you can see here, I've edited my file, but the changes aren't yet active.
+
+<code> [root@testbox ~]$ sysctl -a | grep ip_forward
+	net.ipv4.ip_forward = 0
+</code>
+
+Run <code> sysctl -p </code> as the root, or a privileged user to reload the configuration without restarting the server.
