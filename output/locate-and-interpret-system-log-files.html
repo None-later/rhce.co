@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Locate and interpret system log files</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+        
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+
+<a href="https://github.com/makewhatis/rhce.co">
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+
+</a>
+
+        <header id="banner" class="body">
+                <h1><a href="./index.html">rhce.co </a></h1>
+                <nav><ul>
+                
+                
+                <li><a href="./index.html">Home</a></li>
+                
+                
+                
+                </ul></nav>
+        </header><!-- /#banner -->
+
+        
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="locate-and-interpret-system-log-files.html"
+        rel="bookmark" title="Permalink to Locate and interpret system log files">Locate and interpret system log files</a></h1>  </header>
+        <div class="entry-content">
+
+        <p>Most of the logs you will deal with are going to be located in /var/log/. There are some exceptions to this, such as apache vhosts. Many people write the logs for a specific virtual host in a folder with the web content. </p>
+<p>Aside from the occasional exception, this is the spot. </p>
+<p>Logs are written in a way that makes them easy to parse through with text processing tools like cat, grep, and awk.</p>
+<p>One example would be searching for Failed logins in /var/log/secure </p>
+<div class="codehilite"><pre><span class="nv">$ </span>cat /var/log/messages | grep Failed | less
+Apr  1 16:17:06 mytest sshd<span class="o">[</span>19632<span class="o">]</span>: Failed password <span class="k">for </span>root from 84.204.56.234 port 39045 ssh2
+Apr  1 16:17:09 mytest sshd<span class="o">[</span>19634<span class="o">]</span>: Failed password <span class="k">for </span>root from 84.204.56.234 port 39351 ssh2
+Apr  1 16:17:13 mytest sshd<span class="o">[</span>19636<span class="o">]</span>: Failed password <span class="k">for </span>root from 84.204.56.234 port 39660 ssh2
+Apr  1 22:13:40 mytest sshd<span class="o">[</span>19741<span class="o">]</span>: Failed password <span class="k">for </span>bin from 200.76.17.194 port 53407 ssh2
+Apr  1 22:13:43 mytest sshd<span class="o">[</span>19744<span class="o">]</span>: Failed password <span class="k">for </span>bin from 200.76.17.194 port 40100 ssh2
+Apr  1 22:13:46 mytest sshd<span class="o">[</span>19747<span class="o">]</span>: Failed password <span class="k">for </span>bin from 200.76.17.194 port 51759 ssh2
+Apr  1 22:13:49 mytest sshd<span class="o">[</span>19749<span class="o">]</span>: Failed password <span class="k">for </span>bin from 200.76.17.194 port 45675 ssh2
+Apr  1 22:13:52 mytest sshd<span class="o">[</span>19751<span class="o">]</span>: Failed password <span class="k">for </span>bin from 200.76.17.194 port 54379 ssh2
+Apr  1 22:13:55 mytest sshd<span class="o">[</span>19753<span class="o">]</span>: Failed password <span class="k">for </span>bin from 200.76.17.194 port 12218 ssh2
+Apr  2 06:05:01 mytest sshd<span class="o">[</span>20102<span class="o">]</span>: Failed password <span class="k">for </span>root from 117.211.83.59 port 34815 ssh2
+</pre></div>
+
+
+<p>By using the cat command we are able to read all contents of the file, but thats a lot of stuff. We only want to see Failed logins. We then pipe the result of cat, into grep and process the text there. Grep picks out any line that contains Failed. I then piped it to less to output only the last 10 lines.So now you can see all these failed password attempts on our test server. Wow. </p>
+<p>Lets say we just want to process the text, and get a count of how many logins were failed in this file. We can pipe the output into wc -l, which counts lines. </p>
+<div class="codehilite"><pre><span class="nv">$ </span>cat /var/log/messages | grep Failed | wc -l
+90
+</pre></div>
+
+
+<p>Thats a lot of failed logins. That lets us know we should probably tighten up our security a bit, maybe change the port for ssh. Thats something that is covered down the road though. But you can see the value in combining text processing utilities in order to get a clean final result. </p>
+<p>Some key tools to look at are:</p>
+<ul>
+<li>cat  - http://man.he.net/man1/cat</li>
+<li>tail - http://man.he.net/man1/tail</li>
+<li>head - http://linux.die.net/man/1/head</li>
+<li>wc   - http://linux.die.net/man/1/wc</li>
+<li>less - http://linux.die.net/man/1/less</li>
+<li>more - http://linux.die.net/man/1/more</li>
+<li>grep - http://linux.die.net/man/1/grep</li>
+<li>awk  - http://linux.die.net/man/1/awk</li>
+<li>sed  - http://linux.die.net/man/1/sed</li>
+</ul>
+        </div><!-- /.entry-content -->
+        
+
+</article>
+</section>
+
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                        
+                            <h3>RHCSA</h3>
+
+                                                       
+                                
+                                
+                               
+                                                       
+                                
+                                
+
+                                    <li ><a href="./category/3-configure-local-storage-rhcsa.html">3. Configure Local Storage </a></li>
+                                
+                               
+                                                       
+                                
+                                
+
+                                    <li class="active"><a href="./category/2-operate-running-systems-rhcsa.html">2. Operate Running Systems </a></li>
+                                
+                               
+                                                       
+                                
+                                
+
+                                    <li ><a href="./category/1-understand-and-use-essential-tools-rhcsa.html">1. Understand and Use Essential Tools </a></li>
+                                
+                               
+                            
+
+                        
+                            <h3>RHCE</h3>
+
+                                                       
+                                
+                                
+
+                                    <li ><a href="./category/1-system-configuration-and-management-rhce.html">1. System Configuration and Management</a></li>
+                                
+                               
+                                                       
+                                
+                                
+                               
+                                                       
+                                
+                                
+                               
+                                                       
+                                
+                                
+                               
+                            
+
+                        
+                        </ul>
+                </div>
+               
+
+
+                
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+
+</body>
+</html>

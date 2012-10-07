@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Locate, read and use system documentation including man, info, and files in /usr/share/doc</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+        
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+
+<a href="https://github.com/makewhatis/rhce.co">
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+
+</a>
+
+        <header id="banner" class="body">
+                <h1><a href="./index.html">rhce.co </a></h1>
+                <nav><ul>
+                
+                
+                <li><a href="./index.html">Home</a></li>
+                
+                
+                
+                </ul></nav>
+        </header><!-- /#banner -->
+
+        
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="locate-read-and-use-system-documentation-including-man-info-and-files-in-usrsharedoc.html"
+        rel="bookmark" title="Permalink to Locate, read and use system documentation including man, info, and files in /usr/share/doc">Locate, read and use system documentation including man, info, and files in /usr/share/doc</a></h1>  </header>
+        <div class="entry-content">
+
+        <p>Man pages, docs, and info are all saving graces on the exams. </p>
+<p>The most commonly used help pages are <strong>man pages</strong>. </p>
+<div class="codehilite"><pre><span class="nv">$ </span>man vim
+</pre></div>
+
+
+<p>This will give you the manual pages, with descriptions of the options, examples, and information about the application. If you don't remember exactly what man page you need, but you know what utility you are trying to use you can search man pages. </p>
+<p>For example, lets find all man pages relating to LVM.</p>
+<div class="codehilite"><pre><span class="o">[</span>root@rhel6 ~<span class="o">]</span><span class="c"># man -k lvm</span>
+README.vmesa <span class="o">[</span>perlvmesa<span class="o">]</span> <span class="o">(</span>1<span class="o">)</span>  - building and installing Perl <span class="k">for </span>VM/ESA
+lvm                  <span class="o">(</span>8<span class="o">)</span>  - LVM2 tools
+lvm.conf <span class="o">[</span>lvm<span class="o">]</span>       <span class="o">(</span>5<span class="o">)</span>  - Configuration file <span class="k">for </span>LVM2
+lvmchange            <span class="o">(</span>8<span class="o">)</span>  - change attributes of the logical volume manager
+lvmconf              <span class="o">(</span>8<span class="o">)</span>  - LVM configuration modifier
+lvmdiskscan          <span class="o">(</span>8<span class="o">)</span>  - scan <span class="k">for </span>all devices visible to LVM2
+lvmdump              <span class="o">(</span>8<span class="o">)</span>  - create lvm2 information dumps <span class="k">for </span>diagnostic purposes
+lvmsadc              <span class="o">(</span>8<span class="o">)</span>  - LVM system activity data collector
+lvmsar               <span class="o">(</span>8<span class="o">)</span>  - LVM system activity reporter
+perlvms              <span class="o">(</span>1<span class="o">)</span>  - VMS-specific documentation <span class="k">for </span>Perl
+pvcreate             <span class="o">(</span>8<span class="o">)</span>  - initialize a disk or partition <span class="k">for </span>use by LVM
+pvresize             <span class="o">(</span>8<span class="o">)</span>  - resize a disk or partition in use by LVM2
+</pre></div>
+
+
+<p>This is helpful output of results from the search. Really helpful in situations that you forgot the name of a certain utility.</p>
+<p>Info is nearly identical, referencing the info docs. Its not quite as nice to use, and therefore is not as popular. </p>
+<p>You could also get information from the /usr/share/docs. Here you can find other information about the program itself, or that particular version. The following output is a typical doc directory.</p>
+<div class="codehilite"><pre><span class="o">[</span>root@rhel6 yum-3.2.27<span class="o">]</span><span class="c"># pwd</span>
+/usr/share/doc/yum-3.2.27
+<span class="o">[</span>root@rhel6 yum-3.2.27<span class="o">]</span><span class="c"># ls</span>
+AUTHORS  ChangeLog  COPYING  INSTALL  README  TODO
+</pre></div>
+
+
+<p>As you can see its very different, simply text files with license, readme, install instructions, etc. For most of your referencing in an exam situation, use the man pages.</p>
+<p><em>Exam tip: If you dont get any output from man pages, try running the following command, which will build the man pages.</em></p>
+<div class="codehilite"><pre><span class="c"># first check for the package</span>
+<span class="o">[</span>root@rhel6 ~<span class="o">]</span><span class="c"># rpm -qi man</span>
+<span class="c"># then if its installed try</span>
+<span class="o">[</span>root@rhel6 ~<span class="o">]</span><span class="c"># makewhatis &amp;</span>
+</pre></div>
+        </div><!-- /.entry-content -->
+        
+
+</article>
+</section>
+
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                        
+                            <h3>RHCSA</h3>
+
+                                                       
+                                
+                                
+                               
+                                                       
+                                
+                                
+
+                                    <li ><a href="./category/3-configure-local-storage-rhcsa.html">3. Configure Local Storage </a></li>
+                                
+                               
+                                                       
+                                
+                                
+
+                                    <li ><a href="./category/2-operate-running-systems-rhcsa.html">2. Operate Running Systems </a></li>
+                                
+                               
+                                                       
+                                
+                                
+
+                                    <li class="active"><a href="./category/1-understand-and-use-essential-tools-rhcsa.html">1. Understand and Use Essential Tools </a></li>
+                                
+                               
+                            
+
+                        
+                            <h3>RHCE</h3>
+
+                                                       
+                                
+                                
+
+                                    <li ><a href="./category/1-system-configuration-and-management-rhce.html">1. System Configuration and Management</a></li>
+                                
+                               
+                                                       
+                                
+                                
+                               
+                                                       
+                                
+                                
+                               
+                                                       
+                                
+                                
+                               
+                            
+
+                        
+                        </ul>
+                </div>
+               
+
+
+                
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+
+</body>
+</html>
