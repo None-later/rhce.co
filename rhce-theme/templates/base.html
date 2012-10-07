@@ -57,7 +57,7 @@
                                  
                                     {% if exam in c.name %}
                                         {% set cat1 = c.name |replace("- (%s)" % exam, "") %}
-                                        <li {% if cat == category %}class="active"{% endif %}><a href="{{ SITEURL }}/{{ c.url }}">{{ cat1[3:] }}</a></li>
+                                        <li {% if c.name == category %}class="active"{% endif %}><a href="{{ SITEURL }}/{{ c.url }}">{{ cat1[3:] }}</a></li>
                                     {% endif %}
                                    
                                 {% endfor %}
