@@ -38,3 +38,8 @@ PLUGINS = ['pelican.plugins.sitemap']
 
 
 SITEMAP = {'format': 'xml'}
+
+PIWIK_URL = 'piwik.fhlabs.com'
+
+PIWIK_SITE_ID = '14'
+
