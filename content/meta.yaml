@@ -1,3 +1,0 @@
-extends: page.j2
-default_block: post
-listable: false

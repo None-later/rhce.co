@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="/" rel="alternate"></link><link href="/feeds/1.%20Understand%20and%20Use%20Essential%20Tools%20-%20(RHCSA).atom.xml" rel="self"></link><id>/</id><updated>2012-10-06T19:49:20+02:00</updated><entry><title>Use input-output redirection</title><link href="/use-input-output-redirection.html" rel="alternate"></link><updated>2012-10-06T19:49:20+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:use-input-output-redirection.html</id><summary type="html">&lt;p&gt;Input output redirection is one of the base skills you will need as a sysadmin. On the exam you will have to be able to redirect data from one command into another, and/or into a file. &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;~$ echo "this is input" &amp;gt; file.txt&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Another common example:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cat /var/log/messages | less&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Here are a couple of good tutorials already written on this:&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://linuxhelp.blogspot.com/2006/01/inputoutput-redirection-made-simple-in.html"&gt;http://linuxhelp.blogspot.com/2006/01/inputoutput-redirection-made-simple-in.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://linuxcommand.org/lts0060.php"&gt;http://linuxcommand.org/lts0060.php&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.rwc.uc.edu/thomas/Intro_Unix_Text/IO_Redir_Pipes.html"&gt;http://www.rwc.uc.edu/thomas/Intro_Unix_Text/IO_Redir_Pipes.html&lt;/a&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Access a shell prompt and issue commands with correct syntax</title><link href="/access-a-shell-prompt-and-issue-commands-with-correct-syntax.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:access-a-shell-prompt-and-issue-commands-with-correct-syntax.html</id><summary type="html">&lt;p&gt;This is first requirement should stop anyone who may not know, or may have never used a shell prompt from attempting the test. If you can open your terminal, navigate and type commands then you have accomplished this. If not, then you should check out the basics and start there.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://beginlinux.com/"&gt;http://beginlinux.com/&lt;/a&gt; is a great place to start.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Boot, reboot, and shut down a system normally</title><link href="/boot-reboot-and-shut-down-a-system-normally.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:boot-reboot-and-shut-down-a-system-normally.html</id><summary type="html">&lt;p&gt;Basically, they are referring to these actions on the command line. I'm sure everyone is able to do this on a pc, but not necessarily a live Red Hat Enterprise Linux Server remotely. &lt;/p&gt;
+&lt;p&gt;The commands are simple for the server. &lt;/p&gt;
+&lt;p&gt;Normal reboot&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;$ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;reboot&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Another way&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;  $ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;shutdown&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="n"&gt;now&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Changing to init 6 will reboot as well, which is what init 6 does. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;  $ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;init&lt;/span&gt; 6
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;On the same note, init 0 calls all of the shutdown scripts and gracefully shuts down your machine.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;  $ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;init&lt;/span&gt; 0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Surprisingly you can also use the shutdown command to shutdown completely by using the -h switch.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;  $ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;shutdown&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I think we all know how to boot the computer, so that shouldn't be a problem. :-)&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Use grep and regular expressions to analyze text</title><link href="/use-grep-and-regular-expressions-to-analyze-text.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:use-grep-and-regular-expressions-to-analyze-text.html</id><summary type="html">&lt;p&gt;RHCSA requirements state that you must know how to use grep to analyze text. This is actually going to be pretty necessary to do many administration tasks on a daily basis.&lt;/p&gt;
+&lt;p&gt;Grep returns any lines that have characters, words, or expressions that match your query.&lt;/p&gt;
+&lt;p&gt;Basic usage examples of this include:&lt;/p&gt;
+&lt;p&gt;Find "Permission Denied" entries in a log file:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ grep -r "Permission Denied" /path/to/logfile/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Find "Permission Denied" entries in a log file by using output redirection:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ cat /path/to/file/ | grep "Permission Denied"&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Check out some grep examples at : http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/[http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/]&lt;/p&gt;
+&lt;p&gt;To see all the options check out the Unix Man page, http://unixhelp.ed.ac.uk/CGI/man-cgi?grep[http://unixhelp.ed.ac.uk/CGI/man-cgi?grep] also available by just plain typing &lt;code&gt;man grep&lt;/code&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry></feed>

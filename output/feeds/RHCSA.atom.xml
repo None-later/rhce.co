@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="/" rel="alternate"></link><link href="/feeds/RHCSA.atom.xml" rel="self"></link><id>/</id><updated>2012-10-06T15:24:41+02:00</updated><entry><title>Use input-output redirection</title><link href="/use-input-output-redirection.html" rel="alternate"></link><updated>2012-10-06T15:24:41+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:use-input-output-redirection.html</id><summary type="html">&lt;p&gt;Input output redirection is one of the base skills you will need as a sysadmin. On the exam you will have to be able to redirect data from one command into another, and/or into a file. &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;~$ echo "this is input" &amp;gt; file.txt&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Another common example:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cat /var/log/messages | less&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Here are a couple of good tutorials already written on this:&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://linuxhelp.blogspot.com/2006/01/inputoutput-redirection-made-simple-in.html"&gt;http://linuxhelp.blogspot.com/2006/01/inputoutput-redirection-made-simple-in.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://linuxcommand.org/lts0060.php"&gt;http://linuxcommand.org/lts0060.php&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.rwc.uc.edu/thomas/Intro_Unix_Text/IO_Redir_Pipes.html"&gt;http://www.rwc.uc.edu/thomas/Intro_Unix_Text/IO_Redir_Pipes.html&lt;/a&gt;&lt;/p&gt;</summary><category term="Understand and Use Essential Tools"></category></entry></feed>
