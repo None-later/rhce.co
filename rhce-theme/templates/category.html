@@ -6,7 +6,8 @@
    
         
  <section id="content" class="body">
-    <h1>Objective: {{ category }}</h1>
+    {% set c = category.name[3:] %}
+    <h1>Objective: {{ c }}</h1>
         <hr />
             <ol id="posts-list" class="hfeed">
     {% for tag,value in tags %}
