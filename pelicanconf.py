@@ -12,7 +12,7 @@ TIMEZONE = 'Europe/Paris'
 DEFAULT_LANG = 'en'
 
 #THEME = 'pelican-bootstrap-responsive-theme'
-THEME = 'rhce.co-pelican-theme'
+THEME = 'rhce-theme'
 # Blogroll
 LINKS =  (('Pelican', 'http://docs.notmyidea.org/alexis/pelican/'),
           ('Python.org', 'http://python.org'),

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content_title %}{{ SITENAME }} - {{ category }}{% endblock %}
+{% block content %}
+   
+{% if articles %}
+   
+        
+ <section id="content" class="body">
+    <h1>{{ category }} objectives</h1>
+        <hr />
+            <ol id="posts-list" class="hfeed">
+    {% for tag,value in tags %}
+        {% for cast, value in categories %}
+            {% for article in articles|sort(attribute='objective') %}
+                {% if article.tags %}        
+                    {% for t in article.tags %}
+                            {% if t == tag %}
+                                {% if cast == article.category %}
+                                    <li>
+                                        <article>
+                                            <header>
+                                                    <h1><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title}}">{{ article.title }}</a></h1>
+                                            </header>
+                                            <div class="entry-content">
+                                            {{ article.summary }}
+                                            <a class="readmore" href="{{ SITEURL }}/{{ article.url }}">read more</a>
+                                            </div>
+                                        </article>
+                                    </li>    
+                                {% endif %}    
+                            {% endif %} 
+                    {% endfor %}
+                {% endif %}            
+            {% endfor %}    
+        {% endfor %}
+    {% endfor %}
+
+</ol><!-- /#posts-list -->
+
+</section><!-- /#content -->
+{% else %}
+    <section id="content" class="body">
+    <h2>Pages</h2>
+    {% for page in PAGES %}
+        <li><a href="{{ SITEURL }}/pages/{{ page.url }}">{{ page.title }}</a></li>
+    {% endfor %}
+    </section>
+{% endif %}
+
+{% endblock content %}
