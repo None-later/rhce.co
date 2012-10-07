@@ -1,7 +1,7 @@
 Date: 2012-10-04
 Title: Access remote systems using ssh and VNC
 Objective: 04
-Category: 1. Understand and Use Essential Tools - (RHCSA)
+Category: a. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA
 
 SSH

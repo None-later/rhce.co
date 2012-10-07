@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Start and stop virtual machines
 Objective: 18
-Category: 2. Operate Running Systems - (RHCSA)
+Category: b. Operate Running Systems - (RHCSA)
 Tags: RHCSA
 
 

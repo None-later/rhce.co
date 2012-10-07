@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Archive, compress, unpack and uncompress files using tar, star, gzip, and bzip2
 Objective: 06
-Category: 1. Understand and Use Essential Tools - (RHCSA)
+Category: a. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA
 
 tar

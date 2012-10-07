@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Access a virtual machine's console
 Objective: 17
-Category: 2. Operate Running Systems - (RHCSA)
+Category: b. Operate Running Systems - (RHCSA)
 Tags: RHCSA
 
 Knowing how to access the virtual machines console is essential, and if you have never used it could take a few minutes to figure out. 

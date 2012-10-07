@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Create and edit text files
 Objective: 07
-Category: 1. Understand and Use Essential Tools - (RHCSA)
+Category: a. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA
 
 Using a command line text editor is a skill that is absolutely necessary. Without it most tasks cannot be performed. The default editor used it vim. vim is a enhanced version of vi, which is not quite as pretty as vim. 

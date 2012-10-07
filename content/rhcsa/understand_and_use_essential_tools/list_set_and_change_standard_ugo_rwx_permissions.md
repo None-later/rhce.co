@@ -1,7 +1,7 @@
 Date: 2012-10-05
 Title: List, set and change standard ugo/rwx permissions
 Objective: 10
-Category: 1. Understand and Use Essential Tools - (RHCSA)
+Category: a. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA
 
 Permissions rule on compooters. Controlling them, essential. Linux has a number of different tools to do this, we list the essentials for the exam here.

@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Use grep and regular expressions to analyze text
 Objective: 03
-Category: 1. Understand and Use Essential Tools - (RHCSA)
+Category: a. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA
 
 

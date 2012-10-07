@@ -1,7 +1,7 @@
 Date: 2012-10-05
 Title: Locate, read and use system documentation including man, info, and files in /usr/share/doc
 Objective: 11
-Category: 1. Understand and Use Essential Tools - (RHCSA)
+Category: a. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA
 
 Man pages, docs, and info are all saving graces on the exams. 

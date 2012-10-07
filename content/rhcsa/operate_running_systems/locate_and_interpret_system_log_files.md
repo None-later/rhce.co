@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Locate and interpret system log files
 Objective: 16
-Category: 2. Operate Running Systems - (RHCSA)
+Category: b. Operate Running Systems - (RHCSA)
 Tags: RHCSA
 
 Most of the logs you will deal with are going to be located in /var/log/. There are some exceptions to this, such as apache vhosts. Many people write the logs for a specific virtual host in a folder with the web content. 

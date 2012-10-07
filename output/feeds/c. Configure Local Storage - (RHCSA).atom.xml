@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="/" rel="alternate"></link><link href="/feeds/c.%20Configure%20Local%20Storage%20-%20(RHCSA).atom.xml" rel="self"></link><id>/</id><updated>2012-10-06T00:00:00+02:00</updated><entry><title>List, create, delete and set partition type for primary, extended, and logical partitions</title><link href="/list-create-delete-and-set-partition-type-for-primary-extended-and-logical-partitions.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:list-create-delete-and-set-partition-type-for-primary-extended-and-logical-partitions.html</id><summary type="html">&lt;p&gt;The official tool is now parted, but you can still use fdisk to create partitions. I'm a fan of fdisk, so thats what I will be using here. &lt;/p&gt;
+&lt;h2&gt;&lt;b&gt;List partitions&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;To list all partitions that are on your server, you would issue the fdisk command, with the list switch.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;fdisk -l
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;Create new partitions&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;In order to create new partitions you would first have to open the device in fdisk. I will be opening /dev/sdb and creating both a primary and extended partition. We use the n command to create a new partition. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo fdisk /dev/sdb
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: n
+Command action
+e   extended
+p   primary partition &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;
+p
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4, default 1&lt;span class="o"&gt;)&lt;/span&gt;: 1
+First sector &lt;span class="o"&gt;(&lt;/span&gt;2048-8388607, default 2048&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 2048
+Last sector, +sectors or +size&lt;span class="o"&gt;{&lt;/span&gt;K,M,G&lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;2048-8388607, default 8388607&lt;span class="o"&gt;)&lt;/span&gt;: +250M
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+Disk /dev/sdb: 4294 MB, 4294967296 bytes
+255 heads, 63 sectors/track, 522 cylinders, total 8388608 sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+Disk identifier: 0xd26a7e50
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      514047      256000   83  Linux
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: n
+Command action
+e   extended
+p   primary partition &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;
+e
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4, default 2&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 2
+First sector &lt;span class="o"&gt;(&lt;/span&gt;514048-8388607, default 514048&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 514048
+Last sector, +sectors or +size&lt;span class="o"&gt;{&lt;/span&gt;K,M,G&lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;514048-8388607, default 8388607&lt;span class="o"&gt;)&lt;/span&gt;: +500M
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+The partition table has been altered!
+
+Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+Syncing disks.
+&lt;span class="nv"&gt;$ &lt;/span&gt;sudo partprobe
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;Delete partitions&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;Deleting partitions is even easier. You would just type d at the fdisk prompt, tell it which partition number you are deleting, and the write the changes with the w flag. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo fdisk /dev/sdb
+
+ Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+ Disk /dev/sdb: 4294 MB, 4294967296 bytes
+ 255 heads, 63 sectors/track, 522 cylinders, total 8388608 sectors
+ &lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+ Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+ I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+ Disk identifier: 0x08bafe2e
+
+   Device Boot      Start         End      Blocks   Id  System
+ /dev/sdb1            2048     1026047      512000   83  Linux
+ /dev/sdb2         1026048     1538047      256000    5  Extended
+
+ Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: d
+ Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-5&lt;span class="o"&gt;)&lt;/span&gt;: 2
+
+ Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+ Disk /dev/sdb: 4294 MB, 4294967296 bytes
+ 255 heads, 63 sectors/track, 522 cylinders, total 8388608 sectors
+ &lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+ Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+ I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+ Disk identifier: 0x08bafe2e
+
+   Device Boot      Start         End      Blocks   Id  System
+ /dev/sdb1            2048     1026047      512000   83  Linux
+
+ Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+ The partition table has been altered!
+
+ Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+ Syncing disks.
+ &lt;span class="nv"&gt;$ &lt;/span&gt;sudo partprobe
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;Set partition type&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;In order to use the disk we have to set a partition type. In this case we just make it a general Linux format #83. If it were going to be part of a raid array, we would make it Linux raid auto, #fd.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;fdisk /dev/sdb
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: t
+Selected partition 1
+Hex code &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;type &lt;/span&gt;L to list codes&lt;span class="o"&gt;)&lt;/span&gt;: L
+
+0  Empty           24  NEC DOS         81  Minix / old Lin bf  Solaris        
+1  FAT12           27  Hidden NTFS Win 82  Linux swap / So c1  DRDOS/sec &lt;span class="o"&gt;(&lt;/span&gt;FAT-
+2  XENIX root      39  Plan 9          83  Linux           c4  DRDOS/sec &lt;span class="o"&gt;(&lt;/span&gt;FAT-
+3  XENIX usr       3c  PartitionMagic  84  OS/2 hidden C:  c6  DRDOS/sec &lt;span class="o"&gt;(&lt;/span&gt;FAT-
+4  FAT16 &amp;lt;32M      40  Venix 80286     85  Linux extended  c7  Syrinx         
+5  Extended        41  PPC PReP Boot   86  NTFS volume &lt;span class="nb"&gt;set &lt;/span&gt;da  Non-FS data    
+6  FAT16           42  SFS             87  NTFS volume &lt;span class="nb"&gt;set &lt;/span&gt;db  CP/M / CTOS / .
+7  HPFS/NTFS/exFAT 4d  QNX4.x          88  Linux plaintext de  Dell Utility   
+8  AIX             4e  QNX4.x 2nd part 8e  Linux LVM       df  BootIt         
+9  AIX bootable    4f  QNX4.x 3rd part 93  Amoeba          e1  DOS access     
+a  OS/2 Boot Manag 50  OnTrack DM      94  Amoeba BBT      e3  DOS R/O        
+b  W95 FAT32       51  OnTrack DM6 Aux 9f  BSD/OS          e4  SpeedStor      
+c  W95 FAT32 &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt; 52  CP/M            a0  IBM Thinkpad hi eb  BeOS fs        
+e  W95 FAT16 &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt; 53  OnTrack DM6 Aux a5  FreeBSD         ee  GPT            
+f  W95 Ext&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;d &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt; 54  OnTrackDM6      a6  OpenBSD         ef  EFI &lt;span class="o"&gt;(&lt;/span&gt;FAT-12/16/
+10  OPUS            55  EZ-Drive        a7  NeXTSTEP        f0  Linux/PA-RISC b
+11  Hidden FAT12    56  Golden Bow      a8  Darwin UFS      f1  SpeedStor      
+12  Compaq diagnost 5c  Priam Edisk     a9  NetBSD          f4  SpeedStor      
+14  Hidden FAT16 &amp;lt;3 61  SpeedStor       ab  Darwin boot     f2  DOS secondary  
+16  Hidden FAT16    63  GNU HURD or Sys af  HFS / HFS+      fb  VMware VMFS    
+17  Hidden HPFS/NTF 64  Novell Netware  b7  BSDI fs         &lt;span class="nb"&gt;fc  &lt;/span&gt;VMware VMKCORE 
+18  AST SmartSleep  65  Novell Netware  b8  BSDI swap       fd  Linux raid auto
+1b  Hidden W95 FAT3 70  DiskSecure Mult bb  Boot Wizard hid fe  LANstep        
+1c  Hidden W95 FAT3 75  PC/IX           be  Solaris boot    ff  BBT            
+1e  Hidden W95 FAT1 80  Old Minix      
+Hex code &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;type &lt;/span&gt;L to list codes&lt;span class="o"&gt;)&lt;/span&gt;: 83
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+The partition table has been altered!
+
+Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+Syncing disks.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Redhat actually encourages the use of parted nowadays, with works a little differently. To see information about that, see this link &lt;a href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Storage_Administration_Guide/s1-disk-storage-parted.html"&gt;http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Storage_Administration_Guide/s1-disk-storage-parted.html&lt;/a&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry></feed>

@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Create hard and soft links
 Objective: 09
-Category: 1. Understand and Use Essential Tools - (RHCSA)
+Category: a. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA
 
 

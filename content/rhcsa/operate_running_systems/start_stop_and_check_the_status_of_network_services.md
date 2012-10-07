@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Start, stop and check the status of network services
 Objective: 19
-Category: 2. Operate Running Systems - (RHCSA)
+Category: b. Operate Running Systems - (RHCSA)
 Tags: RHCSA
 
 

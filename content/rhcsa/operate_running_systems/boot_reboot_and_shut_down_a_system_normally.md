@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Boot, reboot, and shut down a system normally
 Objective: 12
-Category: 2. Operate Running Systems - (RHCSA)
+Category: b. Operate Running Systems - (RHCSA)
 Tags: RHCSA 
 
 Basically, they are referring to these actions on the command line. I'm sure everyone is able to do this on a pc, but not necessarily a live Red Hat Enterprise Linux Server remotely. 

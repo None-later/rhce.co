@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: List, create, delete and set partition type for primary, extended, and logical partitions
 Objective: 20
-Category: 3. Configure Local Storage - (RHCSA)
+Category: c. Configure Local Storage - (RHCSA)
 Tags: RHCSA
 
 The official tool is now parted, but you can still use fdisk to create partitions. I'm a fan of fdisk, so thats what I will be using here. 

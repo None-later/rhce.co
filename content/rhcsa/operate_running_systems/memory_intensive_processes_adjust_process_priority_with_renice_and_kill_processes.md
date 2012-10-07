@@ -1,7 +1,7 @@
 Date: 2012-10-04
 Title: Identify CPU/memory intensive processes, adjust process priority with renice, and kill processes
 Objective: 15
-Category: 2. Operate Running Systems - (RHCSA)
+Category: b. Operate Running Systems - (RHCSA)
 Tags: RHCSA
 
 A few commands to help you identify processes on the exam are ps and top. These are commands that you will actually use extensively to monitor systems in the workplace. 

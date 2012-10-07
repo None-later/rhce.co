@@ -1,7 +1,7 @@
 Date: 2012-10-04
 Title: Use single-user mode to gain access to a system
 Objective: 14
-Category: 2. Operate Running Systems - (RHCSA)
+Category: b. Operate Running Systems - (RHCSA)
 Tags: RHCSA
 
 

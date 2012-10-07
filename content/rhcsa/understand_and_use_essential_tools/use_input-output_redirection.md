@@ -1,7 +1,7 @@
 Date: 2012-10-04
 Title: Use input-output redirection
 Objective: 02
-Category: 1. Understand and Use Essential Tools - (RHCSA)
+Category: a. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA 
 
 Input output redirection is one of the base skills you will need as a sysadmin. On the exam you will have to be able to redirect data from one command into another, and/or into a file. 

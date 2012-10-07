@@ -1,7 +1,7 @@
 Date: 2012-10-06
 Title: Boot systems into different runlevels manually
 Objective: 13
-Category: 2. Operate Running Systems - (RHCSA)
+Category: b. Operate Running Systems - (RHCSA)
 Tags: RHCSA
 
 Red Hat Enterprise Linux is similar to most other linux distributions in its core functionality. The ability to run the operating system in multiple run levels is an important skill to have. 
