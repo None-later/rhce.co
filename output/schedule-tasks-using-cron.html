@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Schedule tasks using cron</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+        
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+
+<a href="https://github.com/makewhatis/rhce.co">
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+
+</a>
+
+        <header id="banner" class="body">
+                <h1><a href="./index.html">rhce.co </a></h1>
+                <nav><ul>
+                
+                
+                <li><a href="./index.html">Home</a></li>
+                
+                
+                
+                </ul></nav>
+        </header><!-- /#banner -->
+
+        
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="schedule-tasks-using-cron.html"
+        rel="bookmark" title="Permalink to Schedule tasks using cron">Schedule tasks using cron</a></h1>  </header>
+        <div class="entry-content">
+
+        <p>Cron is a utility used to schedule tasks to run at a certain time on various intervals. First is to make sure its installed, although it is installed by default on a normal installation. </p>
+<div class="codehilite"><pre><span class="o">~</span><span class="p">]</span> <span class="n">rpm</span> <span class="o">-</span><span class="n">qa</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">cron</span>
+<span class="n">cronie</span><span class="o">-</span>1<span class="p">.</span>4<span class="p">.</span>4<span class="o">-</span>2<span class="p">.</span><span class="n">el6</span><span class="p">.</span><span class="n">x86_64</span>
+<span class="n">cronie</span><span class="o">-</span><span class="n">anacron</span><span class="o">-</span>1<span class="p">.</span>4<span class="p">.</span>4<span class="o">-</span>2<span class="p">.</span><span class="n">el6</span><span class="p">.</span><span class="n">x86_64</span>
+</pre></div>
+
+
+<p>The easiest way to get guidance on how to use a utility is to use the man page. In this case the proper documentation is kind of hidden. </p>
+<div class="codehilite"><pre>~<span class="o">]</span> man 5 crontab
+</pre></div>
+
+
+<p>This page lays out the options for cron, why its not found by simply using "man cron" is beyond me, but its not. </p>
+<p>The format for this goes as follows:</p>
+<div class="codehilite"><pre><span class="o">*</span>    <span class="o">*</span>    <span class="o">*</span>    <span class="o">*</span>    <span class="o">*</span>  <span class="n">command</span> <span class="n">to</span> <span class="n">be</span> <span class="n">executed</span>
+<span class="o">-</span>    <span class="o">-</span>    <span class="o">-</span>    <span class="o">-</span>    <span class="o">-</span>
+<span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>
+<span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>
+<span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">+-----</span> <span class="n">day</span> <span class="n">of</span> <span class="n">week</span> <span class="p">(</span>0 <span class="o">-</span> 6<span class="p">)</span> <span class="p">(</span><span class="n">Sunday</span><span class="p">=</span>0<span class="p">)</span>
+<span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">+----------</span> <span class="n">month</span> <span class="p">(</span>1 <span class="o">-</span> 12<span class="p">)</span>
+<span class="o">|</span>    <span class="o">|</span>    <span class="o">+---------------</span> <span class="n">day</span> <span class="n">of</span> <span class="n">month</span> <span class="p">(</span>1 <span class="o">-</span> 31<span class="p">)</span>
+<span class="o">|</span>    <span class="o">+--------------------</span> <span class="n">hour</span> <span class="p">(</span>0 <span class="o">-</span> 23<span class="p">)</span>
+<span class="o">+-------------------------</span> <span class="n">min</span> <span class="p">(</span>0 <span class="o">-</span> 59<span class="p">)</span>
+</pre></div>
+
+
+<p>An example of a cron job would be configuring a job to run every day on minute 0 hour 12 daily, or daily at 12:00pm. </p>
+<div class="codehilite"><pre>0 12 <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">echo</span> &quot;<span class="n">some</span> <span class="n">job</span>&quot; <span class="o">&gt;&gt;</span> <span class="n">echo</span><span class="p">.</span><span class="nb">log</span>
+</pre></div>
+
+
+<p>Another example would be to run a job weekly at 3:30pm on Sunday</p>
+<div class="codehilite"><pre>30 15 <span class="o">*</span> <span class="o">*</span> 0 <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">echo</span> &quot;<span class="n">another</span> <span class="n">job</span>&quot; <span class="o">&gt;&gt;</span> <span class="n">echo</span><span class="p">.</span><span class="nb">log</span>
+</pre></div>
+        </div><!-- /.entry-content -->
+        
+
+</article>
+</section>
+
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                        
+                            <h3>RHCSA</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                    
+                                   
+                                
+                            
+
+                        
+                            <h3>RHCE</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+
+                        
+                        </ul>
+                </div>
+               
+
+
+                
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+
+</body>
+</html>

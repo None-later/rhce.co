@@ -1,6 +1,6 @@
 Title: Configure system to authenticate using Kerberos 
 Objective: 4
-Category: 1. System Configuration and Management- (RHCE)
+Category: a. System Configuration and Management - (RHCE)
 Tags: RHCE
 
 Kerberos is an authentication method that allows users to authenticate without directly providing their password. You can read more on Kerberos over at: 

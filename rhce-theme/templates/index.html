@@ -1,12 +1,37 @@
 {% extends "base.html" %}
 {% block content_title %}{% endblock %}
 {% block content %}
+
+    <section id="content" class="body">
+        <section id="front-header">
+            <article class="hentry">
+                <h1>RHCE Study Guide</h1>
+                
+                <div class="entry-content">
+                    The RHCE is a hands on linux exam that tests your ability to actually manage live systems. In order to actually pass this exam, you have to complete the requested tasks in a fairly short period of time. 
+                    <br />
+                    <br />
+                    The good thing about this exam, is that Red Hat lets us know everthing that could possibly on it, which makes studying that much easier. This site came out of a personal log of me studying for the exams. 
+                    <br />
+                    This site lists information by objective. Objectives come from Red Hat's training site:
+                    <br/>
+                    <br/>
+                    <a href="http://www.redhat.com/training/courses/ex200/examobjective">http://www.redhat.com/training/courses/ex200/examobjective</a>
+                    <br/>
+                    <a href="http://www.redhat.com/training/courses/ex300/examobjective">http://www.redhat.com/training/courses/ex300/examobjective</a>
+                    <br/>
+                    <br/>
+                    I can't go over what's on the test exactly, because that would violiate the agreement I signed when I took the test. This is simply information pulled from the redhat site, man pages, docs, and various internet sources while studying for the exam. All I can say is that, if you know how to do all of these things by the time you go to take the test, not only will you pass, but you will know how to manage systems. 
+                </div>
+                </article>
+        </section>
+    
 {% if articles %}
 
 {% for article in articles %}
    
     {% if loop.index == 1 %}
-    <section id="content" class="body">
+    
         <section id="front-header">
             <h1>Recently updated</h1>
         </section>
@@ -16,7 +41,8 @@
                     <ol id="posts-list" class="hfeed">
         {% endif %}
     {% elif loop.index < 7 %}
-        <li><article class="hentry">
+        <li>
+            <article class="hentry">
                 <header>
                         <h1><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title}}">{{ article.title }}</a></h1>
                 </header>
@@ -25,7 +51,8 @@
                 {{ article.summary }}
                 <a class="readmore" href="{{ SITEURL }}/{{ article.url }}">read more</a>
                 </div><!-- /.entry-content -->
-        </article></li>
+            </article>
+        </li>
     {% endif %}
 {% endfor %}
 </ol><!-- /#posts-list -->

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Add new partitions, logical volumes and swap to a system non-destructively</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+        
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+
+<a href="https://github.com/makewhatis/rhce.co">
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+
+</a>
+
+        <header id="banner" class="body">
+                <h1><a href="./index.html">rhce.co </a></h1>
+                <nav><ul>
+                
+                
+                <li><a href="./index.html">Home</a></li>
+                
+                
+                
+                </ul></nav>
+        </header><!-- /#banner -->
+
+        
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="add-new-partitions-logical-volumes-and-swap-to-a-system-non-destructively.html"
+        rel="bookmark" title="Permalink to Add new partitions, logical volumes and swap to a system non-destructively">Add new partitions, logical volumes and swap to a system non-destructively</a></h1>  </header>
+        <div class="entry-content">
+
+        <p>During the RHCSA / RHCE you may be asked to create new partitions on an already running system. This requires that you do so as not to disturb the already existing file systems, otherwise you may be reformatting halfway through the exam. </p>
+<h1>Add new partitions</h1>
+<p>Adding new partitions is fairly straightforward using tools like fdisk or parted. We will be using fdisk for this objective. </p>
+<p>First step is to open the device that we want to make the partition on. </p>
+<div class="codehilite"><pre>~<span class="o">]</span> fdisk -cu /dev/sdb 
+Device contains neither a valid DOS partition table, nor Sun, SGI or OSF disklabel
+Building a new DOS disklabel with disk identifier 0x110ea9fa.
+Changes will remain in memory only, <span class="k">until </span>you decide to write them.
+After that, of course, the previous content won<span class="err">&#39;</span>t be recoverable.
+
+Warning: invalid flag 0x0000 of partition table 4 will be corrected by w<span class="o">(</span>rite<span class="o">)</span>
+</pre></div>
+
+
+<p>You generally want to print the current partition table on the device with the p command</p>
+<div class="codehilite"><pre>Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+255 heads, 63 sectors/track, 261 cylinders, total 4194304 sectors
+<span class="nv">Units</span> <span class="o">=</span> sectors of 1 * <span class="nv">512</span> <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 512 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+</pre></div>
+
+
+<p>If nothing shows up under the list of devices, then there are no partitions. To make the first partition we will use the n command, for new. Then follow the prompts to create the new partition. Here we are making a 50MB partition.</p>
+<div class="codehilite"><pre>Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: n
+Command action
+e   extended
+p   primary partition <span class="o">(</span>1-4<span class="o">)</span>
+p
+Partition number <span class="o">(</span>1-4<span class="o">)</span>: 1
+First sector <span class="o">(</span>2048-4194303, default 2048<span class="o">)</span>: 
+Using default value 2048
+Last sector, +sectors or +size<span class="o">{</span>K,M,G<span class="o">}</span> <span class="o">(</span>2048-4194303, default 4194303<span class="o">)</span>: +50M
+</pre></div>
+
+
+<p>Once you've created the partition its a good idea to print the partition table. Once you are happy with the changes, write them to the disk with the w command. </p>
+<div class="codehilite"><pre>Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+255 heads, 63 sectors/track, 261 cylinders, total 4194304 sectors
+<span class="nv">Units</span> <span class="o">=</span> sectors of 1 * <span class="nv">512</span> <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 512 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      104447       51200   83  Linux
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: w
+The partition table has been altered!
+
+Calling ioctl<span class="o">()</span> to re-read partition table.
+Syncing disks.
+</pre></div>
+
+
+<h1>Add new logical volumes</h1>
+<p>To add a new logical volume you first need to create a new partition and set it to type Linux LVM.</p>
+<div class="codehilite"><pre>~<span class="o">]</span> fdisk -cu /dev/sdb
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+255 heads, 63 sectors/track, 261 cylinders, total 4194304 sectors
+<span class="nv">Units</span> <span class="o">=</span> sectors of 1 * <span class="nv">512</span> <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 512 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: n
+Command action
+e   extended
+p   primary partition <span class="o">(</span>1-4<span class="o">)</span>
+p
+Partition number <span class="o">(</span>1-4<span class="o">)</span>: 1
+First sector <span class="o">(</span>2048-4194303, default 2048<span class="o">)</span>: 
+Using default value 2048
+Last sector, +sectors or +size<span class="o">{</span>K,M,G<span class="o">}</span> <span class="o">(</span>2048-4194303, default 4194303<span class="o">)</span>: +50M
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: t
+Selected partition 1
+Hex code <span class="o">(</span><span class="nb">type </span>L to list codes<span class="o">)</span>: L
+
+0  Empty           24  NEC DOS         81  Minix / old Lin bf  Solaris        
+1  FAT12           39  Plan 9          82  Linux swap / So c1  DRDOS/sec <span class="o">(</span>FAT-
+2  XENIX root      3c  PartitionMagic  83  Linux           c4  DRDOS/sec <span class="o">(</span>FAT-
+3  XENIX usr       40  Venix 80286     84  OS/2 hidden C:  c6  DRDOS/sec <span class="o">(</span>FAT-
+4  FAT16 &lt;32M      41  PPC PReP Boot   85  Linux extended  c7  Syrinx         
+5  Extended        42  SFS             86  NTFS volume <span class="nb">set </span>da  Non-FS data    
+6  FAT16           4d  QNX4.x          87  NTFS volume <span class="nb">set </span>db  CP/M / CTOS / .
+7  HPFS/NTFS       4e  QNX4.x 2nd part 88  Linux plaintext de  Dell Utility   
+8  AIX             4f  QNX4.x 3rd part 8e  Linux LVM       df  BootIt         
+9  AIX bootable    50  OnTrack DM      93  Amoeba          e1  DOS access     
+a  OS/2 Boot Manag 51  OnTrack DM6 Aux 94  Amoeba BBT      e3  DOS R/O        
+b  W95 FAT32       52  CP/M            9f  BSD/OS          e4  SpeedStor      
+c  W95 FAT32 <span class="o">(</span>LBA<span class="o">)</span> 53  OnTrack DM6 Aux a0  IBM Thinkpad hi eb  BeOS fs        
+e  W95 FAT16 <span class="o">(</span>LBA<span class="o">)</span> 54  OnTrackDM6      a5  FreeBSD         ee  GPT            
+f  W95 Ext<span class="err">&#39;</span>d <span class="o">(</span>LBA<span class="o">)</span> 55  EZ-Drive        a6  OpenBSD         ef  EFI <span class="o">(</span>FAT-12/16/
+10  OPUS            56  Golden Bow      a7  NeXTSTEP        f0  Linux/PA-RISC b
+11  Hidden FAT12    5c  Priam Edisk     a8  Darwin UFS      f1  SpeedStor      
+12  Compaq diagnost 61  SpeedStor       a9  NetBSD          f4  SpeedStor      
+14  Hidden FAT16 &lt;3 63  GNU HURD or Sys ab  Darwin boot     f2  DOS secondary  
+16  Hidden FAT16    64  Novell Netware  af  HFS / HFS+      fb  VMware VMFS    
+17  Hidden HPFS/NTF 65  Novell Netware  b7  BSDI fs         <span class="nb">fc  </span>VMware VMKCORE 
+18  AST SmartSleep  70  DiskSecure Mult b8  BSDI swap       fd  Linux raid auto
+1b  Hidden W95 FAT3 75  PC/IX           bb  Boot Wizard hid fe  LANstep        
+1c  Hidden W95 FAT3 80  Old Minix       be  Solaris boot    ff  BBT            
+1e  Hidden W95 FAT1
+Hex code <span class="o">(</span><span class="nb">type </span>L to list codes<span class="o">)</span>: 8e
+Changed system <span class="nb">type </span>of partition 1 to 8e <span class="o">(</span>Linux LVM<span class="o">)</span>
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+255 heads, 63 sectors/track, 261 cylinders, total 4194304 sectors
+<span class="nv">Units</span> <span class="o">=</span> sectors of 1 * <span class="nv">512</span> <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 512 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      104447       51200   8e  Linux LVM
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: w
+The partition table has been altered!
+
+Calling ioctl<span class="o">()</span> to re-read partition table.
+Syncing disks.
+</pre></div>
+
+
+<p>Once you create the partition as Linux LVM type you can now create a physical volume with that partition. Keep in mind we are using small partitions in order to get the concept across, in real life these would be entire disks being added as physical volumes. </p>
+<p>To create a physical volume we use pvcreate:</p>
+<div class="codehilite"><pre>~<span class="o">]</span> pvcreate /dev/sdb1 physicalvol1
+Physical volume <span class="s2">&quot;/dev/sdb1&quot;</span> successfully created
+
+~<span class="o">]</span> pvdisplay
+
+<span class="s2">&quot;/dev/sdb1&quot;</span> is a new physical volume of <span class="s2">&quot;50.00 MiB&quot;</span>
+--- NEW Physical volume ---
+PV Name               /dev/sdb1
+VG Name               
+PV Size               50.00 MiB
+Allocatable           NO
+PE Size               0   
+Total PE              0
+Free PE               0
+Allocated PE          0
+PV UUID               ysMMtz-jYei-tNph-tvSU-3sSy-vemf-sjWxbO
+</pre></div>
+
+
+<p>Next we have to create the volume group and add the physical volume to it. We can do this with the vgcreate command. </p>
+<div class="codehilite"><pre>~<span class="o">]</span> vgcreate MyNewVolGroup /dev/sdb1
+Volume group <span class="s2">&quot;MyNewVolGroup&quot;</span> successfully created
+</pre></div>
+
+
+<p>Now that we have a physical volume, and its part of a volume group, so we can make a logical volume. To create a logical volume named LogVol1 from the volume group MyNewVolGroup we would use the following command. </p>
+<div class="codehilite"><pre>~<span class="o">]</span> lvcreate -L 28M -n LogVol1 MyNewVolGroup
+Logical volume <span class="s2">&quot;LogVol1&quot;</span> created
+</pre></div>
+
+
+<p>Now there is a lovical volume named "LogVol1" that is a part of MyNewVolGroup"</p>
+<p>'''''Add new swap partition'''''</p>
+<p>Adding a swap partition is like adding any other partition, just changing his type to Linux Swap.</p>
+<div class="codehilite"><pre>~<span class="o">]</span> fdisk -cu /dev/sdb
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+128 heads, 57 sectors/track, 574 cylinders, total 4194304 sectors
+<span class="nv">Units</span> <span class="o">=</span> sectors of 1 * <span class="nv">512</span> <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 512 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      104447       51200   8e  Linux LVM
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: n
+Command action
+e   extended
+p   primary partition <span class="o">(</span>1-4<span class="o">)</span>
+p
+Partition number <span class="o">(</span>1-4<span class="o">)</span>: 2
+First sector <span class="o">(</span>104448-4194303, default 104448<span class="o">)</span>: +50M
+Value out of range.
+First sector <span class="o">(</span>104448-4194303, default 104448<span class="o">)</span>:     
+Using default value 104448
+Last sector, +sectors or +size<span class="o">{</span>K,M,G<span class="o">}</span> <span class="o">(</span>104448-4194303, default 4194303<span class="o">)</span>: ^C
+:::bash
+~<span class="o">]</span> fdisk -cu /dev/sdb
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: n
+Command action
+e   extended
+p   primary partition <span class="o">(</span>1-4<span class="o">)</span>
+p
+Partition number <span class="o">(</span>1-4<span class="o">)</span>: 2
+First sector <span class="o">(</span>104448-4194303, default 104448<span class="o">)</span>: 
+Using default value 104448
+Last sector, +sectors or +size<span class="o">{</span>K,M,G<span class="o">}</span> <span class="o">(</span>104448-4194303, default 4194303<span class="o">)</span>: +50M
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: t
+Partition number <span class="o">(</span>1-4<span class="o">)</span>: 2
+Hex code <span class="o">(</span><span class="nb">type </span>L to list codes<span class="o">)</span>: 82
+Changed system <span class="nb">type </span>of partition 2 to 82 <span class="o">(</span>Linux swap / Solaris<span class="o">)</span>
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+128 heads, 57 sectors/track, 574 cylinders, total 4194304 sectors
+<span class="nv">Units</span> <span class="o">=</span> sectors of 1 * <span class="nv">512</span> <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 512 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      104447       51200   8e  Linux LVM
+/dev/sdb2          104448      206847       51200   82  Linux swap / Solaris
+
+Command <span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: w
+The partition table has been altered!
+
+Calling ioctl<span class="o">()</span> to re-read partition table.
+Syncing disks.
+</pre></div>
+
+
+<p>To activate a swap partion.<br />
+</p>
+<div class="codehilite"><pre>~<span class="o">]</span> swapon -v /dev/sdb2
+swapon on /dev/sdb2
+swapon: /dev/sdb2: found swap signature: version 1, page-size 4, same byte order
+swapon: /dev/sdb2: <span class="nv">pagesize</span><span class="o">=</span>4096, <span class="nv">swapsize</span><span class="o">=</span>52428800, <span class="nv">devsize</span><span class="o">=</span>52428800
+</pre></div>
+
+
+<p>Confirm that the swap was added. </p>
+<div class="codehilite"><pre>~<span class="o">]</span> swapon -s
+Filename               Type        Size    Used    Priority
+/dev/dm-1                               partition  1015800 0   -1
+/dev/sdb2                               partition  51192   0   -2
+</pre></div>
+        </div><!-- /.entry-content -->
+        
+
+</article>
+</section>
+
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                        
+                            <h3>RHCSA</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                    
+                                   
+                                
+                            
+
+                        
+                            <h3>RHCE</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+
+                        
+                        </ul>
+                </div>
+               
+
+
+                
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+
+</body>
+</html>

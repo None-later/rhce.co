@@ -31,3 +31,5 @@ EXAMS = ['RHCSA', 'RHCE']
 
 
 ARTICLE_URL = ('{slug}.html')
+
+REVERSE_CATEGORY_ORDER = False

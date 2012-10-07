@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Configure network services to start automatically at boot</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+        
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+
+<a href="https://github.com/makewhatis/rhce.co">
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+
+</a>
+
+        <header id="banner" class="body">
+                <h1><a href="./index.html">rhce.co </a></h1>
+                <nav><ul>
+                
+                
+                <li><a href="./index.html">Home</a></li>
+                
+                
+                
+                </ul></nav>
+        </header><!-- /#banner -->
+
+        
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="configure-network-services-to-start-automatically-at-boot.html"
+        rel="bookmark" title="Permalink to Configure network services to start automatically at boot">Configure network services to start automatically at boot</a></h1>  </header>
+        <div class="entry-content">
+
+        <p>You could setup every service perfectly, with all the correct settings, but if they do not start at boot, it will all have been in vain. Starting services at boot is critical in the exam, as well as in real life. Luckily this is made very simple with Red Hat Enterprise Linux 6, and prior versions. </p>
+<p>To control network services behaviour on boot, the tool to use is '''chkconfig'''</p>
+<p>These are best run while root or using sudo. Here I assume you are root. Here we check to see the status of httpd (apache). </p>
+<div class="codehilite"><pre>~<span class="o">]</span> chkconfig --list | grep httpd
+httpd              0:off   1:off   2:on    3:on    4:on    5:on    6:off
+</pre></div>
+
+
+<p>Here we see six colums, one for each runlevel. Most common runlevels are 2-5, which we can see are on. If we want to turn that off, we would run the following:</p>
+<div class="codehilite"><pre>~<span class="o">]</span> chkconfig httpd off
+~<span class="o">]</span> chkconfig --list | grep httpd
+httpd              0:off   1:off   2:off   3:off   4:off   5:off   6:off
+</pre></div>
+
+
+<p>Now we can see they are off. This means if I reboot my machine, httpd will not automatically start on boot. To turn this back on for the common runlevels, just run:</p>
+<div class="codehilite"><pre>~<span class="o">]</span> chkconfig httpd on
+~<span class="o">]</span> chkconfig --list | grep httpd
+httpd              0:off   1:off   2:on    3:on    4:on    5:on    6:off
+</pre></div>
+
+
+<p>You can also specify only certain runlevels such as runlevel 3. Which is used for most web servers. </p>
+<div class="codehilite"><pre>~<span class="o">]</span> chkconfig --level 3 httpd on
+~<span class="o">]</span> chkconfig --list | grep http
+httpd              0:off   1:off   2:off   3:on    4:off   5:off   6:off
+</pre></div>
+
+
+<p>So make sure you double check the service that you are depending on, both on exam day and real life.</p>
+        </div><!-- /.entry-content -->
+        
+
+</article>
+</section>
+
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                        
+                            <h3>RHCSA</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                    
+                                   
+                                
+                            
+
+                        
+                            <h3>RHCE</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+
+                        
+                        </ul>
+                </div>
+               
+
+
+                
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="/" rel="alternate"></link><link href="/feeds/g.%20Manage%20Security%20-%20(RHCSA).atom.xml" rel="self"></link><id>/</id><updated>2012-10-06T00:00:00+02:00</updated><entry><title>Configure firewall settings using system-config-firewall or iptables</title><link href="/configure-firewall-settings-using-system-config-firewall-or-iptables.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:configure-firewall-settings-using-system-config-firewall-or-iptables.html</id><summary type="html">&lt;p&gt;&lt;em&gt;&lt;code&gt;system-config-firewall&lt;/code&gt;&lt;/em&gt; is a good way to get rules up quick. But if you are not intimately familiar with the way the rules work, you may not be able to tweak them to the specifications on the exam, and end up in trouble.&lt;/p&gt;
+&lt;p&gt;Iptables is a big topic, and no way I could cover it on this page, nor would I need to. Here is a good page on the Centos Wiki that goes through iptables on a RHEL-based system in great detail.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://wiki.centos.org/HowTos/Network/IPTables"&gt;http://wiki.centos.org/HowTos/Network/IPTables&lt;/a&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Diagnose and address routine SELinux policy violations</title><link href="/diagnose-and-address-routine-selinux-policy-violations.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:diagnose-and-address-routine-selinux-policy-violations.html</id><summary type="html">&lt;p&gt;Going back to a previous example of trying to serve files from a directory other than the default apache directory, how would I be able to tell SELinux was the problem in that case?&lt;/p&gt;
+&lt;p&gt;I see a 403 error when I visit the domain after enabling SELinux. So first I would look in the apache error logs for a message as to why I am being denied. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;crit&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt; 127&lt;span class="p"&gt;.&lt;/span&gt;0&lt;span class="p"&gt;.&lt;/span&gt;0&lt;span class="p"&gt;.&lt;/span&gt;1&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;13&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;Permission&lt;/span&gt; &lt;span class="n"&gt;denied&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;public_html&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;htaccess&lt;/span&gt; &lt;span class="n"&gt;pcfg_openfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;unable&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;check&lt;/span&gt; &lt;span class="n"&gt;htaccess&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ensure&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;readable&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;At this point it would be best to check permissions on the .htaccess file, and sure enough permissions are good. Apache user and Apache group owns it, and it is readable.&lt;/p&gt;
+&lt;p&gt;Next place to look would be the audit.log, which is the logfile that SELinux uses to log messages. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;AVC&lt;/span&gt; &lt;span class="n"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;audit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1323618414&lt;span class="p"&gt;.&lt;/span&gt;869&lt;span class="p"&gt;:&lt;/span&gt;508&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="n"&gt;avc&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  &lt;span class="n"&gt;denied&lt;/span&gt;  &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;read&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt;  &lt;span class="n"&gt;pid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;23407 &lt;span class="n"&gt;comm&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;httpd&lt;/span&gt;&amp;quot; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;htaccess&lt;/span&gt;&amp;quot; &lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;dm&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;2 &lt;span class="n"&gt;ino&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;1966097 &lt;span class="n"&gt;scontext&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;system_u&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;system_r&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;httpd_t&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;s0&lt;/span&gt; &lt;span class="n"&gt;tcontext&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;unconfined_u&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;object_r&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;user_home_t&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;s0&lt;/span&gt; &lt;span class="n"&gt;tclass&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;
+&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;SYSCALL&lt;/span&gt; &lt;span class="n"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;audit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1323618414&lt;span class="p"&gt;.&lt;/span&gt;869&lt;span class="p"&gt;:&lt;/span&gt;508&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="n"&gt;arch&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;c000003e&lt;/span&gt; &lt;span class="n"&gt;syscall&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;2 &lt;span class="n"&gt;success&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;no&lt;/span&gt; &lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;13 &lt;span class="n"&gt;a0&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;7&lt;span class="n"&gt;fa80ef2f358&lt;/span&gt; &lt;span class="n"&gt;a1&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;80000 &lt;span class="n"&gt;a2&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;1&lt;span class="n"&gt;b6&lt;/span&gt; &lt;span class="n"&gt;a3&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;7469672&lt;span class="n"&gt;f7777772f&lt;/span&gt; &lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;0 &lt;span class="n"&gt;ppid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;1345 &lt;span class="n"&gt;pid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;23407 &lt;span class="n"&gt;auid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;4294967295 &lt;span class="n"&gt;uid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;48 &lt;span class="n"&gt;gid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;48 &lt;span class="n"&gt;euid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;48 &lt;span class="n"&gt;suid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;48 &lt;span class="n"&gt;fsuid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;48 &lt;span class="n"&gt;egid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;48 &lt;span class="n"&gt;sgid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;48 &lt;span class="n"&gt;fsgid&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;48 &lt;span class="n"&gt;tty&lt;/span&gt;&lt;span class="p"&gt;=(&lt;/span&gt;&lt;span class="n"&gt;none&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ses&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;4294967295 &lt;span class="n"&gt;comm&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;httpd&lt;/span&gt;&amp;quot; &lt;span class="n"&gt;exe&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&amp;quot;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sbin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;httpd&lt;/span&gt;&amp;quot; &lt;span class="n"&gt;subj&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;system_u&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;system_r&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;httpd_t&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;s0&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;=(&lt;/span&gt;&lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I can see that /usr/sbin/httpd was denied access to '.htaccess'. At this point we know SELinux is the problem. Looking at the message a little closer, the context can be seen in the log entry, tcontext=unconfined_u:object_r:user_home_t, which is not the httpd_sys_content_t that can be seen on files in the deafult apache directory. &lt;/p&gt;
+&lt;p&gt;Lets look at the ftpd man page, which has the best example to pull from...&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; man ftpd_selinux
+
+...
+semanage fcontext -a -t public_content_t &lt;span class="s2"&gt;&amp;quot;/var/ftp(/.*)?&amp;quot;&lt;/span&gt;
+restorecon -F -R -v /var/ftp
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now replace the proper items in order to make this work:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;public_content_t&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;httpd_sys_content_t&lt;/span&gt;
+&amp;quot;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ftp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;/.*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;?&amp;quot; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &amp;quot;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;public_html&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;/.*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;?&amp;quot;
+&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ftp&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;public_html&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The commands we would end up running would be:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;semanage fcontext -a -t httpd_sys_content_t &lt;span class="s2"&gt;&amp;quot;/www/test/public_html(/.*)?&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;restorecon -F -R -v /www/test/public_html
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Finally, check the context of that .htaccess file.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; ls -laZ /www/test/public_html
+ ...
+ -rw-rw-r--. apache apache system_u:object_r:httpd_sys_content_t:s0 .htaccess
+ ...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Looks good, now our page loads. This may seem kind of crazy, but practice with different application and after a while it will be second nature to troubleshoot this. This is a testable item now though, so you have to learn it.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>List and identify SELinux file and process context</title><link href="/list-and-identify-selinux-file-and-process-context.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:list-and-identify-selinux-file-and-process-context.html</id><summary type="html">&lt;p&gt;Listing and identifying SELinux context is really simple. You pretty much just add -Z to your query to display SELinux specific info along with your normal file attributes.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; ps -Z
+LABEL                             PID TTY          TIME CMD
+unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 15802 pts/21 00:00:00 bash
+unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 15908 pts/21 00:00:00 ps
+
+~&lt;span class="o"&gt;]&lt;/span&gt; ls -lZ
+-rw-r--r--. root root system_u:object_r:httpd_config_t:s0 httpd.conf
+-rw-r--r--. root root system_u:object_r:httpd_config_t:s0 magic
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This will allow you to see what context is currently applied to the file, and troubleshoot from there if need be.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Restore default file contexts</title><link href="/restore-default-file-contexts.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:restore-default-file-contexts.html</id><summary type="html">&lt;h1&gt;Restore default file contexts&lt;/h1&gt;
+&lt;p&gt;If any files are added to say, /www/testsite/, and you are running SELinux in enforcing mode, then you will likely have an issue when trying to serve them via Apache. This is because their SELinux file context is not that of &lt;code&gt;httpd_sys_content_t&lt;/code&gt; in that custom directory. SELinux is strict in that nature, and requires that you apply the proper context before it will allow Apache to use them.&lt;/p&gt;
+&lt;p&gt;The easiest thing to do is reference the man pages for specific syntax. I'll use the example of restoring context to files added into a directory that will be used by apache, but isnt the default system directory. I copied an index.html file into /www/testsite&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; ls -laZ /www/testsite/
+-rw-r--r--. root      root      unconfined_u:object_r:default_t:s0 index.html
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can see this file has a generic file context. When running in "Enforcing", SELinux will throw permission errors if this page is served via apache. To set proper file contexts, semanage is the tool to use. &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Tip: "man -k _selinux" will show you the man pages for the main applications you will be using, ftpd, httpd, etc. There are good examples in there&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;First we set context of the directory...&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; semanage fcontext -a -t httpd_sys_content_t &lt;span class="s2"&gt;&amp;quot;/www/testsite(/.*)?&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next we restore context recursively...&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; restorecon -F -R -v /www/testsite
+restorecon reset /www/testsite context unconfined_u:object_r:default_t:s0-&amp;gt;system_u:object_r:httpd_sys_content_t:s0
+restorecon reset /www/testsite/index.html context unconfined_u:object_r:default_t:s0-&amp;gt;system_u:object_r:httpd_sys_content_t:s0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now Apache will have no problem serving files from that directory, because SELinux will be happy with the context. &lt;/p&gt;
+&lt;p&gt;NOTE: If this didnt happen, and you got an error that semanage isnt found, then you didnt install the package that provides this tool.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; yum install policycoreutils-python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Make sure you remember this, it could kill your ability to properly perform SELinux tasks on an exam!&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Set enforcing and permissive modes for SELinux</title><link href="/set-enforcing-and-permissive-modes-for-selinux.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:set-enforcing-and-permissive-modes-for-selinux.html</id><summary type="html">&lt;p&gt;With SELinux being part of the exams now, this is important. Knowing how to change modes and detect mode in SELinux is key.&lt;/p&gt;
+&lt;p&gt;To check the current SELinux mode&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  getenforce
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To set the SELinux mode to 0 (does not persist through a reboot)&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="p"&gt;:::&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt;
+&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  &lt;span class="n"&gt;setenforce&lt;/span&gt; 0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To change mode persistently&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="p"&gt;:::&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt;
+&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  &lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;selinux&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;change to desired value: disabled, permissive, enforcing&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;SELINUX&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;disabled&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Use boolean settings to modify system SELinux settings</title><link href="/use-boolean-settings-to-modify-system-selinux-settings.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:use-boolean-settings-to-modify-system-selinux-settings.html</id><summary type="html">&lt;p&gt;As stated in the man page "Policy booleans enable runtime customization of SELinux policy." Booleans consist of a number of config items, that can either be on or off.&lt;/p&gt;
+&lt;p&gt;Easiest way to see the booleans currently set:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; getsebool -a
+&lt;span class="c"&gt;# ... long list&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If I wanted to see booleans associated with httpd, I could just grep through that.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; getsebool -a | grep httpd
+allow_httpd_anon_write --&amp;gt; off
+allow_httpd_mod_auth_ntlm_winbind --&amp;gt; off
+httpd_enable_cgi --&amp;gt; on
+....
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To change a boolean setting, setsebool would be the command to use. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; setsebool -P httpd_enable_cgi off
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Notice the -P we add in there, that is to make the change persistant across a reboot. -P causes the boolean to be written into the policy file, as opposed to just being changed in memory.&lt;/p&gt;
+&lt;p&gt;Another cool boolean command is togglesebool, which just toggles the boolean, active / inactive.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; togglesebool httpd_enable_cgi
+httpd_enable_cgi: active
+&lt;span class="c"&gt;# togglesebool httpd_enable_cgi&lt;/span&gt;
+httpd_enable_cgi: inactive
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So remember, if you are having issues with SELinux blocking applications like Apache, and all the file contexts are correct, you would next want to look at booleans.&lt;/p&gt;</summary><category term="RHCSA"></category></entry></feed>

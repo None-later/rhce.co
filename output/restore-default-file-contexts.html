@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Restore default file contexts</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+        
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+
+<a href="https://github.com/makewhatis/rhce.co">
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+
+</a>
+
+        <header id="banner" class="body">
+                <h1><a href="./index.html">rhce.co </a></h1>
+                <nav><ul>
+                
+                
+                <li><a href="./index.html">Home</a></li>
+                
+                
+                
+                </ul></nav>
+        </header><!-- /#banner -->
+
+        
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="restore-default-file-contexts.html"
+        rel="bookmark" title="Permalink to Restore default file contexts">Restore default file contexts</a></h1>  </header>
+        <div class="entry-content">
+
+        <h1>Restore default file contexts</h1>
+<p>If any files are added to say, /www/testsite/, and you are running SELinux in enforcing mode, then you will likely have an issue when trying to serve them via Apache. This is because their SELinux file context is not that of <code>httpd_sys_content_t</code> in that custom directory. SELinux is strict in that nature, and requires that you apply the proper context before it will allow Apache to use them.</p>
+<p>The easiest thing to do is reference the man pages for specific syntax. I'll use the example of restoring context to files added into a directory that will be used by apache, but isnt the default system directory. I copied an index.html file into /www/testsite</p>
+<div class="codehilite"><pre>~<span class="o">]</span> ls -laZ /www/testsite/
+-rw-r--r--. root      root      unconfined_u:object_r:default_t:s0 index.html
+</pre></div>
+
+
+<p>You can see this file has a generic file context. When running in "Enforcing", SELinux will throw permission errors if this page is served via apache. To set proper file contexts, semanage is the tool to use. </p>
+<p><em>Tip: "man -k _selinux" will show you the man pages for the main applications you will be using, ftpd, httpd, etc. There are good examples in there</em></p>
+<p>First we set context of the directory...</p>
+<div class="codehilite"><pre>~<span class="o">]</span> semanage fcontext -a -t httpd_sys_content_t <span class="s2">&quot;/www/testsite(/.*)?&quot;</span>
+</pre></div>
+
+
+<p>Next we restore context recursively...</p>
+<div class="codehilite"><pre>~<span class="o">]</span> restorecon -F -R -v /www/testsite
+restorecon reset /www/testsite context unconfined_u:object_r:default_t:s0-&gt;system_u:object_r:httpd_sys_content_t:s0
+restorecon reset /www/testsite/index.html context unconfined_u:object_r:default_t:s0-&gt;system_u:object_r:httpd_sys_content_t:s0
+</pre></div>
+
+
+<p>Now Apache will have no problem serving files from that directory, because SELinux will be happy with the context. </p>
+<p>NOTE: If this didnt happen, and you got an error that semanage isnt found, then you didnt install the package that provides this tool.</p>
+<div class="codehilite"><pre>~<span class="o">]</span> yum install policycoreutils-python
+</pre></div>
+
+
+<p>Make sure you remember this, it could kill your ability to properly perform SELinux tasks on an exam!</p>
+        </div><!-- /.entry-content -->
+        
+
+</article>
+</section>
+
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                        
+                            <h3>RHCSA</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                    
+                                   
+                                
+                            
+
+                        
+                            <h3>RHCE</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+
+                        
+                        </ul>
+                </div>
+               
+
+
+                
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+
+</body>
+</html>

@@ -52,13 +52,15 @@
                         {% for exam in EXAMS %}
                             <h3>{{ exam }}</h3>
 
-                            {% for cat, null in categories|sort(reverse=True)  %}                           
-                                
-                                {% if exam in cat.name %}
-                                    {% set cat1 = cat.name |replace("- (%s)" % exam, "") %}
-                                    <li {% if cat == category %}class="active"{% endif %}><a href="{{ SITEURL }}/{{ cat.url }}">{{ cat1[3:] }}</a></li>
-                                {% endif %}
-                               
+                            {% for cat in categories %}
+                                {% for c in cat|sort(reverse=True)  %}                           
+                                 
+                                    {% if exam in c.name %}
+                                        {% set cat1 = c.name |replace("- (%s)" % exam, "") %}
+                                        <li {% if cat == category %}class="active"{% endif %}><a href="{{ SITEURL }}/{{ c.url }}">{{ cat1[3:] }}</a></li>
+                                    {% endif %}
+                                   
+                                {% endfor %}
                             {% endfor %}
 
                         {% endfor %}

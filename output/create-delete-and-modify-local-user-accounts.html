@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Create, delete, and modify local user accounts</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+        
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+
+<a href="https://github.com/makewhatis/rhce.co">
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+
+</a>
+
+        <header id="banner" class="body">
+                <h1><a href="./index.html">rhce.co </a></h1>
+                <nav><ul>
+                
+                
+                <li><a href="./index.html">Home</a></li>
+                
+                
+                
+                </ul></nav>
+        </header><!-- /#banner -->
+
+        
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="create-delete-and-modify-local-user-accounts.html"
+        rel="bookmark" title="Permalink to Create, delete, and modify local user accounts">Create, delete, and modify local user accounts</a></h1>  </header>
+        <div class="entry-content">
+
+        <p>Two ways you can go about this, the command-line way, or the GUI way. Doesn't matter for the test, just whatever you are comfortable with. Keep in mind that as a sysadmin it will be much more handy to use the command-line. ;-) </p>
+<h1>Graphical User Interface (GUI)</h1>
+<div class="codehilite"><pre>~<span class="o">]</span>  yum -y install system-config-users
+
+~<span class="o">]</span>  system-config-users
+</pre></div>
+
+
+<p>That will pop up an interface to add, remove, and modify users. Remember that if you are doing this remotely, you need to carry your XSession over to the server. </p>
+<div class="codehilite"><pre>~<span class="o">]</span>  ssh -X user@host
+</pre></div>
+
+
+<p>That's as far as I will go into the GUI, its all point and click. :)</p>
+<h1>Command-line interface (CLI)</h1>
+<h2><em>Add user bob:</em></h2>
+<div class="codehilite"><pre>~<span class="o">]</span>  useradd bob
+</pre></div>
+
+
+<h2><em>Add bob into the wheel group</em></h2>
+<div class="codehilite"><pre>~<span class="o">]</span>  useradd -G wheel bob
+</pre></div>
+
+
+<h2><em>Add bob with sh shell instead of bash</em></h2>
+<div class="codehilite"><pre>~<span class="o">]</span>  useradd -s /bin/sh bob
+</pre></div>
+
+
+<h2><em>Add bob with a UID of 504 and a GID of 505</em></h2>
+<div class="codehilite"><pre>~<span class="o">]</span>  useradd -u 504 -g 505 bob
+</pre></div>
+
+
+<h2><em>Modify bob to use the bash shell instead</em></h2>
+<div class="codehilite"><pre>~<span class="o">]</span>  usermod -s /bin/bash bob
+</pre></div>
+
+
+<h2><em>Modify bob to be in the sales group as well</em></h2>
+<div class="codehilite"><pre>~<span class="o">]</span>  usermod -a -G sales bob
+</pre></div>
+
+
+<h2><em>Set or change a password for bob</em></h2>
+<div class="codehilite"><pre>~<span class="o">]</span>  passwd bob
+</pre></div>
+
+
+<h2><em>Delete bob from the system</em></h2>
+<div class="codehilite"><pre>~<span class="o">]</span>  userdel bob
+</pre></div>
+
+
+<h2><em>Delete bob and force remove him even if he is logged in. Also removes his home dir and mail spool</em></h2>
+<div class="codehilite"><pre>~<span class="o">]</span>  userdel -f bob
+</pre></div>
+
+
+<p>There are many other options that you can use that I didn't go over, just check out the man page. I covered most of the common ones.</p>
+        </div><!-- /.entry-content -->
+        
+
+</article>
+</section>
+
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                        
+                            <h3>RHCSA</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                    
+                                   
+                                
+                            
+
+                        
+                            <h3>RHCE</h3>
+
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                        
+                                        <li ><a href="./category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+                                                           
+                                 
+                                    
+                                   
+                                                           
+                                 
+                                    
+                                   
+                                
+                            
+
+                        
+                        </ul>
+                </div>
+               
+
+
+                
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+
+</body>
+</html>
