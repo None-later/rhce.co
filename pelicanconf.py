@@ -3,7 +3,7 @@
 
 AUTHOR = u"David Johansen"
 SITENAME = u"rhce.co"
-SITEURL = ''
+SITEURL = 'http://rhce.co'
 
 GITHUB_URL = 'https://github.com/makewhatis/rhce.co'
 
@@ -33,3 +33,8 @@ EXAMS = ['RHCSA', 'RHCE']
 ARTICLE_URL = ('{slug}.html')
 
 REVERSE_CATEGORY_ORDER = False
+
+PLUGINS = ['pelican.plugins.sitemap']
+
+
+SITEMAP = {'format': 'xml'}

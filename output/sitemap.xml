@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+         xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>http://rhce.co/index.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/archives.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/tags.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/categories.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-system-to-authenticate-using-kerberos.html</loc>
+    <lastmod>2012-10-07T12:18:53-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/access-a-shell-prompt-and-issue-commands-with-correct-syntax.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/access-a-virtual-machines-console.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/add-new-partitions-logical-volumes-and-swap-to-a-system-non-destructively.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/archive-compress-unpack-and-uncompress-files-using-tar-star-gzip-and-bzip2.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/boot-reboot-and-shut-down-a-system-normally.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/boot-systems-into-different-runlevels-manually.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/change-passwords-and-adjust-password-aging-for-local-user-accounts.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-a-physical-machine-to-host-virtual-guests.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-a-system-to-run-a-default-configuration-ftp-server.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-a-system-to-run-a-default-configuration-http-server.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-a-system-to-use-an-existing-ldap-directory-service-for-user-and-group-information.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-firewall-settings-using-system-config-firewall-or-iptables.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-network-services-to-start-automatically-at-boot.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-networking-and-hostname-resolution-statically-or-dynamically.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-systems-to-boot-into-a-specific-runlevel-automatically.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-systems-to-launch-virtual-machines-at-boot.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-systems-to-mount-ext4-luks-encrypted-and-network-file-systems-automatically.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/configure-systems-to-mount-file-systems-at-boot-by-universally-unique-id-uuid-or-label.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-and-configure-luks-encrypted-partitions-and-logical-volumes-to-prompt-for-password-and-mount-a-decrypted-file-system-at-boot.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-and-configure-set-gid-directories-for-collaboration.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-and-edit-text-files.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-and-manage-access-control-lists-acls.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-and-remove-physical-volumes-assign-physical-volumes-to-volume-groups-create-and-delete-logical-volumes.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-delete-and-modify-local-groups-and-group-memberships.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-delete-and-modify-local-user-accounts.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-delete-copy-and-move-files-and-directories.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-hard-and-soft-links.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/create-mount-unmount-and-use-ext2-ext3-and-ext4-file-systems.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/diagnose-and-address-routine-selinux-policy-violations.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/diagnose-and-correct-file-permission-problems.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/extend-existing-unencrypted-ext4-formatted-logical-volumes.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/install-and-update-software-packages-from-red-hat-network-a-remote-repository-or-from-the-local-filesystem.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/install-red-hat-enterprise-linux-automatically-using-kickstart.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/install-red-hat-enterprise-linux-systems-as-virtual-guests.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/list-and-identify-selinux-file-and-process-context.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/list-create-delete-and-set-partition-type-for-primary-extended-and-logical-partitions.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/locate-and-interpret-system-log-files.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/modify-the-system-bootloader.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/mount-and-unmount-cifs-and-nfs-network-file-systems.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/mount-unmount-and-use-luks-encrypted-file-systems.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/restore-default-file-contexts.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/schedule-tasks-using-cron.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/set-enforcing-and-permissive-modes-for-selinux.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/start-and-stop-virtual-machines.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/start-stop-and-check-the-status-of-network-services.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/update-the-kernel-package-appropriately-to-ensure-a-bootable-system.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/use-boolean-settings-to-modify-system-selinux-settings.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/use-grep-and-regular-expressions-to-analyze-text.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/use-shell-scripting-to-automate-system-maintenance-tasks.html</loc>
+    <lastmod>2012-10-06T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/list-set-and-change-standard-ugorwx-permissions.html</loc>
+    <lastmod>2012-10-05T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/locate-read-and-use-system-documentation-including-man-info-and-files-in-usrsharedoc.html</loc>
+    <lastmod>2012-10-05T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/access-remote-systems-using-ssh-and-vnc.html</loc>
+    <lastmod>2012-10-04T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/identify-cpumemory-intensive-processes-adjust-process-priority-with-renice-and-kill-processes.html</loc>
+    <lastmod>2012-10-04T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/log-in-and-switch-users-in-multi-user-runlevels.html</loc>
+    <lastmod>2012-10-04T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/use-input-output-redirection.html</loc>
+    <lastmod>2012-10-04T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/use-single-user-mode-to-gain-access-to-a-system.html</loc>
+    <lastmod>2012-10-04T00:00:00-00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/category/a-system-configuration-and-management-rhce.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/category/a-understand-and-use-essential-tools-rhcsa.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/category/b-operate-running-systems-rhcsa.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/category/c-configure-local-storage-rhcsa.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/category/d-create-and-configure-file-systems-rhcsa.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/category/e-deploy-configure-and-maintain-systems-rhcsa.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/category/f-manage-users-and-groups-rhcsa.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/category/g-manage-security-rhcsa.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/tag/rhce.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/tag/rhcsa.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>http://rhce.co/author/david-johansen.html</loc>
+    <lastmod>2012-10-07T16:22:15-00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+</urlset>
