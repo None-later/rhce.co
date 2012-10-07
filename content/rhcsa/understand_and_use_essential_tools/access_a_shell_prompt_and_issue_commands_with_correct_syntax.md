@@ -1,6 +1,6 @@
 Date: 2012-10-06
 Title: Access a shell prompt and issue commands with correct syntax
-Objective: 1
+Objective: 01
 Category: 1. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA
 

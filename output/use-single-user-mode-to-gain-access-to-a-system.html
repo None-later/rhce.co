@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Access a shell prompt and issue commands with correct syntax</title>
+        <title>Use single-user mode to gain access to a system</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
         <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
@@ -43,12 +43,26 @@
         
 <section id="content" class="body">
 <article>
-        <header> <h1 class="entry-title"><a href="access-a-shell-prompt-and-issue-commands-with-correct-syntax.html"
-        rel="bookmark" title="Permalink to Access a shell prompt and issue commands with correct syntax">Access a shell prompt and issue commands with correct syntax</a></h1>  </header>
+        <header> <h1 class="entry-title"><a href="use-single-user-mode-to-gain-access-to-a-system.html"
+        rel="bookmark" title="Permalink to Use single-user mode to gain access to a system">Use single-user mode to gain access to a system</a></h1>  </header>
         <div class="entry-content">
 
-        <p>This is first requirement should stop anyone who may not know, or may have never used a shell prompt from attempting the test. If you can open your terminal, navigate and type commands then you have accomplished this. If not, then you should check out the basics and start there.</p>
-<p><a href="http://beginlinux.com/">http://beginlinux.com/</a> is a great place to start.</p>
+        <p>Booting into single user mode is the easiest way to gain access to a Red Hat Enterprise Linux server. </p>
+<p>This is only feasible if you have access to the physical console, which you will on the RHCSA and RHCE exams. </p>
+<ul>
+<li>At the beginning of the boot process you should see the grub menu pop up with a countdown and some kernel options (or perhaps just one option). </li>
+<li>It should be counting down at this point and says: "Press any key to enter the menu". In this case you would hit any key. </li>
+<li>At the bottom of the screen there is an explanation of the few options that are available to use on this page. One of these options is "e" for edit. Hit "e" to edit the boot kernel options. 
+NOTE: (You can also use "a" for append, although they both accomplish the same thing.)</li>
+<li>You would now edit the main kernel options, adding either "single" or even just "1" at the end. Once you have completed that hit enter, the "b" for boot. </li>
+<li>You are now in single user mode, and be auto logged in as root. </li>
+</ul>
+<p>NOTE: for Red Hat Enterprise Linux 6.0 there is a bug that will prevent you from changing your root password in single user mode. This is a result of SELinux. For this situation you would want to temporarily disable SELinux.</p>
+<div class="codehilite"><pre><span class="c"># setenforce 0</span>
+</pre></div>
+
+
+<p>Now you should be allowed to change your root password.</p>
         </div><!-- /.entry-content -->
         
 
@@ -72,14 +86,14 @@
                                 
                                 
 
-                                    <li ><a href="./category/2-operate-running-systems-rhcsa.html">2. Operate Running Systems </a></li>
+                                    <li class="active"><a href="./category/2-operate-running-systems-rhcsa.html">2. Operate Running Systems </a></li>
                                 
                                
                                                        
                                 
                                 
 
-                                    <li class="active"><a href="./category/1-understand-and-use-essential-tools-rhcsa.html">1. Understand and Use Essential Tools </a></li>
+                                    <li ><a href="./category/1-understand-and-use-essential-tools-rhcsa.html">1. Understand and Use Essential Tools </a></li>
                                 
                                
                             

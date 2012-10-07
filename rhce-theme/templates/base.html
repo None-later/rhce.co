@@ -52,7 +52,7 @@
                         {% for exam in EXAMS %}
                             <h3>{{ exam }}</h3>
 
-                            {% for cat, null in categories|sort  %}                                
+                            {% for cat, null in categories|sort  %}                           
                                 
                                 {% if exam in cat.name %}
 

@@ -1,15 +1,18 @@
+Date: 2012-10-04
 Title: Use input-output redirection
-Objective: 2
+Objective: 02
 Category: 1. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA 
 
 Input output redirection is one of the base skills you will need as a sysadmin. On the exam you will have to be able to redirect data from one command into another, and/or into a file. 
 
- <code>~$ echo "this is input" > file.txt</code>
+    :::bash
+    $ echo "this is input" > file.txt
 
 Another common example:
 
- <code>cat /var/log/messages | less</code>
+    :::bash
+    $ cat /var/log/messages | less
 
 
 Here are a couple of good tutorials already written on this:

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Access a shell prompt and issue commands with correct syntax</title>
+        <title>Access remote systems using ssh and VNC</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
         <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
@@ -43,12 +43,82 @@
         
 <section id="content" class="body">
 <article>
-        <header> <h1 class="entry-title"><a href="access-a-shell-prompt-and-issue-commands-with-correct-syntax.html"
-        rel="bookmark" title="Permalink to Access a shell prompt and issue commands with correct syntax">Access a shell prompt and issue commands with correct syntax</a></h1>  </header>
+        <header> <h1 class="entry-title"><a href="access-remote-systems-using-ssh-and-vnc.html"
+        rel="bookmark" title="Permalink to Access remote systems using ssh and VNC">Access remote systems using ssh and VNC</a></h1>  </header>
         <div class="entry-content">
 
-        <p>This is first requirement should stop anyone who may not know, or may have never used a shell prompt from attempting the test. If you can open your terminal, navigate and type commands then you have accomplished this. If not, then you should check out the basics and start there.</p>
-<p><a href="http://beginlinux.com/">http://beginlinux.com/</a> is a great place to start.</p>
+        <h1>SSH</h1>
+<p>Objective: Access remote systems using '''ssh''' and VNC</p>
+<p>SSH is such an integrated part of this exam that its kind of weird that this is one of the official requirements. But nonetheless there are a number of different options that you can apply to make you more efficient in exam. </p>
+<p>Basic ssh access is simple:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>ssh user@host&lt;/code&gt;
+</pre></div>
+
+
+<p>ssh to a custom port:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>ssh -p port_number user@host&lt;/code&gt;
+</pre></div>
+
+
+<p>ssh bringing X (required to run programs like system-config-users remotely)</p>
+<div class="codehilite"><pre><span class="nv">$ </span>ssh -X user@host&lt;/code&gt;
+</pre></div>
+
+
+<p>ssh as another user (another way)</p>
+<div class="codehilite"><pre><span class="nv">$ </span>ssh -l user host&lt;/code&gt;
+</pre></div>
+
+
+<p>Display debugging messages as it connects. Useful if you have having some issues connecting to a certain machine.</p>
+<div class="codehilite"><pre><span class="nv">$ </span>ssh -v user@host&lt;/code&gt;
+</pre></div>
+
+
+<p>Those are the main options for ssh, as always "man ssh" to see all the other magic.</p>
+<h1>VNC</h1>
+<p>Objective: Access remote systems using ssh and '''VNC'''</p>
+<p>On the remote machine, that you will be connecting to, you should have tigervnc-server installed.</p>
+<div class="codehilite"><pre><span class="nv">$ </span>yum install tigervnc-server &lt;/code&gt;
+</pre></div>
+
+
+<p>This puts a config file on your remote machine in /etc/sysconfig/vncservers</p>
+<div class="codehilite"><pre><span class="nv">VNCSERVERS</span><span class="o">=</span><span class="s2">&quot;2:myusername&quot;</span>
+VNCSERVERARGS<span class="o">[</span>2<span class="o">]=</span><span class="s2">&quot;-geometry 800x600 -nolisten tcp -nohttpd&quot;</span>
+</pre></div>
+
+
+<p>Aside from changing "username" you want it to look like this. All we did to change it, is remove the "-localhost" directive. This would have restricted us from connecting from a remote system without a tunnel setup. Since this is an exam and not the real world, we can disable that.</p>
+<p>Set up your password on the remote machine by running </p>
+<div class="codehilite"><pre><span class="nv">$ </span>vncpasswd&lt;/code&gt;
+</pre></div>
+
+
+<p>And finally start your vncserver</p>
+<div class="codehilite"><pre><span class="nv">$ </span>vncserver :1&lt;/code&gt;
+</pre></div>
+
+
+<p>The output should look like this:<br></p>
+<div class="codehilite"><pre> <span class="o">[</span>root@rhel6 ~<span class="o">]</span><span class="c"># vncserver :1</span>
+ New <span class="s1">&#39;rhel6.local:1 (root)&#39;</span> desktop is rhel6.local:1&lt;br&gt;
+ Starting applications specified in /root/.vnc/xstartup&lt;br&gt;
+ Log file is /root/.vnc/rhel6.local:1.log
+</pre></div>
+
+
+<p>The default vnc client on Red Hat Enterprise Linux 6 is tigervnc. If it is not already installed on the system:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>yum install tigervnc&lt;/code&gt;
+</pre></div>
+
+
+<p>To connect to the newly setup vncserver just type:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>vncviewer rhel6.local:5901
+</pre></div>
+
+
+<p>(replace rhel6.local with your remote host)</p>
         </div><!-- /.entry-content -->
         
 

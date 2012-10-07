@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Boot, reboot, and shut down a system normally</title>
+        <title>Identify CPU/memory intensive processes, adjust process priority with renice, and kill processes</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
         <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
@@ -43,38 +43,67 @@
         
 <section id="content" class="body">
 <article>
-        <header> <h1 class="entry-title"><a href="boot-reboot-and-shut-down-a-system-normally.html"
-        rel="bookmark" title="Permalink to Boot, reboot, and shut down a system normally">Boot, reboot, and shut down a system normally</a></h1>  </header>
+        <header> <h1 class="entry-title"><a href="identify-cpumemory-intensive-processes-adjust-process-priority-with-renice-and-kill-processes.html"
+        rel="bookmark" title="Permalink to Identify CPU/memory intensive processes, adjust process priority with renice, and kill processes">Identify CPU/memory intensive processes, adjust process priority with renice, and kill processes</a></h1>  </header>
         <div class="entry-content">
 
-        <p>Basically, they are referring to these actions on the command line. I'm sure everyone is able to do this on a pc, but not necessarily a live Red Hat Enterprise Linux Server remotely. </p>
-<p>The commands are simple for the server. </p>
-<p>Normal reboot</p>
-<div class="codehilite"><pre><span class="nv">$ </span>sudo reboot
+        <p>A few commands to help you identify processes on the exam are ps and top. These are commands that you will actually use extensively to monitor systems in the workplace. </p>
+<p>ps - report a snapshot of the current processes.</p>
+<p>ps helps you see what processes are being run, what files and commands they are being run with, who they are being run by, as well and their process ids. All the above items are crucial when troubleshooting issues on a Red Hat Enterprise Linux 6 system. </p>
+<p>a few good examples pulled from a man page:</p>
+<p>EXAMPLES</p>
+<div class="codehilite"><pre><span class="c"># To see every process on the system using standard syntax:</span>
+<span class="nv">$ </span>ps -e
+<span class="nv">$ </span>ps -ef
+<span class="nv">$ </span>ps -eF
+ps -ely
+
+<span class="c"># To see every process on the system using BSD syntax:</span>
+<span class="nv">$ </span>ps ax
+<span class="nv">$ </span>ps axu
+
+<span class="c"># To print a process tree:</span>
+<span class="nv">$ </span>ps -ejH
+<span class="nv">$ </span>ps axjf
+
+<span class="c"># To get info about threads:</span>
+<span class="nv">$ </span>ps -eLf
+<span class="nv">$ </span>ps axms
+
+<span class="c"># To get security info:</span>
+<span class="nv">$ </span>ps -eo euser,ruser,suser,fuser,f,comm,label
+<span class="nv">$ </span>ps axZ
+<span class="nv">$ </span>ps -eM
+
+<span class="c"># To see every process running as root (real &amp; effective ID) in user format:</span>
+<span class="nv">$ </span>ps -U root -u root u
 </pre></div>
 
 
-<p>Another way</p>
-<div class="codehilite"><pre><span class="nv">$ </span>sudo shutdown -r now
+<p>There is plenty of more info on this in the man pages as well as a plethoura of information on the web for ps. </p>
+<div class="codehilite"><pre>top - display Linux tasks
 </pre></div>
 
 
-<p>Changing to init 6 will reboot as well, which is what init 6 does. </p>
-<div class="codehilite"><pre><span class="nv">$ </span>sudo init 6
+<p>At its most basic usage you can just type:</p>
+<p><code>$ top </code></p>
+<p>There is a whole lot of options that go along with that command: "man top" to see them all.</p>
+<p>renice — alter priority of running processes</p>
+<p>As stated in the description, renice is a linux utility to change the priority of a process. This could obviously come in handy while trying to keep a process at bay. </p>
+<p>Example from the man page:</p>
+<div class="codehilite"><pre> <span class="n">renice</span> <span class="o">+</span>1 987 <span class="o">-</span><span class="n">u</span> <span class="n">daemon</span> <span class="n">root</span> <span class="o">-</span><span class="n">p</span> 32
 </pre></div>
 
 
-<p>On the same note, init 0 calls all of the shutdown scripts and gracefully shuts down your machine.</p>
-<div class="codehilite"><pre><span class="nv">$ </span>sudo init 0
-</pre></div>
-
-
-<p>Surprisingly you can also use the shutdown command to shutdown completely by using the -h switch.</p>
-<div class="codehilite"><pre><span class="nv">$ </span>sudo shutdown -h
-</pre></div>
-
-
-<p>I think we all know how to boot the computer, so that shouldn't be a problem. :-)</p>
+<p>This would change the priority of process ID's 987 and 32, and all processes owned by users daemon and root.</p>
+<p>Man Page http://linux.die.net/man/8/renice</p>
+<p>kill - terminate a process</p>
+<p>Like it states in the name, this kills processes. Once you have identified the process you would like to kill with top or ps, you would use the kill command to terminate that process. </p>
+<p>The most common implementation of this is:</p>
+<p><code># kill 2342 </code></p>
+<p>If that doesnt kill the process you would use the -9 switch, which will take out most any process. </p>
+<p><code># kill -9 2342</code></p>
+<p>NOTE: The -9 command should be used with caution. Make sure you are killing the right pid, otherwise terrible things may transpire, especially on the RHCSA or the RHCE, where time is of concern.</p>
         </div><!-- /.entry-content -->
         
 

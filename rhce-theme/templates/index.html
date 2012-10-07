@@ -10,17 +10,12 @@
         <section id="front-header">
             <h1>Recently updated</h1>
         </section>
-        <aside id="featured"><article>
-                <h2>Objective: {{ article.objective }}</h2>
-                <h1 class="entry-title"><a href="{{ SITEURL }}/{{ article.url
-                }}">{{ article.title }}</a></h1>
-                {{ article.content }}
-        </article></aside><!-- /#featured -->
+
         {% if loop.length  > 1 %}
                 <hr />
                     <ol id="posts-list" class="hfeed">
         {% endif %}
-    {% else %}
+    {% elif loop.index < 7 %}
         <li><article class="hentry">
                 <header>
                         <h1><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title}}">{{ article.title }}</a></h1>

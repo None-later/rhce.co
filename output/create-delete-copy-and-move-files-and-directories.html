@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Access a shell prompt and issue commands with correct syntax</title>
+        <title>Create, delete, copy and move files and directories</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
         <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
@@ -43,12 +43,85 @@
         
 <section id="content" class="body">
 <article>
-        <header> <h1 class="entry-title"><a href="access-a-shell-prompt-and-issue-commands-with-correct-syntax.html"
-        rel="bookmark" title="Permalink to Access a shell prompt and issue commands with correct syntax">Access a shell prompt and issue commands with correct syntax</a></h1>  </header>
+        <header> <h1 class="entry-title"><a href="create-delete-copy-and-move-files-and-directories.html"
+        rel="bookmark" title="Permalink to Create, delete, copy and move files and directories">Create, delete, copy and move files and directories</a></h1>  </header>
         <div class="entry-content">
 
-        <p>This is first requirement should stop anyone who may not know, or may have never used a shell prompt from attempting the test. If you can open your terminal, navigate and type commands then you have accomplished this. If not, then you should check out the basics and start there.</p>
-<p><a href="http://beginlinux.com/">http://beginlinux.com/</a> is a great place to start.</p>
+        <p>''Objective: Create, delete, copy and move files and directories''</p>
+<p>Administering a system requires moving, copying, and deleting files and directories. These are tasks that you will encounter on a constant basis and are essential to the RHCE.</p>
+<p>Some of the most important commands are the ones that we will list below. </p>
+<h2><b>ls</b> - List contents of a directory</h2>
+<div class="codehilite"><pre><span class="c"># list the contents of the home directory.</span>
+<span class="nv">$ </span>ls /home/
+</pre></div>
+
+
+<h2><b>cp</b> - Copy a file or group of files to another location on the machine.</h2>
+<div class="codehilite"><pre><span class="c"># copy file1 as file2</span>
+cp file1 file2
+</pre></div>
+
+
+<h2><b>mv</b> - Move a file or directory</h2>
+<div class="codehilite"><pre><span class="c"># move a directory to the /tmp directory</span>
+<span class="nv">$ </span>mv directory /tmp/
+</pre></div>
+
+
+<h2><b>cd</b> - Change directory</h2>
+<div class="codehilite"><pre><span class="c"># navigate into the /home/ directory</span>
+<span class="nv">$ </span><span class="nb">cd</span> /home/
+
+<span class="c"># navigate from home into the /etc directory, using the .. to reverse out of the directory</span>
+<span class="nv">$ </span><span class="nb">cd</span> ../etc/
+</pre></div>
+
+
+<h2><b>rm</b> - remove files or directories.</h2>
+<div class="codehilite"><pre><span class="c"># remove file1</span>
+<span class="nv">$ </span>rm file1
+
+<span class="c"># remove directory with all contents (Caution when using this!)</span>
+<span class="nv">$ </span>rm -rf directory1/
+</pre></div>
+
+
+<h2><b>touch</b> - create a new blank file</h2>
+<div class="codehilite"><pre><span class="c"># create a blank file named myfile.txt</span>
+<span class="nv">$ </span>touch myfile.txt
+</pre></div>
+
+
+<h2><b>mkdir</b> - create a new directory</h2>
+<div class="codehilite"><pre><span class="c"># create a directory in the present working directory</span>
+<span class="nv">$ </span>mkdir directory1
+</pre></div>
+
+
+<h2><b>pwd</b> - Get the present working directory</h2>
+<div class="codehilite"><pre><span class="c"># find the present working directory. Handy when you need to see where in the system you are.</span>
+<span class="nv">$ </span><span class="nb">pwd</span>     
+<span class="nv">$ </span>/home/david/
+</pre></div>
+
+
+<h2><b>head</b>- Display first lines of a file, default to 10 lines</h2>
+<div class="codehilite"><pre><span class="c"># display the first 10 lines of file1</span>
+head file1
+
+::bash
+<span class="c"># display the first 50 lines of file1</span>
+head -50 file1
+</pre></div>
+
+
+<h2><b>tail</b> -Display last lines of a file, default to 10 lines</h2>
+<div class="codehilite"><pre><span class="c"># display the last 10 lines of file1</span>
+tail file1
+
+<span class="c"># display the last 50 lines of file1   </span>
+tail -50 file1
+</pre></div>
         </div><!-- /.entry-content -->
         
 

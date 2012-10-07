@@ -1,49 +1,638 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="/" rel="alternate"></link><link href="/feeds/all-en.atom.xml" rel="self"></link><id>/</id><updated>2012-10-06T19:49:33+02:00</updated><entry><title>Configure system to authenticate using Kerberos</title><link href="/configure-system-to-authenticate-using-kerberos.html" rel="alternate"></link><updated>2012-10-06T19:49:33+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:configure-system-to-authenticate-using-kerberos.html</id><summary type="html">&lt;p&gt;Kerberos is an authentication method that allows users to authenticate without directly providing their password. You can read more on Kerberos over at: http://web.mit.edu/kerberos/
-Our goal per the information Provided by Red Hat is to configure a system to authenticate via Kerberos.
-To begin with we'll need to install openldap-clients, authconfig (usually installed by default),
-While we could simply use system-config-authentication that's not really a good real-world example, as I doubt most of your production machines will have a graphical interface. Instead we'll be using authconfig.
-authconfig has a long list of options, but the key ones we'll use are:&lt;/p&gt;</summary><category term="RHCE"></category></entry><entry><title>Use input-output redirection</title><link href="/use-input-output-redirection.html" rel="alternate"></link><updated>2012-10-06T19:49:20+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:use-input-output-redirection.html</id><summary type="html">&lt;p&gt;Input output redirection is one of the base skills you will need as a sysadmin. On the exam you will have to be able to redirect data from one command into another, and/or into a file. &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;~$ echo "this is input" &amp;gt; file.txt&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Another common example:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;cat /var/log/messages | less&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Here are a couple of good tutorials already written on this:&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://linuxhelp.blogspot.com/2006/01/inputoutput-redirection-made-simple-in.html"&gt;http://linuxhelp.blogspot.com/2006/01/inputoutput-redirection-made-simple-in.html&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://linuxcommand.org/lts0060.php"&gt;http://linuxcommand.org/lts0060.php&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://www.rwc.uc.edu/thomas/Intro_Unix_Text/IO_Redir_Pipes.html"&gt;http://www.rwc.uc.edu/thomas/Intro_Unix_Text/IO_Redir_Pipes.html&lt;/a&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Access a shell prompt and issue commands with correct syntax</title><link href="/access-a-shell-prompt-and-issue-commands-with-correct-syntax.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:access-a-shell-prompt-and-issue-commands-with-correct-syntax.html</id><summary type="html">&lt;p&gt;This is first requirement should stop anyone who may not know, or may have never used a shell prompt from attempting the test. If you can open your terminal, navigate and type commands then you have accomplished this. If not, then you should check out the basics and start there.&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://beginlinux.com/"&gt;http://beginlinux.com/&lt;/a&gt; is a great place to start.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Boot, reboot, and shut down a system normally</title><link href="/boot-reboot-and-shut-down-a-system-normally.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:boot-reboot-and-shut-down-a-system-normally.html</id><summary type="html">&lt;p&gt;Basically, they are referring to these actions on the command line. I'm sure everyone is able to do this on a pc, but not necessarily a live Red Hat Enterprise Linux Server remotely. &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="/" rel="alternate"></link><link href="/feeds/all-en.atom.xml" rel="self"></link><id>/</id><updated>2012-10-06T21:21:18+02:00</updated><entry><title>Configure system to authenticate using Kerberos</title><link href="/configure-system-to-authenticate-using-kerberos.html" rel="alternate"></link><updated>2012-10-06T21:21:18+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:configure-system-to-authenticate-using-kerberos.html</id><summary type="html">&lt;p&gt;Kerberos is an authentication method that allows users to authenticate without directly providing their password. You can read more on Kerberos over at: &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;web&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mit&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;edu&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;kerberos&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Our goal per the information Provided by Red Hat is to configure a system to authenticate via Kerberos. To begin with we'll need to install openldap-clients, authconfig (usually installed by default).&lt;/p&gt;
+&lt;p&gt;While we could simply use system-config-authentication that's not really a good real-world example, as I doubt most of your production machines will have a graphical interface.Instead we'll be using authconfig.&lt;/p&gt;
+&lt;p&gt;authconfig has a long list of options, but the key ones we'll use are:&lt;/p&gt;</summary><category term="RHCE"></category></entry><entry><title>Access a shell prompt and issue commands with correct syntax</title><link href="/access-a-shell-prompt-and-issue-commands-with-correct-syntax.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:access-a-shell-prompt-and-issue-commands-with-correct-syntax.html</id><summary type="html">&lt;p&gt;This is first requirement should stop anyone who may not know, or may have never used a shell prompt from attempting the test. If you can open your terminal, navigate and type commands then you have accomplished this. If not, then you should check out the basics and start there.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://beginlinux.com/"&gt;http://beginlinux.com/&lt;/a&gt; is a great place to start.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Archive, compress, unpack and uncompress files using tar, star, gzip, and bzip2</title><link href="/archive-compress-unpack-and-uncompress-files-using-tar-star-gzip-and-bzip2.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:archive-compress-unpack-and-uncompress-files-using-tar-star-gzip-and-bzip2.html</id><summary type="html">&lt;h1&gt;tar&lt;/h1&gt;
+&lt;p&gt;Create a tar file from a folder called test1:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;tar cvf test1.tar test1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;c = create&lt;/li&gt;
+&lt;li&gt;v = verbose&lt;/li&gt;
+&lt;li&gt;f = file&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Extract test1.tar&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;tar xvf test1.tar&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;x = extract&lt;/li&gt;
+&lt;li&gt;v = verbose&lt;/li&gt;
+&lt;li&gt;f = file&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;List contents of tar archive&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;tar tf test1.tar&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;star&lt;/h1&gt;
+&lt;p&gt;Man page for star: &lt;a href="http://linux.die.net/man/1/star"&gt;star&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;gzip&lt;/h1&gt;
+&lt;p&gt;This is most commonly used in combination with tar, using the z switch. Tar itself does not compress, it just packs. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;tar cvzf test1.tar.gz test1&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Although it can be used by itself&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;gzip test1&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;gunzip test1.gz&lt;/code&gt;&lt;/p&gt;
+&lt;h1&gt;note that this does not preserve the .gz file, it extracts it and removes it.&lt;/h1&gt;
+&lt;h1&gt;bzip2&lt;/h1&gt;
+&lt;p&gt;bzip2 uses a different algorithm to compress files than the other tools, but very similar options&lt;/p&gt;
+&lt;p&gt;Create a bzip2 file&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;bzip2 test1&amp;lt;/code&amp;gt;
+&lt;span class="c"&gt;# note that this does not preserve the original file(s),&lt;/span&gt;
+&lt;span class="c"&gt;# it will compress and delete the uncompressed version&lt;/span&gt;
+&lt;span class="c"&gt;# also does not compress directories, only files.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Check out the man page: &lt;a href="http://bzip.org/1.0.5/bzip2.txt"&gt;bzip2&lt;/a&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Boot, reboot, and shut down a system normally</title><link href="/boot-reboot-and-shut-down-a-system-normally.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:boot-reboot-and-shut-down-a-system-normally.html</id><summary type="html">&lt;p&gt;Basically, they are referring to these actions on the command line. I'm sure everyone is able to do this on a pc, but not necessarily a live Red Hat Enterprise Linux Server remotely. &lt;/p&gt;
 &lt;p&gt;The commands are simple for the server. &lt;/p&gt;
 &lt;p&gt;Normal reboot&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;$ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;reboot&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo reboot
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Another way&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;  $ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;shutdown&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="n"&gt;now&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo shutdown -r now
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Changing to init 6 will reboot as well, which is what init 6 does. &lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;  $ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;init&lt;/span&gt; 6
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo init 6
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;On the same note, init 0 calls all of the shutdown scripts and gracefully shuts down your machine.&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;  $ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;init&lt;/span&gt; 0
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo init 0
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Surprisingly you can also use the shutdown command to shutdown completely by using the -h switch.&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;  $ &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;shutdown&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo shutdown -h
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;I think we all know how to boot the computer, so that shouldn't be a problem. :-)&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Use grep and regular expressions to analyze text</title><link href="/use-grep-and-regular-expressions-to-analyze-text.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:use-grep-and-regular-expressions-to-analyze-text.html</id><summary type="html">&lt;p&gt;RHCSA requirements state that you must know how to use grep to analyze text. This is actually going to be pretty necessary to do many administration tasks on a daily basis.&lt;/p&gt;
+&lt;p&gt;I think we all know how to boot the computer, so that shouldn't be a problem. :-)&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Boot systems into different runlevels manually</title><link href="/boot-systems-into-different-runlevels-manually.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:boot-systems-into-different-runlevels-manually.html</id><summary type="html">&lt;p&gt;Red Hat Enterprise Linux is similar to most other linux distributions in its core functionality. The ability to run the operating system in multiple run levels is an important skill to have. &lt;/p&gt;
+&lt;p&gt;If you type into your terminal:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;runlevel
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;you should see a number as the output. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;N 3
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is the runlevel my server was running at the time this was written. &lt;/p&gt;
+&lt;p&gt;There are 6 runlevels:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Runlevel 0 - Halt&lt;/li&gt;
+&lt;li&gt;Runlevel 1 - Single User mode. Most services turned off, including networking. Used to perform maintenance on the server usually. Boots logged into roots account, no  password.&lt;/li&gt;
+&lt;li&gt;Runlevel 2 - This is basic functions, multi-user mode, without any networking. &lt;/li&gt;
+&lt;li&gt;Runlevel 3 - This is what servers usually run in, as it provides all of the services of the normal server, without the graphical user interface.&lt;/li&gt;
+&lt;li&gt;Runlevel 4 - Doesn't really get used. &lt;/li&gt;
+&lt;li&gt;Runlevel 5 - This provides the same functions of runlevel 3, along with services to allow for desktop functionality (graphical user interface). &lt;/li&gt;
+&lt;li&gt;Runlevel 6 - Reboot&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The command to jump runlevels is actually really easy. Just type init followed by the runlevel you want to switch into. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;init 1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The above command would turn off most services and drop you into single user mode.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create and edit text files</title><link href="/create-and-edit-text-files.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:create-and-edit-text-files.html</id><summary type="html">&lt;p&gt;Using a command line text editor is a skill that is absolutely necessary. Without it most tasks cannot be performed. The default editor used it vim. vim is a enhanced version of vi, which is not quite as pretty as vim. &lt;/p&gt;
+&lt;p&gt;To use vim simply type vim and then the filename&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;vim filename.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are options that can be given such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;-R Open in read-only&lt;/li&gt;
+&lt;li&gt;-b Start in binary mode&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There is also a list of options for using vim once you are editing, to move around and actually edit. It may seem cumbersome at first, but once you are used to vim you will love it.&lt;/p&gt;
+&lt;p&gt;Check out the man page for more options: &lt;a href="http://amath.colorado.edu/computing/software/man/vim.html"&gt;vim&lt;/a&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create, delete, copy and move files and directories</title><link href="/create-delete-copy-and-move-files-and-directories.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:create-delete-copy-and-move-files-and-directories.html</id><summary type="html">&lt;p&gt;''Objective: Create, delete, copy and move files and directories''&lt;/p&gt;
+&lt;p&gt;Administering a system requires moving, copying, and deleting files and directories. These are tasks that you will encounter on a constant basis and are essential to the RHCE.&lt;/p&gt;
+&lt;p&gt;Some of the most important commands are the ones that we will list below. &lt;/p&gt;
+&lt;h2&gt;&lt;b&gt;ls&lt;/b&gt; - List contents of a directory&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# list the contents of the home directory.&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;ls /home/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;cp&lt;/b&gt; - Copy a file or group of files to another location on the machine.&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# copy file1 as file2&lt;/span&gt;
+cp file1 file2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;mv&lt;/b&gt; - Move a file or directory&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# move a directory to the /tmp directory&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;mv directory /tmp/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;cd&lt;/b&gt; - Change directory&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# navigate into the /home/ directory&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /home/
+
+&lt;span class="c"&gt;# navigate from home into the /etc directory, using the .. to reverse out of the directory&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ../etc/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;rm&lt;/b&gt; - remove files or directories.&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# remove file1&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;rm file1
+
+&lt;span class="c"&gt;# remove directory with all contents (Caution when using this!)&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;rm -rf directory1/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;touch&lt;/b&gt; - create a new blank file&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# create a blank file named myfile.txt&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;touch myfile.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;mkdir&lt;/b&gt; - create a new directory&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# create a directory in the present working directory&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir directory1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;pwd&lt;/b&gt; - Get the present working directory&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# find the present working directory. Handy when you need to see where in the system you are.&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;     
+&lt;span class="nv"&gt;$ &lt;/span&gt;/home/david/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;head&lt;/b&gt;- Display first lines of a file, default to 10 lines&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# display the first 10 lines of file1&lt;/span&gt;
+head file1
+
+::bash
+&lt;span class="c"&gt;# display the first 50 lines of file1&lt;/span&gt;
+head -50 file1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;tail&lt;/b&gt; -Display last lines of a file, default to 10 lines&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# display the last 10 lines of file1&lt;/span&gt;
+tail file1
+
+&lt;span class="c"&gt;# display the last 50 lines of file1   &lt;/span&gt;
+tail -50 file1
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create hard and soft links</title><link href="/create-hard-and-soft-links.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:create-hard-and-soft-links.html</id><summary type="html">&lt;h1&gt;Hard Links&lt;/h1&gt;
+&lt;p&gt;A &lt;em&gt;hard link&lt;/em&gt; is a link where two files are really the same file. &lt;/p&gt;
+&lt;p&gt;Watch how when we create a file, and link to it with a hard link, the inodes (exact location on the harddisk) are the same.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;touch file.txt
+&lt;span class="nv"&gt;$ &lt;/span&gt;ln file.txt file1.txt
+&lt;span class="nv"&gt;$ &lt;/span&gt;ls -li file*
+524594 -rw-r--r--. 2 root root 0 Mar 21 12:54 file1.txt
+524594 -rw-r--r--. 2 root root 0 Mar 21 12:54 file.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;When we create a third file linking it to the original, we see the same thing. They all are have an inode of 524594. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ln file.txt file2.txt
+&lt;span class="nv"&gt;$ &lt;/span&gt;ls -li file*
+524594 -rw-r--r--. 3 root root 0 Mar 21 12:54 file1.txt
+524594 -rw-r--r--. 3 root root 0 Mar 21 12:54 file2.txt
+524594 -rw-r--r--. 3 root root 0 Mar 21 12:54 file.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;What happens if we delete the original file?&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;rm file.txt
+rm: remove regular empty file &lt;span class="s1"&gt;&amp;#39;file.txt&amp;#39;&lt;/span&gt;? y
+&lt;span class="nv"&gt;$ &lt;/span&gt;ls -li file*
+524594 -rw-r--r--. 2 root root 0 Mar 21 12:54 file1.txt
+524594 -rw-r--r--. 2 root root 0 Mar 21 12:54 file2.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As you can see, the other two files are in tact and have not been removed, even though the original file is gone. That is because they are all the same file, when you make a hard link to it you are just putting another reference to it with a different name. Until the last file with that inode gets deleted, that file lives on.&lt;/p&gt;
+&lt;p&gt;Lets put some text in file2.txt and see what happens&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;things&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; file2.txt
+&lt;span class="nv"&gt;$ &lt;/span&gt;ls -li file*
+524594 -rw-r--r--. 2 root root 7 Mar 21 13:01 file1.txt
+524594 -rw-r--r--. 2 root root 7 Mar 21 13:01 file2.txt
+&lt;span class="nv"&gt;$ &lt;/span&gt;cat file1.txt 
+things
+&lt;span class="nv"&gt;$ &lt;/span&gt;cat file2.txt 
+things
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As you can see, the files both grew to 7 bytes, and when we look inside each one, they both have the same text. That's because they are the same.&lt;/p&gt;
+&lt;h1&gt;Soft Links&lt;/h1&gt;
+&lt;p&gt;A &lt;em&gt;soft link&lt;/em&gt; is much different from a hard link. Most people relate hard links to shortcuts in Windows. When you put a shortcut on your Desktop, it is just a link to the something on your computer. If you delete it no biggie, its just a link. Soft links are the same way. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;touch testfile.txt
+&lt;span class="nv"&gt;$ &lt;/span&gt;ln -s testfile.txt testfile1.txt
+&lt;span class="nv"&gt;$ &lt;/span&gt;ls -li testfile*
+524726 lrwxrwxrwx. 1 root root 12 Mar 21 13:11 testfile1.txt -&amp;gt; testfile.txt
+524725 -rw-r--r--. 1 root root  0 Mar 21 13:11 testfile.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Here we created a file, testfile.txt, and then ran &lt;code&gt;ln -s&lt;/code&gt; to create a soft link. When we ran &lt;code&gt;ls -li&lt;/code&gt; we see that now the inodes are different, and testfile1.txt shows highlighted with an arrow to testfile.txt.&lt;/p&gt;
+&lt;p&gt;OK, so now lets repeat what we did above for hard links. I will make another soft link, linking to the original file testfile.txt and call it testfile2.txt. Then I'll delete the original and &lt;code&gt;ls -li&lt;/code&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ln -s testfile.txt testfile2.txt
+&lt;span class="nv"&gt;$ &lt;/span&gt;ls -li testfile*
+524726 lrwxrwxrwx. 1 root root 12 Mar 21 13:11 testfile1.txt -&amp;gt; testfile.txt
+524727 lrwxrwxrwx. 1 root root 12 Mar 21 13:15 testfile2.txt -&amp;gt; testfile.txt
+524725 -rw-r--r--. 1 root root  0 Mar 21 13:11 testfile.txt
+&lt;span class="nv"&gt;$ &lt;/span&gt;rm testfile.txt 
+rm: remove regular empty file &lt;span class="s1"&gt;&amp;#39;testfile.txt&amp;#39;&lt;/span&gt;? y
+&lt;span class="nv"&gt;$ &lt;/span&gt;ls -li testfile*
+524726 lrwxrwxrwx. 1 root root 12 Mar 21 13:11 testfile1.txt -&amp;gt; testfile.txt &lt;span class="c"&gt;# Imagine RED here&lt;/span&gt;
+524727 lrwxrwxrwx. 1 root root 12 Mar 21 13:15 testfile2.txt -&amp;gt; testfile.txt &lt;span class="c"&gt;# Imagine RED here&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If we try and cat the two files, to see the contents, we get an error. We can no longer access these files, they are broken links. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;cat testfile*
+cat: testfile1.txt: No such file or directory
+cat: testfile2.txt: No such file or directory
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Locate and interpret system log files</title><link href="/locate-and-interpret-system-log-files.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:locate-and-interpret-system-log-files.html</id><summary type="html">&lt;p&gt;Most of the logs you will deal with are going to be located in /var/log/. There are some exceptions to this, such as apache vhosts. Many people write the logs for a specific virtual host in a folder with the web content. &lt;/p&gt;
+&lt;p&gt;Aside from the occasional exception, this is the spot. &lt;/p&gt;
+&lt;p&gt;Logs are written in a way that makes them easy to parse through with text processing tools like cat, grep, and awk.&lt;/p&gt;
+&lt;p&gt;One example would be searching for Failed logins in /var/log/secure &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;cat /var/log/messages | grep Failed | less
+Apr  1 16:17:06 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;19632&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;root from 84.204.56.234 port 39045 ssh2
+Apr  1 16:17:09 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;19634&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;root from 84.204.56.234 port 39351 ssh2
+Apr  1 16:17:13 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;19636&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;root from 84.204.56.234 port 39660 ssh2
+Apr  1 22:13:40 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;19741&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;bin from 200.76.17.194 port 53407 ssh2
+Apr  1 22:13:43 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;19744&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;bin from 200.76.17.194 port 40100 ssh2
+Apr  1 22:13:46 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;19747&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;bin from 200.76.17.194 port 51759 ssh2
+Apr  1 22:13:49 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;19749&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;bin from 200.76.17.194 port 45675 ssh2
+Apr  1 22:13:52 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;19751&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;bin from 200.76.17.194 port 54379 ssh2
+Apr  1 22:13:55 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;19753&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;bin from 200.76.17.194 port 12218 ssh2
+Apr  2 06:05:01 mytest sshd&lt;span class="o"&gt;[&lt;/span&gt;20102&lt;span class="o"&gt;]&lt;/span&gt;: Failed password &lt;span class="k"&gt;for &lt;/span&gt;root from 117.211.83.59 port 34815 ssh2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;By using the cat command we are able to read all contents of the file, but thats a lot of stuff. We only want to see Failed logins. We then pipe the result of cat, into grep and process the text there. Grep picks out any line that contains Failed. I then piped it to less to output only the last 10 lines.So now you can see all these failed password attempts on our test server. Wow. &lt;/p&gt;
+&lt;p&gt;Lets say we just want to process the text, and get a count of how many logins were failed in this file. We can pipe the output into wc -l, which counts lines. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;cat /var/log/messages | grep Failed | wc -l
+90
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Thats a lot of failed logins. That lets us know we should probably tighten up our security a bit, maybe change the port for ssh. Thats something that is covered down the road though. But you can see the value in combining text processing utilities in order to get a clean final result. &lt;/p&gt;
+&lt;p&gt;Some key tools to look at are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;cat  - http://man.he.net/man1/cat&lt;/li&gt;
+&lt;li&gt;tail - http://man.he.net/man1/tail&lt;/li&gt;
+&lt;li&gt;head - http://linux.die.net/man/1/head&lt;/li&gt;
+&lt;li&gt;wc   - http://linux.die.net/man/1/wc&lt;/li&gt;
+&lt;li&gt;less - http://linux.die.net/man/1/less&lt;/li&gt;
+&lt;li&gt;more - http://linux.die.net/man/1/more&lt;/li&gt;
+&lt;li&gt;grep - http://linux.die.net/man/1/grep&lt;/li&gt;
+&lt;li&gt;awk  - http://linux.die.net/man/1/awk&lt;/li&gt;
+&lt;li&gt;sed  - http://linux.die.net/man/1/sed&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="RHCSA"></category></entry><entry><title>Use grep and regular expressions to analyze text</title><link href="/use-grep-and-regular-expressions-to-analyze-text.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-06:use-grep-and-regular-expressions-to-analyze-text.html</id><summary type="html">&lt;p&gt;RHCSA requirements state that you must know how to use grep to analyze text. This is actually going to be pretty necessary to do many administration tasks on a daily basis.&lt;/p&gt;
 &lt;p&gt;Grep returns any lines that have characters, words, or expressions that match your query.&lt;/p&gt;
 &lt;p&gt;Basic usage examples of this include:&lt;/p&gt;
-&lt;p&gt;Find "Permission Denied" entries in a log file:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;$ grep -r "Permission Denied" /path/to/logfile/&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Find "Permission Denied" entries in a log file by using output redirection:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;$ cat /path/to/file/ | grep "Permission Denied"&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Find "Permission Denied" entries in a log file&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;grep -r &lt;span class="s2"&gt;&amp;quot;Permission Denied&amp;quot;&lt;/span&gt; /path/to/logfile/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Find "Permission Denied" entries in a log file by using output redirection&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;cat /path/to/file/ | grep &lt;span class="s2"&gt;&amp;quot;Permission Denied&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Check out some grep examples at : http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/[http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/]&lt;/p&gt;
-&lt;p&gt;To see all the options check out the Unix Man page, http://unixhelp.ed.ac.uk/CGI/man-cgi?grep[http://unixhelp.ed.ac.uk/CGI/man-cgi?grep] also available by just plain typing &lt;code&gt;man grep&lt;/code&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry></feed>
+&lt;p&gt;To see all the options check out the Unix Man page, http://unixhelp.ed.ac.uk/CGI/man-cgi?grep[http://unixhelp.ed.ac.uk/CGI/man-cgi?grep] also available by just plain typing &lt;code&gt;man grep&lt;/code&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>List, set and change standard ugo/rwx permissions</title><link href="/list-set-and-change-standard-ugorwx-permissions.html" rel="alternate"></link><updated>2012-10-05T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-05:list-set-and-change-standard-ugorwx-permissions.html</id><summary type="html">&lt;p&gt;Permissions rule on compooters. Controlling them, essential. Linux has a number of different tools to do this, we list the essentials for the exam here.&lt;/p&gt;
+&lt;h2&gt;&lt;b&gt;ls&lt;/b&gt;&lt;/h2&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# this is one of the most common commands used when probing a filesystem.&lt;/span&gt;
+&lt;span class="c"&gt;# ls lists the files in a directory, and the -l switch shows permissions, &lt;/span&gt;
+&lt;span class="c"&gt;# ownership, size, and date modified &lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# ls -l&lt;/span&gt;
+total 28
+-rw-------. 1 root root  1403 Mar 21 15:40 anaconda-ks.cfg
+-rw-r--r--. 1 root root 15932 Mar 21 15:39 install.log
+-rw-r--r--. 1 root root  5337 Mar 21 15:37 install.log.syslog
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;chmod&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;Permissions are as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 execute&lt;/li&gt;
+&lt;li&gt;2 write&lt;/li&gt;
+&lt;li&gt;4 read&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;..or in letter format&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;x execute&lt;/li&gt;
+&lt;li&gt;w write&lt;/li&gt;
+&lt;li&gt;r read&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;note: the first bit is reserved for type, files are -, directories are d, links are l&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;For example, to change all three above files to 777 or readable, writable, and executable by all:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# chmod changes permission bits, either with numeric or letter permission options.&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# chmod 777 ./*&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# ls -l&lt;/span&gt;
+total 28
+-rwxrwxrwx. 1 root root  1403 Mar 21 15:40 anaconda-ks.cfg
+-rwxrwxrwx. 1 root root 15932 Mar 21 15:39 install.log
+-rwxrwxrwx. 1 root root  5337 Mar 21 15:37 install.log.syslog
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A more reasonable permissions set would be to allow others to read files, but only allow the owner to read, write, and execute. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# chmod 644 ./*&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# ls -l&lt;/span&gt;
+total 28
+-rw-r--r--. 1 root root  1403 Mar 21 15:40 anaconda-ks.cfg
+-rw-r--r--. 1 root root 15932 Mar 21 15:39 install.log
+-rw-r--r--. 1 root root  5337 Mar 21 15:37 install.log.syslog
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Directories usually have a similar permissions set. They allow owner to rwx, but everyone else to rx. 755 would be the numerical value. &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;If directories are not executable, you cannot change into them with cd. cd essentially executes itself on the directory when you use it.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;If we want to use the letter format as opposed to numbers. we combine the ugo/rwx to apply permissions. To give the group permissions to execute install.log we combine g+x:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# chmod g+x install.log&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# ls -l&lt;/span&gt;
+total 28
+-rw-r--r--. 1 nobody nobody  1403 Mar 21 15:40 anaconda-ks.cfg
+-rw-r-xr--. 1 david  root   15932 Mar 21 15:39 install.log
+-rw-r--r--. 1 root   david   5337 Mar 21 15:37 install.log.syslog
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;chown&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;chown is used to change ownership of files and directories. &lt;/p&gt;
+&lt;p&gt;Using the same group of files, we can change the owner from root to david on install.log.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# chown david.david install.log&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# ls -l&lt;/span&gt;
+total 28
+-rw-r--r--. 1 root  root   1403 Mar 21 15:40 anaconda-ks.cfg
+-rw-r--r--. 1 david david 15932 Mar 21 15:39 install.log
+-rw-r--r--. 1 root  root   5337 Mar 21 15:37 install.log.syslog
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can also change just group on a file, to allow the group certain permissions. Here we change install.log.syslog to be owned by group david, but still owner is root.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# chown root.david install.log.syslog &lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# ls -l&lt;/span&gt;
+total 28
+-rw-r--r--. 1 root  root   1403 Mar 21 15:40 anaconda-ks.cfg
+-rw-r--r--. 1 david david 15932 Mar 21 15:39 install.log
+-rw-r--r--. 1 root  david  5337 Mar 21 15:37 install.log.syslog
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If we don't want anyone to see have access, we could change it to a user like nobody. In this case, everyone would be able to read it, but nobody could write and execute anaconda-ks.config.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# chown nobody.nobody anaconda-ks.cfg &lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# ls -l&lt;/span&gt;
+total 28
+-rw-r--r--. 1 nobody nobody  1403 Mar 21 15:40 anaconda-ks.cfg
+-rw-r--r--. 1 david  david  15932 Mar 21 15:39 install.log
+-rw-r--r--. 1 root   david   5337 Mar 21 15:37 install.log.syslog
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;b&gt;chgrp&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;chgrp does the same thing as chown does, except it only changes the group. Handy if you just want to apply group permissions to a group of files that have various owners. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# chgrp root install.log&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# ls -l&lt;/span&gt;
+total 28
+-rw-r--r--. 1 nobody nobody  1403 Mar 21 15:40 anaconda-ks.cfg
+-rw-r--r--. 1 david  root   15932 Mar 21 15:39 install.log
+-rw-r--r--. 1 root   david   5337 Mar 21 15:37 install.log.syslog
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Locate, read and use system documentation including man, info, and files in /usr/share/doc</title><link href="/locate-read-and-use-system-documentation-including-man-info-and-files-in-usrsharedoc.html" rel="alternate"></link><updated>2012-10-05T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-05:locate-read-and-use-system-documentation-including-man-info-and-files-in-usrsharedoc.html</id><summary type="html">&lt;p&gt;Man pages, docs, and info are all saving graces on the exams. &lt;/p&gt;
+&lt;p&gt;The most commonly used help pages are &lt;strong&gt;man pages&lt;/strong&gt;. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;man vim
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This will give you the manual pages, with descriptions of the options, examples, and information about the application. If you don't remember exactly what man page you need, but you know what utility you are trying to use you can search man pages. &lt;/p&gt;
+&lt;p&gt;For example, lets find all man pages relating to LVM.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# man -k lvm&lt;/span&gt;
+README.vmesa &lt;span class="o"&gt;[&lt;/span&gt;perlvmesa&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;1&lt;span class="o"&gt;)&lt;/span&gt;  - building and installing Perl &lt;span class="k"&gt;for &lt;/span&gt;VM/ESA
+lvm                  &lt;span class="o"&gt;(&lt;/span&gt;8&lt;span class="o"&gt;)&lt;/span&gt;  - LVM2 tools
+lvm.conf &lt;span class="o"&gt;[&lt;/span&gt;lvm&lt;span class="o"&gt;]&lt;/span&gt;       &lt;span class="o"&gt;(&lt;/span&gt;5&lt;span class="o"&gt;)&lt;/span&gt;  - Configuration file &lt;span class="k"&gt;for &lt;/span&gt;LVM2
+lvmchange            &lt;span class="o"&gt;(&lt;/span&gt;8&lt;span class="o"&gt;)&lt;/span&gt;  - change attributes of the logical volume manager
+lvmconf              &lt;span class="o"&gt;(&lt;/span&gt;8&lt;span class="o"&gt;)&lt;/span&gt;  - LVM configuration modifier
+lvmdiskscan          &lt;span class="o"&gt;(&lt;/span&gt;8&lt;span class="o"&gt;)&lt;/span&gt;  - scan &lt;span class="k"&gt;for &lt;/span&gt;all devices visible to LVM2
+lvmdump              &lt;span class="o"&gt;(&lt;/span&gt;8&lt;span class="o"&gt;)&lt;/span&gt;  - create lvm2 information dumps &lt;span class="k"&gt;for &lt;/span&gt;diagnostic purposes
+lvmsadc              &lt;span class="o"&gt;(&lt;/span&gt;8&lt;span class="o"&gt;)&lt;/span&gt;  - LVM system activity data collector
+lvmsar               &lt;span class="o"&gt;(&lt;/span&gt;8&lt;span class="o"&gt;)&lt;/span&gt;  - LVM system activity reporter
+perlvms              &lt;span class="o"&gt;(&lt;/span&gt;1&lt;span class="o"&gt;)&lt;/span&gt;  - VMS-specific documentation &lt;span class="k"&gt;for &lt;/span&gt;Perl
+pvcreate             &lt;span class="o"&gt;(&lt;/span&gt;8&lt;span class="o"&gt;)&lt;/span&gt;  - initialize a disk or partition &lt;span class="k"&gt;for &lt;/span&gt;use by LVM
+pvresize             &lt;span class="o"&gt;(&lt;/span&gt;8&lt;span class="o"&gt;)&lt;/span&gt;  - resize a disk or partition in use by LVM2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is helpful output of results from the search. Really helpful in situations that you forgot the name of a certain utility.&lt;/p&gt;
+&lt;p&gt;Info is nearly identical, referencing the info docs. Its not quite as nice to use, and therefore is not as popular. &lt;/p&gt;
+&lt;p&gt;You could also get information from the /usr/share/docs. Here you can find other information about the program itself, or that particular version. The following output is a typical doc directory.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 yum-3.2.27&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# pwd&lt;/span&gt;
+/usr/share/doc/yum-3.2.27
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 yum-3.2.27&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# ls&lt;/span&gt;
+AUTHORS  ChangeLog  COPYING  INSTALL  README  TODO
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As you can see its very different, simply text files with license, readme, install instructions, etc. For most of your referencing in an exam situation, use the man pages.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Exam tip: If you dont get any output from man pages, try running the following command, which will build the man pages.&lt;/em&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# first check for the package&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# rpm -qi man&lt;/span&gt;
+&lt;span class="c"&gt;# then if its installed try&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# makewhatis &amp;amp;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Access remote systems using ssh and VNC</title><link href="/access-remote-systems-using-ssh-and-vnc.html" rel="alternate"></link><updated>2012-10-04T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-04:access-remote-systems-using-ssh-and-vnc.html</id><summary type="html">&lt;h1&gt;SSH&lt;/h1&gt;
+&lt;p&gt;Objective: Access remote systems using '''ssh''' and VNC&lt;/p&gt;
+&lt;p&gt;SSH is such an integrated part of this exam that its kind of weird that this is one of the official requirements. But nonetheless there are a number of different options that you can apply to make you more efficient in exam. &lt;/p&gt;
+&lt;p&gt;Basic ssh access is simple:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ssh user@host&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;ssh to a custom port:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ssh -p port_number user@host&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;ssh bringing X (required to run programs like system-config-users remotely)&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ssh -X user@host&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;ssh as another user (another way)&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ssh -l user host&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Display debugging messages as it connects. Useful if you have having some issues connecting to a certain machine.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ssh -v user@host&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Those are the main options for ssh, as always "man ssh" to see all the other magic.&lt;/p&gt;
+&lt;h1&gt;VNC&lt;/h1&gt;
+&lt;p&gt;Objective: Access remote systems using ssh and '''VNC'''&lt;/p&gt;
+&lt;p&gt;On the remote machine, that you will be connecting to, you should have tigervnc-server installed.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;yum install tigervnc-server &amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This puts a config file on your remote machine in /etc/sysconfig/vncservers&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;VNCSERVERS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;2:myusername&amp;quot;&lt;/span&gt;
+VNCSERVERARGS&lt;span class="o"&gt;[&lt;/span&gt;2&lt;span class="o"&gt;]=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;-geometry 800x600 -nolisten tcp -nohttpd&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Aside from changing "username" you want it to look like this. All we did to change it, is remove the "-localhost" directive. This would have restricted us from connecting from a remote system without a tunnel setup. Since this is an exam and not the real world, we can disable that.&lt;/p&gt;
+&lt;p&gt;Set up your password on the remote machine by running &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;vncpasswd&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And finally start your vncserver&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;vncserver :1&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The output should look like this:&lt;br&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="o"&gt;[&lt;/span&gt;root@rhel6 ~&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c"&gt;# vncserver :1&lt;/span&gt;
+ New &lt;span class="s1"&gt;&amp;#39;rhel6.local:1 (root)&amp;#39;&lt;/span&gt; desktop is rhel6.local:1&amp;lt;br&amp;gt;
+ Starting applications specified in /root/.vnc/xstartup&amp;lt;br&amp;gt;
+ Log file is /root/.vnc/rhel6.local:1.log
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The default vnc client on Red Hat Enterprise Linux 6 is tigervnc. If it is not already installed on the system:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;yum install tigervnc&amp;lt;/code&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To connect to the newly setup vncserver just type:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;vncviewer rhel6.local:5901
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;(replace rhel6.local with your remote host)&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Identify CPU/memory intensive processes, adjust process priority with renice, and kill processes</title><link href="/identify-cpumemory-intensive-processes-adjust-process-priority-with-renice-and-kill-processes.html" rel="alternate"></link><updated>2012-10-04T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-04:identify-cpumemory-intensive-processes-adjust-process-priority-with-renice-and-kill-processes.html</id><summary type="html">&lt;p&gt;A few commands to help you identify processes on the exam are ps and top. These are commands that you will actually use extensively to monitor systems in the workplace. &lt;/p&gt;
+&lt;p&gt;ps - report a snapshot of the current processes.&lt;/p&gt;
+&lt;p&gt;ps helps you see what processes are being run, what files and commands they are being run with, who they are being run by, as well and their process ids. All the above items are crucial when troubleshooting issues on a Red Hat Enterprise Linux 6 system. &lt;/p&gt;
+&lt;p&gt;a few good examples pulled from a man page:&lt;/p&gt;
+&lt;p&gt;EXAMPLES&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# To see every process on the system using standard syntax:&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps -e
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps -ef
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps -eF
+ps -ely
+
+&lt;span class="c"&gt;# To see every process on the system using BSD syntax:&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps ax
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps axu
+
+&lt;span class="c"&gt;# To print a process tree:&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps -ejH
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps axjf
+
+&lt;span class="c"&gt;# To get info about threads:&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps -eLf
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps axms
+
+&lt;span class="c"&gt;# To get security info:&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps -eo euser,ruser,suser,fuser,f,comm,label
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps axZ
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps -eM
+
+&lt;span class="c"&gt;# To see every process running as root (real &amp;amp; effective ID) in user format:&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;ps -U root -u root u
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There is plenty of more info on this in the man pages as well as a plethoura of information on the web for ps. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;top - display Linux tasks
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;At its most basic usage you can just type:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ top &lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;There is a whole lot of options that go along with that command: "man top" to see them all.&lt;/p&gt;
+&lt;p&gt;renice — alter priority of running processes&lt;/p&gt;
+&lt;p&gt;As stated in the description, renice is a linux utility to change the priority of a process. This could obviously come in handy while trying to keep a process at bay. &lt;/p&gt;
+&lt;p&gt;Example from the man page:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="n"&gt;renice&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;1 987 &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="n"&gt;daemon&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt; 32
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This would change the priority of process ID's 987 and 32, and all processes owned by users daemon and root.&lt;/p&gt;
+&lt;p&gt;Man Page http://linux.die.net/man/8/renice&lt;/p&gt;
+&lt;p&gt;kill - terminate a process&lt;/p&gt;
+&lt;p&gt;Like it states in the name, this kills processes. Once you have identified the process you would like to kill with top or ps, you would use the kill command to terminate that process. &lt;/p&gt;
+&lt;p&gt;The most common implementation of this is:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;# kill 2342 &lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;If that doesnt kill the process you would use the -9 switch, which will take out most any process. &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;# kill -9 2342&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;NOTE: The -9 command should be used with caution. Make sure you are killing the right pid, otherwise terrible things may transpire, especially on the RHCSA or the RHCE, where time is of concern.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Log in and switch users in multi-user runlevels</title><link href="/log-in-and-switch-users-in-multi-user-runlevels.html" rel="alternate"></link><updated>2012-10-04T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-04:log-in-and-switch-users-in-multi-user-runlevels.html</id><summary type="html">&lt;p&gt;If you have followed along to this point, you have logged in, and most likely been in either runlevel 3 or runlevel 5. Runlevels determine how much of the systems services are actually running. Most common runlevel for servers is going to be 3, most services that are not GUI oriented (including the Gnome Desktop) are turned off. Runlevel 5 is what you see when you boot into the desktop environment.&lt;/p&gt;
+&lt;p&gt;Switching between these levels is fairly straightforward. To switch to runlevel 3 type:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;init 3
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then to see what runlevel you are in type:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;runlevel
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Switching between users, also straightforward. To switch to bob, assuming bob is a user on the system:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;su - bob  &lt;span class="c"&gt;#note: We put the dash in there to gain the users login profile.&lt;/span&gt;
+            &lt;span class="c"&gt;# So if I switched to root and didnt use the - operator, I wouldn&amp;#39;t have /usr/sbin in my path.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Switching to root is a common task.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;su -
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Use input-output redirection</title><link href="/use-input-output-redirection.html" rel="alternate"></link><updated>2012-10-04T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-04:use-input-output-redirection.html</id><summary type="html">&lt;p&gt;Input output redirection is one of the base skills you will need as a sysadmin. On the exam you will have to be able to redirect data from one command into another, and/or into a file. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;this is input&amp;quot;&lt;/span&gt; &amp;gt; file.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Another common example:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;cat /var/log/messages | less
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Here are a couple of good tutorials already written on this:&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://linuxhelp.blogspot.com/2006/01/inputoutput-redirection-made-simple-in.html"&gt;http://linuxhelp.blogspot.com/2006/01/inputoutput-redirection-made-simple-in.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://linuxcommand.org/lts0060.php"&gt;http://linuxcommand.org/lts0060.php&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.rwc.uc.edu/thomas/Intro_Unix_Text/IO_Redir_Pipes.html"&gt;http://www.rwc.uc.edu/thomas/Intro_Unix_Text/IO_Redir_Pipes.html&lt;/a&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Use single-user mode to gain access to a system</title><link href="/use-single-user-mode-to-gain-access-to-a-system.html" rel="alternate"></link><updated>2012-10-04T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:,2012-10-04:use-single-user-mode-to-gain-access-to-a-system.html</id><summary type="html">&lt;p&gt;Booting into single user mode is the easiest way to gain access to a Red Hat Enterprise Linux server. &lt;/p&gt;
+&lt;p&gt;This is only feasible if you have access to the physical console, which you will on the RHCSA and RHCE exams. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;At the beginning of the boot process you should see the grub menu pop up with a countdown and some kernel options (or perhaps just one option). &lt;/li&gt;
+&lt;li&gt;It should be counting down at this point and says: "Press any key to enter the menu". In this case you would hit any key. &lt;/li&gt;
+&lt;li&gt;At the bottom of the screen there is an explanation of the few options that are available to use on this page. One of these options is "e" for edit. Hit "e" to edit the boot kernel options. 
+NOTE: (You can also use "a" for append, although they both accomplish the same thing.)&lt;/li&gt;
+&lt;li&gt;You would now edit the main kernel options, adding either "single" or even just "1" at the end. Once you have completed that hit enter, the "b" for boot. &lt;/li&gt;
+&lt;li&gt;You are now in single user mode, and be auto logged in as root. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;NOTE: for Red Hat Enterprise Linux 6.0 there is a bug that will prevent you from changing your root password in single user mode. This is a result of SELinux. For this situation you would want to temporarily disable SELinux.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# setenforce 0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now you should be allowed to change your root password.&lt;/p&gt;</summary><category term="RHCSA"></category></entry></feed>

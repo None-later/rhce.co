@@ -1,6 +1,6 @@
 Date: 2012-10-06
 Title: Use grep and regular expressions to analyze text
-Objective: 3
+Objective: 03
 Category: 1. Understand and Use Essential Tools - (RHCSA)
 Tags: RHCSA
 
@@ -11,13 +11,15 @@ Grep returns any lines that have characters, words, or expressions that match yo
 
 Basic usage examples of this include:
 
-Find "Permission Denied" entries in a log file:
+Find "Permission Denied" entries in a log file
 
- <code>$ grep -r "Permission Denied" /path/to/logfile/</code>
+    :::bash    
+    $ grep -r "Permission Denied" /path/to/logfile/
 
-Find "Permission Denied" entries in a log file by using output redirection:
+Find "Permission Denied" entries in a log file by using output redirection
 
- <code>$ cat /path/to/file/ | grep "Permission Denied"</code>
+    :::bash
+    $ cat /path/to/file/ | grep "Permission Denied"
 
 Check out some grep examples at : http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/[http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/]
 

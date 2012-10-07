@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Access a shell prompt and issue commands with correct syntax</title>
+        <title>Boot systems into different runlevels manually</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
         <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
@@ -43,12 +43,38 @@
         
 <section id="content" class="body">
 <article>
-        <header> <h1 class="entry-title"><a href="access-a-shell-prompt-and-issue-commands-with-correct-syntax.html"
-        rel="bookmark" title="Permalink to Access a shell prompt and issue commands with correct syntax">Access a shell prompt and issue commands with correct syntax</a></h1>  </header>
+        <header> <h1 class="entry-title"><a href="boot-systems-into-different-runlevels-manually.html"
+        rel="bookmark" title="Permalink to Boot systems into different runlevels manually">Boot systems into different runlevels manually</a></h1>  </header>
         <div class="entry-content">
 
-        <p>This is first requirement should stop anyone who may not know, or may have never used a shell prompt from attempting the test. If you can open your terminal, navigate and type commands then you have accomplished this. If not, then you should check out the basics and start there.</p>
-<p><a href="http://beginlinux.com/">http://beginlinux.com/</a> is a great place to start.</p>
+        <p>Red Hat Enterprise Linux is similar to most other linux distributions in its core functionality. The ability to run the operating system in multiple run levels is an important skill to have. </p>
+<p>If you type into your terminal:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>runlevel
+</pre></div>
+
+
+<p>you should see a number as the output. </p>
+<div class="codehilite"><pre><span class="nv">$ </span>N 3
+</pre></div>
+
+
+<p>This is the runlevel my server was running at the time this was written. </p>
+<p>There are 6 runlevels:</p>
+<ul>
+<li>Runlevel 0 - Halt</li>
+<li>Runlevel 1 - Single User mode. Most services turned off, including networking. Used to perform maintenance on the server usually. Boots logged into roots account, no  password.</li>
+<li>Runlevel 2 - This is basic functions, multi-user mode, without any networking. </li>
+<li>Runlevel 3 - This is what servers usually run in, as it provides all of the services of the normal server, without the graphical user interface.</li>
+<li>Runlevel 4 - Doesn't really get used. </li>
+<li>Runlevel 5 - This provides the same functions of runlevel 3, along with services to allow for desktop functionality (graphical user interface). </li>
+<li>Runlevel 6 - Reboot</li>
+</ul>
+<p>The command to jump runlevels is actually really easy. Just type init followed by the runlevel you want to switch into. </p>
+<div class="codehilite"><pre><span class="nv">$ </span>init 1
+</pre></div>
+
+
+<p>The above command would turn off most services and drop you into single user mode.</p>
         </div><!-- /.entry-content -->
         
 
@@ -72,14 +98,14 @@
                                 
                                 
 
-                                    <li ><a href="./category/2-operate-running-systems-rhcsa.html">2. Operate Running Systems </a></li>
+                                    <li class="active"><a href="./category/2-operate-running-systems-rhcsa.html">2. Operate Running Systems </a></li>
                                 
                                
                                                        
                                 
                                 
 
-                                    <li class="active"><a href="./category/1-understand-and-use-essential-tools-rhcsa.html">1. Understand and Use Essential Tools </a></li>
+                                    <li ><a href="./category/1-understand-and-use-essential-tools-rhcsa.html">1. Understand and Use Essential Tools </a></li>
                                 
                                
                             

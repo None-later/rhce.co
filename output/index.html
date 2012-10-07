@@ -50,34 +50,11 @@
         <section id="front-header">
             <h1>Recently updated</h1>
         </section>
-        <aside id="featured"><article>
-                <h2>Objective: 4</h2>
-                <h1 class="entry-title"><a href="./configure-system-to-authenticate-using-kerberos.html">Configure system to authenticate using Kerberos</a></h1>
-                <p>Kerberos is an authentication method that allows users to authenticate without directly providing their password. You can read more on Kerberos over at: http://web.mit.edu/kerberos/
-Our goal per the information Provided by Red Hat is to configure a system to authenticate via Kerberos.
-To begin with we'll need to install openldap-clients, authconfig (usually installed by default),
-While we could simply use system-config-authentication that's not really a good real-world example, as I doubt most of your production machines will have a graphical interface. Instead we'll be using authconfig.
-authconfig has a long list of options, but the key ones we'll use are:</p>
-        </article></aside><!-- /#featured -->
+
         
                 <hr />
                     <ol id="posts-list" class="hfeed">
         
-    
-
-   
-    
-        <li><article class="hentry">
-                <header>
-                        <h1><a href="./use-input-output-redirection.html" rel="bookmark" title="Permalink to Use input-output redirection">Use input-output redirection</a></h1>
-                </header>
-
-                <div class="entry-content">
-                <p>Input output redirection is one of the base skills you will need as a sysadmin. On the exam you will have to be able to redirect data from one command into another, and/or into a file. </p>
-<p><code>~$ echo "this is ...</code></p>
-                <a class="readmore" href="./use-input-output-redirection.html">read more</a>
-                </div><!-- /.entry-content -->
-        </article></li>
     
 
    
@@ -90,6 +67,41 @@ authconfig has a long list of options, but the key ones we'll use are:</p>
                 <div class="entry-content">
                 <p>This is first requirement should stop anyone who may not know, or may have never used a shell prompt from attempting the test. If you can open your terminal, navigate and type commands then you have accomplished this. If not ...</p>
                 <a class="readmore" href="./access-a-shell-prompt-and-issue-commands-with-correct-syntax.html">read more</a>
+                </div><!-- /.entry-content -->
+        </article></li>
+    
+
+   
+    
+        <li><article class="hentry">
+                <header>
+                        <h1><a href="./archive-compress-unpack-and-uncompress-files-using-tar-star-gzip-and-bzip2.html" rel="bookmark" title="Permalink to Archive, compress, unpack and uncompress files using tar, star, gzip, and bzip2">Archive, compress, unpack and uncompress files using tar, star, gzip, and bzip2</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <h1>tar</h1>
+<p>Create a tar file from a folder called test1:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>tar cvf test1.tar test1
+</pre></div>
+
+
+<ul>
+<li>c = create</li>
+<li>v = verbose</li>
+<li>f = file</li>
+</ul>
+<p>Extract test1.tar</p>
+<div class="codehilite"><pre><span class="nv">$ </span>tar xvf test1.tar&lt;/code&gt;
+</pre></div>
+
+
+<ul>
+<li>x = extract</li>
+<li>v = verbose</li>
+<li>f = file</li>
+</ul>
+<p>List contents of tar archive ...</p>
+                <a class="readmore" href="./archive-compress-unpack-and-uncompress-files-using-tar-star-gzip-and-bzip2.html">read more</a>
                 </div><!-- /.entry-content -->
         </article></li>
     
@@ -113,15 +125,67 @@ authconfig has a long list of options, but the key ones we'll use are:</p>
     
         <li><article class="hentry">
                 <header>
-                        <h1><a href="./use-grep-and-regular-expressions-to-analyze-text.html" rel="bookmark" title="Permalink to Use grep and regular expressions to analyze text">Use grep and regular expressions to analyze text</a></h1>
+                        <h1><a href="./boot-systems-into-different-runlevels-manually.html" rel="bookmark" title="Permalink to Boot systems into different runlevels manually">Boot systems into different runlevels manually</a></h1>
                 </header>
 
                 <div class="entry-content">
-                <p>RHCSA requirements state that you must know how to use grep to analyze text. This is actually going to be pretty necessary to do many administration tasks on a daily basis.</p>
-<p>Grep returns any lines that have characters, words, or ...</p>
-                <a class="readmore" href="./use-grep-and-regular-expressions-to-analyze-text.html">read more</a>
+                <p>Red Hat Enterprise Linux is similar to most other linux distributions in its core functionality. The ability to run the operating system in multiple run levels is an important skill to have. </p>
+<p>If you type into your terminal:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>runlevel
+</pre></div>
+
+
+<p>you ...</p>
+                <a class="readmore" href="./boot-systems-into-different-runlevels-manually.html">read more</a>
                 </div><!-- /.entry-content -->
         </article></li>
+    
+
+   
+    
+        <li><article class="hentry">
+                <header>
+                        <h1><a href="./create-and-edit-text-files.html" rel="bookmark" title="Permalink to Create and edit text files">Create and edit text files</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>Using a command line text editor is a skill that is absolutely necessary. Without it most tasks cannot be performed. The default editor used it vim. vim is a enhanced version of vi, which is not quite as pretty as ...</p>
+                <a class="readmore" href="./create-and-edit-text-files.html">read more</a>
+                </div><!-- /.entry-content -->
+        </article></li>
+    
+
+   
+    
+
+   
+    
+
+   
+    
+
+   
+    
+
+   
+    
+
+   
+    
+
+   
+    
+
+   
+    
+
+   
+    
+
+   
+    
+
+   
     
 
 </ol><!-- /#posts-list -->
@@ -136,15 +200,22 @@ authconfig has a long list of options, but the key ones we'll use are:</p>
                         
                             <h3>RHCSA</h3>
 
-                                                            
+                                                       
+                                
+                                
+                               
+                                                       
+                                
+                                
+
+                                    <li ><a href="./category/2-operate-running-systems-rhcsa.html">2. Operate Running Systems </a></li>
+                                
+                               
+                                                       
                                 
                                 
 
                                     <li ><a href="./category/1-understand-and-use-essential-tools-rhcsa.html">1. Understand and Use Essential Tools </a></li>
-                                
-                               
-                                                            
-                                
                                 
                                
                             
@@ -152,15 +223,19 @@ authconfig has a long list of options, but the key ones we'll use are:</p>
                         
                             <h3>RHCE</h3>
 
-                                                            
-                                
-                                
-                               
-                                                            
+                                                       
                                 
                                 
 
                                     <li ><a href="./category/1-system-configuration-and-management-rhce.html">1. System Configuration and Management</a></li>
+                                
+                               
+                                                       
+                                
+                                
+                               
+                                                       
+                                
                                 
                                
                             

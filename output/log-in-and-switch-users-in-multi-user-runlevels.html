@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Access a shell prompt and issue commands with correct syntax</title>
+        <title>Log in and switch users in multi-user runlevels</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
         <link href="./" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
@@ -43,12 +43,30 @@
         
 <section id="content" class="body">
 <article>
-        <header> <h1 class="entry-title"><a href="access-a-shell-prompt-and-issue-commands-with-correct-syntax.html"
-        rel="bookmark" title="Permalink to Access a shell prompt and issue commands with correct syntax">Access a shell prompt and issue commands with correct syntax</a></h1>  </header>
+        <header> <h1 class="entry-title"><a href="log-in-and-switch-users-in-multi-user-runlevels.html"
+        rel="bookmark" title="Permalink to Log in and switch users in multi-user runlevels">Log in and switch users in multi-user runlevels</a></h1>  </header>
         <div class="entry-content">
 
-        <p>This is first requirement should stop anyone who may not know, or may have never used a shell prompt from attempting the test. If you can open your terminal, navigate and type commands then you have accomplished this. If not, then you should check out the basics and start there.</p>
-<p><a href="http://beginlinux.com/">http://beginlinux.com/</a> is a great place to start.</p>
+        <p>If you have followed along to this point, you have logged in, and most likely been in either runlevel 3 or runlevel 5. Runlevels determine how much of the systems services are actually running. Most common runlevel for servers is going to be 3, most services that are not GUI oriented (including the Gnome Desktop) are turned off. Runlevel 5 is what you see when you boot into the desktop environment.</p>
+<p>Switching between these levels is fairly straightforward. To switch to runlevel 3 type:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>init 3
+</pre></div>
+
+
+<p>Then to see what runlevel you are in type:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>runlevel
+</pre></div>
+
+
+<p>Switching between users, also straightforward. To switch to bob, assuming bob is a user on the system:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>su - bob  <span class="c">#note: We put the dash in there to gain the users login profile.</span>
+            <span class="c"># So if I switched to root and didnt use the - operator, I wouldn&#39;t have /usr/sbin in my path.</span>
+</pre></div>
+
+
+<p>Switching to root is a common task.</p>
+<div class="codehilite"><pre><span class="nv">$ </span>su -
+</pre></div>
         </div><!-- /.entry-content -->
         
 
