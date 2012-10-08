@@ -4,7 +4,7 @@ var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.fhlab
 document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
 </script><script type="text/javascript">
 try {
-var piwikTracker = Piwik.getTracker({{ PIWIK_URL }} + "piwik.php", {{ PIWIK_SITE_ID }});
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", {{ PIWIK_SITE_ID }});
 piwikTracker.trackPageView();
 piwikTracker.enableLinkTracking();
 } catch( err ) {}
