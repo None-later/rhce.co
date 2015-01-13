@@ -21,6 +21,6 @@ Find "Permission Denied" entries in a log file by using output redirection
     :::bash
     $ cat /path/to/file/ | grep "Permission Denied"
 
-Check out some grep examples at : (http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/)[http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/]
+Check out some grep examples at : http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/[http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/]
 
-To see all the options check out the Unix Man page, (http://unixhelp.ed.ac.uk/CGI/man-cgi?grep)[http://unixhelp.ed.ac.uk/CGI/man-cgi?grep] also available by just plain typing <code>man grep</code>
+To see all the options check out the Unix Man page, http://unixhelp.ed.ac.uk/CGI/man-cgi?grep[http://unixhelp.ed.ac.uk/CGI/man-cgi?grep] also available by just plain typing <code>man grep</code>
