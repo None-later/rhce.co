@@ -19,7 +19,7 @@ Create a tar file from a folder called test1:
 Extract test1.tar
 
     :::bash
-    $ tar xvf test1.tar</code>
+    $ tar xvf test1.tar
 * x = extract
 * v = verbose
 * f = file
@@ -27,7 +27,7 @@ Extract test1.tar
 List contents of tar archive
 
     :::bash
-    $ tar tf test1.tar</code>
+    $ tar tf test1.tar
 
 star
 ====
@@ -40,15 +40,16 @@ gzip
 This is most commonly used in combination with tar, using the z switch. Tar itself does not compress, it just packs. 
 
     :::bash
-    $ tar cvzf test1.tar.gz test1</code>
+    $ tar cvzf test1.tar.gz test1
 
 Although it can be used by itself
 
     :::bash
-    $ gzip test1</code>
+    $ gzip test1
+    $ gunzip test1.gz
 
- <code>gunzip test1.gz</code>
-# note that this does not preserve the .gz file, it extracts it and removes it. 
+{: .note }
+> **Note that this does not preserve the .gz file, it extracts it and removes it.** 
 
 bzip2
 =====
@@ -58,7 +59,7 @@ bzip2 uses a different algorithm to compress files than the other tools, but ver
 Create a bzip2 file
 
     :::bash
-    $ bzip2 test1</code>
+    $ bzip2 test1
     # note that this does not preserve the original file(s),
     # it will compress and delete the uncompressed version
     # also does not compress directories, only files. 
