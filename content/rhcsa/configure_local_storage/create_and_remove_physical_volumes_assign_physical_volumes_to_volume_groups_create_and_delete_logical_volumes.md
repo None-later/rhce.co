@@ -79,7 +79,7 @@ To display the volume after for confirmation:
 
 To delete the logical volume you would use the LV Name listed in the results of lvdisplay:
 
-   :::bash
+    :::bash
     ~] lvremove /dev/MyVolGroup/lvol0
     Do you really want to remove active logical volume lvol0? [y/n]: y
     Logical volume "lvol0" successfully removed
