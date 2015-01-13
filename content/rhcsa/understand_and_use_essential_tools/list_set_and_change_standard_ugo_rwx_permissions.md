@@ -34,7 +34,12 @@ Permissions are as follows:
 * w write
 * r read
 
-*note: the first bit is reserved for type, files are -, directories are d, links are l*
+
+{: .note }
+>
+> *note: the first bit is reserved for type, files are -, directories are d, links are l*
+
+
 
 For example, to change all three above files to 777 or readable, writable, and executable by all:
  
@@ -108,6 +113,7 @@ If we don't want anyone to see have access, we could change it to a user like no
     -rw-r--r--. 1 root   david   5337 Mar 21 15:37 install.log.syslog
 
 <b>chgrp</b>
+--
 
 chgrp does the same thing as chown does, except it only changes the group. Handy if you just want to apply group permissions to a group of files that have various owners. 
 
