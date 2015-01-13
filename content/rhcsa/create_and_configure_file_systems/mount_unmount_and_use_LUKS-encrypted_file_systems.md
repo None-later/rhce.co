@@ -58,8 +58,9 @@ Create the mount point and mount read/write on that mount point.
     ~] mount -o rw -t ext4 /dev/mapper/newlukspart /lukspart
 
 Check that the partition is mounted. 
+    
     :::bash
-    ~] mount
+    ~] mount -l
     ... output omitted... 
     /dev/mapper/newlukspart on /lukspart type ext4 (rw)
 
