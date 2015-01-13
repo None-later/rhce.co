@@ -48,7 +48,9 @@ Although it can be used by itself
     $ gzip test1
     $ gunzip test1.gz
 
+
 {: .note }
+>
 > **Note that this does not preserve the .gz file, it extracts it and removes it.** 
 
 bzip2
