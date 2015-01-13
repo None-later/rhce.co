@@ -13,14 +13,18 @@ To check the current SELinux mode
 
 To set the SELinux mode to 0 (does not persist through a reboot)
 
-     :::bash
+    :::bash
     ~]  setenforce 0
 
 To change mode persistently
 
-     :::bash
+    :::bash
     ~]  vim /etc/selinux/config
 
 change to desired value: disabled, permissive, enforcing
 
     SELINUX=disabled
+    
+{: .note }
+>
+> Keep in mind that, after editing */etc/selinux/config* changes will be applied after system reboot.
