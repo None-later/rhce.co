@@ -189,36 +189,11 @@ Now that we have a physical volume, and its part of a volume group, so we can ma
 Now there is a lovical volume named "LogVol1" that is a part of MyNewVolGroup"
 
 
-'''''Add new swap partition'''''
+Add new swap partition
+==
 
 Adding a swap partition is like adding any other partition, just changing his type to Linux Swap.
 
-    :::bash
-    ~] fdisk -cu /dev/sdb 
-
-    Command (m for help): p
-
-    Disk /dev/sdb: 2147 MB, 2147483648 bytes
-    128 heads, 57 sectors/track, 574 cylinders, total 4194304 sectors
-    Units = sectors of 1 * 512 = 512 bytes
-    Sector size (logical/physical): 512 bytes / 512 bytes
-    I/O size (minimum/optimal): 512 bytes / 512 bytes
-    Disk identifier: 0x110ea9fa 
-
-    Device Boot      Start         End      Blocks   Id  System
-    /dev/sdb1            2048      104447       51200   8e  Linux LVM
-
-    Command (m for help): n
-    Command action
-    e   extended
-    p   primary partition (1-4)
-    p
-    Partition number (1-4): 2
-    First sector (104448-4194303, default 104448): +50M
-    Value out of range.
-    First sector (104448-4194303, default 104448):     
-    Using default value 104448
-    Last sector, +sectors or +size{K,M,G} (104448-4194303, default 4194303): ^C
     :::bash
     ~] fdisk -cu /dev/sdb 
 
@@ -257,8 +232,10 @@ Adding a swap partition is like adding any other partition, just changing his ty
     Syncing disks.
 
 To activate a swap partion.  
-     
+    
     :::bash
+    ~] mkswap /dev/sdb2
+    
     ~] swapon -v /dev/sdb2
     swapon on /dev/sdb2
     swapon: /dev/sdb2: found swap signature: version 1, page-size 4, same byte order
@@ -271,3 +248,5 @@ Confirm that the swap was added.
     Filename               Type        Size    Used    Priority
     /dev/dm-1                               partition  1015800 0   -1
     /dev/sdb2                               partition  51192   0   -2
+
+Also you have to edit */etc/fstab* file to reflect your changes at system boot-up.

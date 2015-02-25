@@ -8,6 +8,7 @@ A few commands to help you identify processes on the exam are ps and top. These 
 
 
 ps - report a snapshot of the current processes.
+------------------------------------------------
 
 ps helps you see what processes are being run, what files and commands they are being run with, who they are being run by, as well and their process ids. All the above items are crucial when troubleshooting issues on a Red Hat Enterprise Linux 6 system. 
 
@@ -50,11 +51,13 @@ There is plenty of more info on this in the man pages as well as a plethoura of 
 
 At its most basic usage you can just type:
 
- <code>$ top </code>
+    :::bash
+    $ top
 
 There is a whole lot of options that go along with that command: "man top" to see them all.
 
 renice — alter priority of running processes
+--------------------------------------------
 
 As stated in the description, renice is a linux utility to change the priority of a process. This could obviously come in handy while trying to keep a process at bay. 
 
@@ -64,18 +67,21 @@ Example from the man page:
 
 This would change the priority of process ID's 987 and 32, and all processes owned by users daemon and root.
 
-Man Page http://linux.die.net/man/8/renice
+Man Page (http://linux.die.net/man/8/renice)[http://linux.die.net/man/8/renice]
 
 kill - terminate a process
+--------------------------
 
 Like it states in the name, this kills processes. Once you have identified the process you would like to kill with top or ps, you would use the kill command to terminate that process. 
 
 The most common implementation of this is:
-
- <code># kill 2342 </code>
+    
+    :::bash
+    # kill 2342
 
 If that doesnt kill the process you would use the -9 switch, which will take out most any process. 
-
- <code># kill -9 2342</code>
+    
+    :::bash
+    # kill -9 2342
 
 NOTE: The -9 command should be used with caution. Make sure you are killing the right pid, otherwise terrible things may transpire, especially on the RHCSA or the RHCE, where time is of concern.
