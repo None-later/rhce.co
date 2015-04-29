@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="http://rhce.co/" rel="alternate"></link><link href="http://rhce.co/feeds/f-manage-users-and-groups-rhcsa.atom.xml" rel="self"></link><id>http://rhce.co/</id><updated>2012-10-06T00:00:00+02:00</updated><entry><title>Change passwords and adjust password aging for local user accounts</title><link href="http://rhce.co/change-passwords-and-adjust-password-aging-for-local-user-accounts.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:change-passwords-and-adjust-password-aging-for-local-user-accounts.html</id><summary type="html">&lt;p&gt;The utility used for password aging is chage. As with most unix tools, its name sounds like a short lazy of saying the action... in this case, "change age".&lt;/p&gt;
+&lt;p&gt;The switches are everything here, and unless you use this all the time, the man page will be in order here. For now, here are the options:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="na"&gt;-m&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nb"&gt;days&lt;/span&gt;   &lt;span class="nx"&gt;Specifies&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;minimum&lt;/span&gt; &lt;span class="nx"&gt;number&lt;/span&gt; &lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nb"&gt;days&lt;/span&gt; &lt;span class="nx"&gt;between&lt;/span&gt; &lt;span class="nx"&gt;which&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nb"&gt;user&lt;/span&gt; &lt;span class="nx"&gt;must&lt;/span&gt; &lt;span class="nx"&gt;change&lt;/span&gt; &lt;span class="nx"&gt;passwords.&lt;/span&gt; &lt;span class="k"&gt;If&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nb"&gt;value&lt;/span&gt; &lt;span class="nx"&gt;is&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;password&lt;/span&gt; &lt;span class="nx"&gt;does&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="nx"&gt;expire.&lt;/span&gt;
+&lt;span class="na"&gt;-M&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nb"&gt;days&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  &lt;span class="nx"&gt;Specifies&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;maximum&lt;/span&gt; &lt;span class="nx"&gt;number&lt;/span&gt; &lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nb"&gt;days&lt;/span&gt; &lt;span class="nb"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;which&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;password&lt;/span&gt; &lt;span class="nx"&gt;is&lt;/span&gt; &lt;span class="nx"&gt;valid.&lt;/span&gt; &lt;span class="nx"&gt;When&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;number&lt;/span&gt; &lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nb"&gt;days&lt;/span&gt; &lt;span class="nb"&gt;specified&lt;/span&gt; &lt;span class="k"&gt;by&lt;/span&gt; &lt;span class="nx"&gt;this&lt;/span&gt; &lt;span class="nb"&gt;option&lt;/span&gt; &lt;span class="nx"&gt;plus&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;number&lt;/span&gt; &lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nb"&gt;days&lt;/span&gt; &lt;span class="nb"&gt;specified&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="na"&gt;-d&lt;/span&gt; &lt;span class="nb"&gt;option&lt;/span&gt; &lt;span class="nx"&gt;is&lt;/span&gt; &lt;span class="nx"&gt;less&lt;/span&gt; &lt;span class="nx"&gt;than&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;current&lt;/span&gt; &lt;span class="nb"&gt;day&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nb"&gt;user&lt;/span&gt; &lt;span class="nx"&gt;must&lt;/span&gt; &lt;span class="nx"&gt;change&lt;/span&gt; &lt;span class="nx"&gt;passwords&lt;/span&gt; &lt;span class="nx"&gt;before&lt;/span&gt; &lt;span class="nx"&gt;using&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;account.&lt;/span&gt;
+&lt;span class="na"&gt;-d&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nb"&gt;days&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  &lt;span class="nx"&gt;Specifies&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;number&lt;/span&gt; &lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nb"&gt;days&lt;/span&gt; &lt;span class="nx"&gt;since&lt;/span&gt; &lt;span class="nx"&gt;January&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1970&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;password&lt;/span&gt; &lt;span class="nx"&gt;was&lt;/span&gt; &lt;span class="nx"&gt;changed&lt;/span&gt;
+&lt;span class="na"&gt;-I&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nb"&gt;days&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  &lt;span class="nx"&gt;Specifies&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;number&lt;/span&gt; &lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nx"&gt;inactive&lt;/span&gt; &lt;span class="nb"&gt;days&lt;/span&gt; &lt;span class="nx"&gt;after&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;password&lt;/span&gt; &lt;span class="nx"&gt;expiration&lt;/span&gt; &lt;span class="nx"&gt;before&lt;/span&gt; &lt;span class="nx"&gt;locking&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;account.&lt;/span&gt; &lt;span class="k"&gt;If&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nb"&gt;value&lt;/span&gt; &lt;span class="nx"&gt;is&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;account&lt;/span&gt; &lt;span class="nx"&gt;is&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="nx"&gt;locked&lt;/span&gt; &lt;span class="nx"&gt;after&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;password&lt;/span&gt; &lt;span class="nx"&gt;expires.&lt;/span&gt;
+&lt;span class="na"&gt;-E&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;date&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  &lt;span class="nx"&gt;Specifies&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="kt"&gt;date&lt;/span&gt; &lt;span class="k"&gt;on&lt;/span&gt; &lt;span class="nx"&gt;which&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;account&lt;/span&gt; &lt;span class="nx"&gt;is&lt;/span&gt; &lt;span class="nx"&gt;locked&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nb"&gt;format&lt;/span&gt; &lt;span class="nx"&gt;YYYY&lt;/span&gt;&lt;span class="na"&gt;-MM-DD.&lt;/span&gt; &lt;span class="nx"&gt;Instead&lt;/span&gt; &lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="kt"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;number&lt;/span&gt; &lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nb"&gt;days&lt;/span&gt; &lt;span class="nx"&gt;since&lt;/span&gt; &lt;span class="nx"&gt;January&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1970&lt;/span&gt; &lt;span class="nx"&gt;can&lt;/span&gt; &lt;span class="nx"&gt;also&lt;/span&gt; &lt;span class="nx"&gt;be&lt;/span&gt; &lt;span class="nx"&gt;used.&lt;/span&gt;
+&lt;span class="na"&gt;-W&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nb"&gt;days&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  &lt;span class="nx"&gt;Specifies&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;number&lt;/span&gt; &lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nb"&gt;days&lt;/span&gt; &lt;span class="nx"&gt;before&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;password&lt;/span&gt; &lt;span class="nx"&gt;expiration&lt;/span&gt; &lt;span class="kt"&gt;date&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="nx"&gt;warn&lt;/span&gt; &lt;span class="nx"&gt;the&lt;/span&gt; &lt;span class="nx"&gt;user.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Examples:&lt;/p&gt;
+&lt;p&gt;List a users passowrd expiration info&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; chage --list username
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Set an expiration based on a maximum number of days for which the password should be valid.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; chage -M 120 username
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To only allow a user to change their password every 10 days, and no more&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; chage -m 10 username
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Apply immediate expiration&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; chage -d 0 username
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Configure a system to use an existing LDAP directory service for user and group information</title><link href="http://rhce.co/configure-a-system-to-use-an-existing-ldap-directory-service-for-user-and-group-information.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:configure-a-system-to-use-an-existing-ldap-directory-service-for-user-and-group-information.html</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  yum -y install openldap-clients system-config-authentication
+
+~&lt;span class="o"&gt;]&lt;/span&gt;  system-config-authentication
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Check enable ldap support. Then configure should open up a windows that allows you to just add the ldap info, and be done. Not much too this objective, seeming as you only have to be able to connect and authenticate.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create, delete and modify local groups and group memberships</title><link href="http://rhce.co/create-delete-and-modify-local-groups-and-group-memberships.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:create-delete-and-modify-local-groups-and-group-memberships.html</id><summary type="html">&lt;p&gt;Working with groups is a lot like working with users. Commands include groupadd, groupmod, groupdel, groups&lt;/p&gt;
+&lt;p&gt;Examples:&lt;/p&gt;
+&lt;h2&gt;&lt;em&gt;List the groups a user is in&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  groups username
+username : username wheel sales
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Add a group&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  groupadd sales
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Delete a group&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  groupdel sales
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Modify a group's name&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  groupmod -n salesfolk sales
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Modify a group's GID&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  groupmod -g 217 sales
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Delete a group&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  groupdel sales
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Add user bob to sales&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  groupmems -g sales -a bob
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create, delete, and modify local user accounts</title><link href="http://rhce.co/create-delete-and-modify-local-user-accounts.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:create-delete-and-modify-local-user-accounts.html</id><summary type="html">&lt;p&gt;Two ways you can go about this, the command-line way, or the GUI way. Doesn't matter for the test, just whatever you are comfortable with. Keep in mind that as a sysadmin it will be much more handy to use the command-line. ;-) &lt;/p&gt;
+&lt;h1&gt;Graphical User Interface (GUI)&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  yum -y install system-config-users
+
+~&lt;span class="o"&gt;]&lt;/span&gt;  system-config-users
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That will pop up an interface to add, remove, and modify users. Remember that if you are doing this remotely, you need to carry your XSession over to the server. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  ssh -X user@host
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That's as far as I will go into the GUI, its all point and click. :)&lt;/p&gt;
+&lt;h1&gt;Command-line interface (CLI)&lt;/h1&gt;
+&lt;h2&gt;&lt;em&gt;Add user bob:&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  useradd bob
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Add bob into the wheel group&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  useradd -G wheel bob
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Add bob with sh shell instead of bash&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  useradd -s /bin/sh bob
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Add bob with a UID of 504 and a GID of 505&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  useradd -u 504 -g 505 bob
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Modify bob to use the bash shell instead&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  usermod -s /bin/bash bob
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Modify bob to be in the sales group as well&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  usermod -a -G sales bob
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Set or change a password for bob&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  passwd bob
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Delete bob from the system&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  userdel bob
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;em&gt;Delete bob and force remove him even if he is logged in. Also removes his home dir and mail spool&lt;/em&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  userdel -f bob
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are many other options that you can use that I didn't go over, just check out the man page. I covered most of the common ones.&lt;/p&gt;</summary><category term="RHCSA"></category></entry></feed>

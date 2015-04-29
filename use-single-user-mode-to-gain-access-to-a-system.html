@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Use single-user mode to gain access to a system</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://rhce.co/theme/css/main.css" type="text/css" />
+        <link href="http://rhce.co/" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie.css"/>
+                <script src="http://rhce.co/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/makewhatis/rhce.co">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="http://rhce.co/index.html">rhce.co </a></h1>
+                <nav><ul>
+                <li><a href="http://rhce.co/index.html">Home</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="use-single-user-mode-to-gain-access-to-a-system.html"
+        rel="bookmark" title="Permalink to Use single-user mode to gain access to a system">Use single-user mode to gain access to a system</a></h1>  </header>
+        <div class="entry-content">
+
+        <p>Booting into single user mode is the easiest way to gain access to a Red Hat Enterprise Linux server. </p>
+<p>This is only feasible if you have access to the physical console, which you will on the RHCSA and RHCE exams. </p>
+<ul>
+<li>At the beginning of the boot process you should see the grub menu pop up with a countdown and some kernel options (or perhaps just one option). </li>
+<li>It should be counting down at this point and says: "Press any key to enter the menu". In this case you would hit any key. </li>
+<li>At the bottom of the screen there is an explanation of the few options that are available to use on this page. One of these options is "e" for edit. Hit "e" to edit the boot kernel options. 
+NOTE: (You can also use "a" for append, although they both accomplish the same thing.)</li>
+<li>You would now edit the main kernel options, adding either "single" or even just "1" at the end. Once you have completed that hit enter, the "b" for boot. </li>
+<li>You are now in single user mode, and be auto logged in as root. </li>
+</ul>
+<p>NOTE: for Red Hat Enterprise Linux 6.0 there is a bug that will prevent you from changing your root password in single user mode. This is a result of SELinux. For this situation you would want to temporarily disable SELinux.</p>
+<div class="highlight"><pre><span class="c"># setenforce 0</span>
+</pre></div>
+
+
+<p>Now you should be allowed to change your root password.</p>
+        </div><!-- /.entry-content -->
+
+</article>
+</section>
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                            <h3>RHCSA</h3>
+
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li class="active"><a href="http://rhce.co/category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                   
+                           
+                                 
+                                   
+
+                            <h3>RHCE</h3>
+
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+
+                        </ul>
+                </div>
+
+
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+<!-- Piwik --> 
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.fhlabs.com/" : "http://piwik.fhlabs.com/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 14);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.fhlabs.com/piwik.php?idsite=14" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code --></body>
+</html>

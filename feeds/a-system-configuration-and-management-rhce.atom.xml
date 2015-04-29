@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="http://rhce.co/" rel="alternate"></link><link href="http://rhce.co/feeds/a-system-configuration-and-management-rhce.atom.xml" rel="self"></link><id>http://rhce.co/</id><updated>2012-10-06T00:00:00+02:00</updated><entry><title>Use shell scripting to automate system maintenance tasks</title><link href="http://rhce.co/use-shell-scripting-to-automate-system-maintenance-tasks.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:use-shell-scripting-to-automate-system-maintenance-tasks.html</id><summary type="html">&lt;p&gt;It is important to be familiar with basic bash scripting. Some commands were covered in the RHCSA portion, however writing scripts was not. Lets look at writing some basic scripts.&lt;/p&gt;
+&lt;p&gt;The most important thing we need to start with is our shebang:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The shebang is used to invoke the proper interpreter. You can read more about the shebang itself here: http://en.wikipedia.org/wiki/Shebang_%28Unix%29 for now however, we're not going to discuss it further. Just make sure it's at the top of your shell script.&lt;/p&gt;
+&lt;p&gt;As with most scripting languages, a key concept to understand is variables. This is no difference in bash scripting, lets look at an example of a variable, how to assign a value, and how to return that value using echo:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="nv"&gt;OPERATINGSYSTEM&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;rhel6
+~&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$OPERATINGSYSTEM&lt;/span&gt;
+rhel6
+~&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="nb"&gt;echo &lt;/span&gt;OPERATINGSYSTEM
+OPERATINGSYSTEM
+~&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="nv"&gt;os&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;rhel6
+~&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$os&lt;/span&gt;
+rhel6
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As you can see, we've declared our variable, and given it a value, and returned that value. Notice we needed the $ to ensure that it was referenced as a variable. If you don't use $NAME the interpreter will just use the literal value of whatever the variable's name is, which is bad news. Additionally you can see that the case of the variable doesn't matter. Obviously you should practice good variable naming conventions, but that won't be covered here.&lt;/p&gt;
+&lt;p&gt;While we're discussing the use of echo, lets review the use of quoting,&lt;/p&gt;</summary><category term="RHCE"></category></entry></feed>

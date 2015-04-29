@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="http://rhce.co/" rel="alternate"></link><link href="http://rhce.co/feeds/d.%20Create%20and%20Configure%20File%20Systems%20-%20(RHCSA).atom.xml" rel="self"></link><id>http://rhce.co/</id><updated>2012-10-06T00:00:00+02:00</updated><entry><title>Configure systems to mount ext4, LUKS-encrypted and network file systems automatically</title><link href="http://rhce.co/configure-systems-to-mount-ext4-luks-encrypted-and-network-file-systems-automatically.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:configure-systems-to-mount-ext4-luks-encrypted-and-network-file-systems-automatically.html</id><summary type="html">&lt;p&gt;Filesystems can be automatically mounted via path or UUID in the /etc/fstab file. &lt;/p&gt;
+&lt;h1&gt;Mount filesystems automatically&lt;/h1&gt;
+&lt;p&gt;Via device:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sda1&lt;/span&gt;   &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mountpoint&lt;/span&gt;    &lt;span class="n"&gt;ext4&lt;/span&gt;    &lt;span class="n"&gt;defaults&lt;/span&gt;    1 1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Via filepath:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mapper&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filesystem&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mountpoint&lt;/span&gt; &lt;span class="n"&gt;ext4&lt;/span&gt;    &lt;span class="n"&gt;defaults&lt;/span&gt;    1 1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Below are explainations of the fstab columns, right from the man page.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The first field (fs_spec)    - This field describes the block special device or remote filesystem to be mounted.&lt;/li&gt;
+&lt;li&gt;The second field (fs_file)   - This field describes the mount point for the filesystem.&lt;/li&gt;
+&lt;li&gt;The third field (fs_vfstype) - This  field  describes  the  type of the filesystem.&lt;/li&gt;
+&lt;li&gt;The fourth field (fs_mntops) - This field describes the mount options associated with the filesystem.&lt;/li&gt;
+&lt;li&gt;The fifth field (fs_freq)    - This  field is used for these filesystems by the dump(8) command to determine which filesystems need to be dumped. &lt;/li&gt;
+&lt;li&gt;The sixth field (fs_passno)  - This field is used by the fsck(8) program to determine the order in which filesystem checks are done at reboot time. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Mount ext4 filesystems&lt;/h1&gt;
+&lt;p&gt;Assuming we have formatted /dev/sda1 as ext4, then we would add this line to fstab&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sda1&lt;/span&gt;   &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mountpoint&lt;/span&gt;    &lt;span class="n"&gt;ext4&lt;/span&gt;    &lt;span class="n"&gt;defaults&lt;/span&gt;    1 1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Always check your entry by running mount -a command, if errors are returned address them before a reboot to prevent serious issues. &lt;/p&gt;
+&lt;h1&gt;Mount LUKS-encrypted filesystems&lt;/h1&gt;
+&lt;p&gt;Assuming we have already created and opened a LUKS-encrypted filesystem, we would add the mount point and luks name into the /etc/crypttab file:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;lukspartition&lt;/span&gt;      &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mapper&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lukspartition&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and then we would want to mount add an entry to fstab. If we wanted to reference the filesystem via path:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mapper&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lukspartition&lt;/span&gt;   &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mountpoint&lt;/span&gt;  &lt;span class="n"&gt;ext4&lt;/span&gt;   &lt;span class="n"&gt;defaults&lt;/span&gt; 0 0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If we wanted to reference by UUID we could get the UUID with the blkid command. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;localhost&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;# &lt;span class="n"&gt;blkid&lt;/span&gt;
+&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mapper&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;newlukspart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;UUID&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&amp;quot;51&lt;span class="n"&gt;b401e1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;2120&lt;span class="o"&gt;-&lt;/span&gt;4&lt;span class="n"&gt;f52&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;88&lt;span class="n"&gt;ff&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d6c80c379276&lt;/span&gt;&amp;quot; &lt;span class="n"&gt;TYPE&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;ext4&lt;/span&gt;&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;then in fstab:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;UUID&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&amp;quot;51&lt;span class="n"&gt;b401e1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;2120&lt;span class="o"&gt;-&lt;/span&gt;4&lt;span class="n"&gt;f52&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;88&lt;span class="n"&gt;ff&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d6c80c379276&lt;/span&gt;&amp;quot; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mountpoint&lt;/span&gt;     &lt;span class="n"&gt;ext4&lt;/span&gt;   &lt;span class="n"&gt;defaults&lt;/span&gt; 0 0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Mount network filesystems&lt;/h1&gt;
+&lt;p&gt;Similar to the rest, just using ip as location, in &lt;code&gt;/etc/fstab&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;192&lt;span class="p"&gt;.&lt;/span&gt;168&lt;span class="p"&gt;.&lt;/span&gt;1&lt;span class="p"&gt;.&lt;/span&gt;100&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;share&lt;/span&gt;    &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mnt&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;share&lt;/span&gt;  &lt;span class="n"&gt;nfs&lt;/span&gt;     &lt;span class="n"&gt;ro&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;_netdev&lt;/span&gt;         0 0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The options will vary of course, &lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create and configure set-GID directories for collaboration</title><link href="http://rhce.co/create-and-configure-set-gid-directories-for-collaboration.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:create-and-configure-set-gid-directories-for-collaboration.html</id><summary type="html">&lt;p&gt;Set-GID directories are used for group collaboration. Everything that is created in a directory with that special permission bit, is automatically owned by the group. &lt;/p&gt;
+&lt;p&gt;To set that permission bit you have to add one more digit than you usually see to permission sets, or another character depending on how to usually set permissions. &lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;digit-based way&lt;/em&gt; to setup a set-GID directory:&lt;/p&gt;
+&lt;p&gt;We start off with a directory under root, named share. Right now its owned by root, along with everything under it. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; ls -l | grep share
+drwxr-xr-x.   2 root root  4096 Apr  6 10:28 share
+
+~&lt;span class="o"&gt;]&lt;/span&gt; ls -l share/
+total 0
+-rw-r--r--. 1 root root 0 Apr  6 10:28 file213
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;First step in this process is changing group ownership of the directory to the group. 'it' will be the group in this example. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; chgrp -R it  share/
+
+~&lt;span class="o"&gt;]&lt;/span&gt; ls -l share/
+total 0
+-rw-r--r--. 1 root it 0 Apr  6 10:28 file213
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As you can see, we recursivley change the directory and contents to the 'it' group, but its still owned by root. 
+Next we would apply the set-gid permission on the directory by adding a 2 before the standard permissions set. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; chmod 2755 share/
+
+~&lt;span class="o"&gt;]&lt;/span&gt; ls -l | grep share
+drwxr-sr-x.   2 root it    4096 Apr  6 10:28 share
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now you can see the directory has a permission set that contains an 's' now in place of the x for group. Lets test this out. I am going to touch a file as root in this directory. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; touch newfile
+~&lt;span class="o"&gt;]&lt;/span&gt; chmod 760 newfile
+~&lt;span class="o"&gt;]&lt;/span&gt; ls -l
+total 0
+-rw-r--r--. 1 root it 0 Apr  6 10:28 file213
+-rwxrw----. 1 root it 0 Apr 13 02:03 newfile
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So you can see that automatically a group ownership is added to this file, which means anyone in the group 'it' can now read and write to this file, while anyone else cannot.&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;character-based way&lt;/em&gt; to setup a set-GID directory:&lt;/p&gt;
+&lt;p&gt;The only thing done differently with this method is the way the permissions are set. Instead of numerical/digit permissions, we use letters. First we list the permissions.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; ls -l | grep share
+drwxr-xr-x.   2 root it    4096 Apr 13 02:03 share
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then apply the permissions with g+s, for group plus set-guid bit.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; chmod g+s share/
+
+~&lt;span class="o"&gt;]&lt;/span&gt; ls -l | grep share
+drwxr-sr-x.   2 root it    4096 Apr 13 02:03 share
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As you can see it has the same effect, just a different approach.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create and manage Access Control Lists (ACLs)</title><link href="http://rhce.co/create-and-manage-access-control-lists-acls.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:create-and-manage-access-control-lists-acls.html</id><summary type="html">&lt;p&gt;Access control lists are an import part of administration on any Red Hat Enterprise Linux 6 system that you will be managing. The ability to deny or allow users based on user or group is crucial. &lt;/p&gt;
+&lt;h1&gt;Enable ACL on a filesystem&lt;/h1&gt;
+&lt;p&gt;To use ACLs first the acl property needs to be enabled on the partition. This can be checked by running the mount command and checking the options section for acl. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mount
+/dev/mapper/vg_rhel01-lv_root on / &lt;span class="nb"&gt;type &lt;/span&gt;ext4 &lt;span class="o"&gt;(&lt;/span&gt;rw&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Notice that the only option is "rw", which means that acl is not enabled on the root filesystem. The change is easy to make and it involves adding an option in /etc/fstab. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; vim /etc/fstab
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;before:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mapper&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;vg_rhel01&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;lv_root&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;                       &lt;span class="n"&gt;ext4&lt;/span&gt;    &lt;span class="n"&gt;defaults&lt;/span&gt;        1 1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;after:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mapper&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;vg_rhel01&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;lv_root&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;                       &lt;span class="n"&gt;ext4&lt;/span&gt;    &lt;span class="n"&gt;defaults&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;acl&lt;/span&gt;        1 1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once that change has been made, we need to remount the filesystem in order for it to actually take effect. We could reboot, or just run the mount command with an option of remount. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mount -o remount /
+
+~&lt;span class="o"&gt;]&lt;/span&gt; mount
+/dev/mapper/vg_rhel01-lv_root on / &lt;span class="nb"&gt;type &lt;/span&gt;ext4 &lt;span class="o"&gt;(&lt;/span&gt;rw,acl&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now the acl option shows next to "rw". &lt;/p&gt;
+&lt;h1&gt;Apply ACLs to a file for a user&lt;/h1&gt;
+&lt;p&gt;To check acl on a directory or file, we would use the getfacl command &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; getfacl install.log
+&lt;span class="c"&gt;# file: install.log&lt;/span&gt;
+&lt;span class="c"&gt;# owner: root&lt;/span&gt;
+&lt;span class="c"&gt;# group: root&lt;/span&gt;
+user::rw-
+group::r--
+mask::r--
+other::r--
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are no special rules applied at this point. Use the setfacl command to add rw permissions to install.log.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; setfacl -m u:user2:rw install.log
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then getfacl to see the newly added acl. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; getfacl install.log
+&lt;span class="c"&gt;# file: install.log&lt;/span&gt;
+&lt;span class="c"&gt;# owner: root&lt;/span&gt;
+&lt;span class="c"&gt;# group: root&lt;/span&gt;
+user::rw-
+user:user2:rw-
+group::r--
+mask::rw-
+other::r--
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Apply ACLs to a file for a group&lt;/h1&gt;
+&lt;p&gt;To add a group acl on the same file, we use the g option instead. The following command with add rwx permissions for the group "it" on the install.log file. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; setfacl -m g:it:rwx install.log
+~&lt;span class="o"&gt;]&lt;/span&gt; getfacl install.log
+&lt;span class="c"&gt;# file: install.log&lt;/span&gt;
+&lt;span class="c"&gt;# owner: root&lt;/span&gt;
+&lt;span class="c"&gt;# group: root&lt;/span&gt;
+user::rw-
+user:user2:rw-
+group::r--
+group:it:rwx
+mask::rwx
+other::r--
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create, mount, unmount and use ext2, ext3 and ext4 file systems</title><link href="http://rhce.co/create-mount-unmount-and-use-ext2-ext3-and-ext4-file-systems.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:create-mount-unmount-and-use-ext2-ext3-and-ext4-file-systems.html</id><summary type="html">&lt;p&gt;The default filesystem with Red Hat Enterprise Linux 6 is ext4, so that is the one we will use in the following example. The mkfs command can be used with the filesystem type as shown below. We are making a filesystem on a newly created partition, /dev/sdc1&lt;/p&gt;
+&lt;h1&gt;Create file systems&lt;/h1&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mkfs.ext4 /dev/sdc1
+mke2fs 1.41.12 &lt;span class="o"&gt;(&lt;/span&gt;17-May-2010&lt;span class="o"&gt;)&lt;/span&gt;
+Filesystem &lt;span class="nv"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+OS &lt;span class="nb"&gt;type&lt;/span&gt;: Linux
+Block &lt;span class="nv"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1024 &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;log&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0&lt;span class="o"&gt;)&lt;/span&gt;
+Fragment &lt;span class="nv"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1024 &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;log&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;Stride&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0 blocks, Stripe &lt;span class="nv"&gt;width&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0 blocks
+64000 inodes, 256000 blocks
+12800 blocks &lt;span class="o"&gt;(&lt;/span&gt;5.00%&lt;span class="o"&gt;)&lt;/span&gt; reserved &lt;span class="k"&gt;for &lt;/span&gt;the super user
+First data &lt;span class="nv"&gt;block&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1
+Maximum filesystem &lt;span class="nv"&gt;blocks&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;67371008
+32 block groups
+8192 blocks per group, 8192 fragments per group
+2000 inodes per group
+Superblock backups stored on blocks: 
+8193, 24577, 40961, 57345, 73729, 204801, 221185
+
+Writing inode tables: &lt;span class="k"&gt;done                            &lt;/span&gt;
+Creating journal &lt;span class="o"&gt;(&lt;/span&gt;4096 blocks&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="k"&gt;done&lt;/span&gt;
+Writing superblocks and filesystem accounting information: &lt;span class="k"&gt;done&lt;/span&gt;
+
+This filesystem will be automatically checked every 37 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If we wanted to make an ext3 filesystem we would just run:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mkfs.ext3 /dev/sdc1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Mount Filesystems&lt;/h1&gt;
+&lt;p&gt;To mount a newly created filesystem, we would use the mount command. First we have to create a mount point. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  mkdir /new_mount_point
+
+~&lt;span class="o"&gt;]&lt;/span&gt;  mount -o rw -t ext4 /dev/sdc1 /new_mount_point/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To check that that partition was created and mounted correctly. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  mount
+/dev/mapper/VolGroup-lv_root on / &lt;span class="nb"&gt;type &lt;/span&gt;ext4 &lt;span class="o"&gt;(&lt;/span&gt;rw&lt;span class="o"&gt;)&lt;/span&gt;
+...output omitted
+/dev/sdc1 on /new_mount_point &lt;span class="nb"&gt;type &lt;/span&gt;ext4 &lt;span class="o"&gt;(&lt;/span&gt;rw&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The mount will not survive a reboot, unless you add the partition into /etc/fstab as we did on this page: http://rhce.co/configure-systems-to-mount-file-systems-at-boot-by-universally-unique-id-uuid-or-label.html&lt;/p&gt;
+&lt;h1&gt;Unmount Filesystems&lt;/h1&gt;
+&lt;p&gt;The command to unmount a filesystem is not unmount, but instead its umount. (no idea why they left out the n, but they did)&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt;  umount /dev/sdc1 
+:::bash
+~&lt;span class="o"&gt;]&lt;/span&gt;  mount
+&lt;span class="c"&gt;# ... no /dev/sdc1 here&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Diagnose and correct file permission problems</title><link href="http://rhce.co/diagnose-and-correct-file-permission-problems.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:diagnose-and-correct-file-permission-problems.html</id><summary type="html">&lt;p&gt;Filesystem permssions can be diagnosed best with the ls -l option, which will display the permission bits on the file. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;$ &lt;span class="nb"&gt;cat&lt;/span&gt; &lt;span class="n"&gt;rootfile&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt; 
+&lt;span class="nb"&gt;cat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;rootfile&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Permission&lt;/span&gt; &lt;span class="n"&gt;denied&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A typical filesystem permission issue will look like the above. With a permission denied error. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;ls&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="n"&gt;rootfile&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt; 
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rwxrwx&lt;/span&gt;&lt;span class="o"&gt;---&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; 1 &lt;span class="n"&gt;root&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; 0 &lt;span class="n"&gt;Apr&lt;/span&gt; 14 01&lt;span class="p"&gt;:&lt;/span&gt;32 &lt;span class="n"&gt;rootfile&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Permission denied can show up in log files as well, example being the apache error log.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Extend existing unencrypted ext4-formatted logical volumes</title><link href="http://rhce.co/extend-existing-unencrypted-ext4-formatted-logical-volumes.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:extend-existing-unencrypted-ext4-formatted-logical-volumes.html</id><summary type="html">&lt;p&gt;Extending a file system without damaging it is an important skill, for many obvious reasons. Its also pretty straightforward once you know the commands. &lt;/p&gt;
+&lt;p&gt;To extend a logical volume you can use the lvextend command, with the -L switch to specify the size. There are two ways to do this, make sure you are careful with the syntax. &lt;/p&gt;
+&lt;p&gt;First lets display our logical volumes. (make sure you unmount any filesystems which you are about to extend.)&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; lvdisplay 
+--- Logical volume ---
+LV Name                /dev/MyNewVolgroup1/MyNewLogVol1
+VG Name                MyNewVolgroup1
+LV UUID                ZyZZLu-oQYu-ifti-ww28-VzQ7-xV5w-wOvBim
+LV Write Access        &lt;span class="nb"&gt;read&lt;/span&gt;/write
+LV Status              available
+&lt;span class="c"&gt;# open                 0&lt;/span&gt;
+LV Size                200.00 MiB
+Current LE             50
+Segments               1
+Allocation             inherit
+Read ahead sectors     auto
+- currently &lt;span class="nb"&gt;set &lt;/span&gt;to     256
+Block device           253:2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next we will extend the logical volume, adding 100M. See how we do this by putting a + sign in front of the size? &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; lvextend -L +100M /dev/MyNewVolgroup1/MyNewLogVol1
+Extending logical volume MyNewLogVol1 to 300.00 MiB
+Logical volume MyNewLogVol1 successfully resized
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we extend the volume TO BE 400M. So here we are specifying the end size, as opposed to adding that amount. This is an important distinction to make, especially during testing. Last thing you want to do is destroy a filesystem because you had to shrink it in order to meet the test requirements. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; lvextend -L 400M /dev/MyNewVolgroup1/MyNewLogVol1
+Extending logical volume MyNewLogVol1 to 400.00 MiB
+Logical volume MyNewLogVol1 successfully resized
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Mount and unmount CIFS and NFS network file systems</title><link href="http://rhce.co/mount-and-unmount-cifs-and-nfs-network-file-systems.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:mount-and-unmount-cifs-and-nfs-network-file-systems.html</id><summary type="html">&lt;p&gt;Mounting network shares of type NFS and CIFS on Red Hat Enterprise Linux 6 is done with the mount command.&lt;/p&gt;
+&lt;h1&gt;Mount CIFS share&lt;/h1&gt;
+&lt;p&gt;Mounting samba/windows shares requires the -t cifs option followed by the //server:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mount -t cifs //server/share /mnt --verbose -o &lt;span class="nv"&gt;user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;username
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Unmount CIFS share&lt;/h1&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; umount /mnt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Mount NFS share&lt;/h1&gt;
+&lt;p&gt;Mounting a nfs share would be done with the -t nfs option, followed but the server:/mount &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mount -o rw -t nfs hostname:/mountpoint /mnt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Unmount NFS share&lt;/h1&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; umount /mnt
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Mount, unmount and use LUKS-encrypted file systems</title><link href="http://rhce.co/mount-unmount-and-use-luks-encrypted-file-systems.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:mount-unmount-and-use-luks-encrypted-file-systems.html</id><summary type="html">&lt;p&gt;To create a luks encrypted partition you would use the cryptsetup luksFormat command.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; cryptsetup luksFormat /dev/sdc1
+
+WARNING!
+&lt;span class="o"&gt;========&lt;/span&gt;
+This will overwrite data on /dev/sdc1 irrevocably.
+
+Are you sure? &lt;span class="o"&gt;(&lt;/span&gt;Type uppercase yes&lt;span class="o"&gt;)&lt;/span&gt;: YES
+Enter LUKS passphrase: 
+Verify passphrase:
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once the partition is encrypted with a password, it needs to be opened with the password in order to be used. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; cryptsetup luksOpen /dev/sdc1 newlukspart
+Enter passphrase &lt;span class="k"&gt;for&lt;/span&gt; /dev/sdc1:
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create a ext4 filesystem on the partition.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mkfs.ext4 /dev/mapper/newlukspart 
+mke2fs 1.41.12 &lt;span class="o"&gt;(&lt;/span&gt;17-May-2010&lt;span class="o"&gt;)&lt;/span&gt;
+Filesystem &lt;span class="nv"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+OS &lt;span class="nb"&gt;type&lt;/span&gt;: Linux
+Block &lt;span class="nv"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1024 &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;log&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0&lt;span class="o"&gt;)&lt;/span&gt;
+Fragment &lt;span class="nv"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1024 &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;log&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;Stride&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0 blocks, Stripe &lt;span class="nv"&gt;width&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0 blocks
+63488 inodes, 253952 blocks
+12697 blocks &lt;span class="o"&gt;(&lt;/span&gt;5.00%&lt;span class="o"&gt;)&lt;/span&gt; reserved &lt;span class="k"&gt;for &lt;/span&gt;the super user
+First data &lt;span class="nv"&gt;block&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1
+Maximum filesystem &lt;span class="nv"&gt;blocks&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;67371008
+31 block groups
+8192 blocks per group, 8192 fragments per group
+2048 inodes per group
+Superblock backups stored on blocks: 
+8193, 24577, 40961, 57345, 73729, 204801, 221185
+
+Writing inode tables: &lt;span class="k"&gt;done                            &lt;/span&gt;
+Creating journal &lt;span class="o"&gt;(&lt;/span&gt;4096 blocks&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="k"&gt;done&lt;/span&gt;
+Writing superblocks and filesystem accounting information: &lt;span class="k"&gt;done&lt;/span&gt;
+
+This filesystem will be automatically checked every 29 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create the mount point and mount read/write on that mount point.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mkdir /lukspart
+
+~&lt;span class="o"&gt;]&lt;/span&gt; mount -o rw -t ext4 /dev/mapper/newlukspart /lukspart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Check that the partition is mounted. 
+    :::bash
+    ~] mount
+    ... output omitted... 
+    /dev/mapper/newlukspart on /lukspart type ext4 (rw)&lt;/p&gt;
+&lt;p&gt;Finally the command to unmount the partition would just be umount. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; umount /lukspart
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry></feed>

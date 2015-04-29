@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Create and remove physical volumes, assign physical volumes to volume groups, create and delete logical volumes</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://rhce.co/theme/css/main.css" type="text/css" />
+        <link href="http://rhce.co/" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie.css"/>
+                <script src="http://rhce.co/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/makewhatis/rhce.co">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="http://rhce.co/index.html">rhce.co </a></h1>
+                <nav><ul>
+                <li><a href="http://rhce.co/index.html">Home</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="create-and-remove-physical-volumes-assign-physical-volumes-to-volume-groups-create-and-delete-logical-volumes.html"
+        rel="bookmark" title="Permalink to Create and remove physical volumes, assign physical volumes to volume groups, create and delete logical volumes">Create and remove physical volumes, assign physical volumes to volume groups, create and delete logical volumes</a></h1>  </header>
+        <div class="entry-content">
+
+        <h1>Create and remove physical volumes</h1>
+<p>Creating a physical volume in LVM is the first step in the LVM setup. Its the part where you actually tell Red Hat Enterprise Linux that you want a disk to be used for LVM.</p>
+<p><em><code>pvcreate</code></em> is the command used to add the physical volumes, or physical partitions.</p>
+<div class="highlight"><pre>~<span class="o">]</span> pvcreate /dev/sdb
+~<span class="o">]</span> Physical volume <span class="s2">&quot;/dev/sdb&quot;</span> successfully created
+</pre></div>
+
+
+<p><em><code>pvremove</code></em> is used to disassociate the volume from LVM.</p>
+<div class="highlight"><pre>~<span class="o">]</span> pvremove /dev/sdb
+~<span class="o">]</span> Labels on physical volume <span class="s2">&quot;/dev/sdb&quot;</span> successfully wiped
+</pre></div>
+
+
+<h1>Assign physical volumes to volume groups</h1>
+<p>Once that physical volume has been created we can add it to a volume group with the vgcreate or vgextend (if the volume group has already been created).</p>
+<p>If the volume group does not exist, you can create it and add physical volumes in one shot:</p>
+<div class="highlight"><pre>~<span class="o">]</span> vgextend MyVolGroup /dev/sdc 
+No physical volume label <span class="nb">read </span>from /dev/sdc
+Physical volume <span class="s2">&quot;/dev/sdc&quot;</span> successfully created
+Volume group <span class="s2">&quot;MyVolGroup&quot;</span> successfully extended
+</pre></div>
+
+
+<p>To assign a new physical volume to an existing volume group we use <em><code>vgextend</code></em>:</p>
+<div class="highlight"><pre>~<span class="o">]</span> vgextend MyVolGroup /dev/sdc 
+Volume group <span class="s2">&quot;MyVolGroup&quot;</span> successfully extended
+</pre></div>
+
+
+<p>Similarly if we want to remove /dev/sdc from that group we would run ''vgreduce'':</p>
+<div class="highlight"><pre>~<span class="o">]</span> vgreduce MyVolGroup /dev/sdc
+Removed <span class="s2">&quot;/dev/sdc&quot;</span> from volume group <span class="s2">&quot;MyVolGroup&quot;</span>
+</pre></div>
+
+
+<h1>Create and delete logical volumes</h1>
+<p>Logical Volumes have similar commands to create and delete as Volume Groups and Physical Volumes. </p>
+<p>To create a new logical volume:</p>
+<div class="highlight"><pre>~<span class="o">]</span> lvcreate -L 100M MyVolGroup
+Logical volume <span class="s2">&quot;lvol0&quot;</span> created
+</pre></div>
+
+
+<p>To display the volume after for confirmation:</p>
+<div class="highlight"><pre>~<span class="o">]</span> lvdisplay MyVolGroup
+--- Logical volume ---
+LV Name                /dev/MyVolGroup/lvol0
+VG Name                MyVolGroup
+LV UUID                zwLMev-i63w-7Jpk-XuqZ-VGl7-89Ov-WpoewP
+LV Write Access        <span class="nb">read</span>/write
+LV Status              available
+<span class="c"># open                 0</span>
+LV Size                100.00 MiB
+Current LE             25
+Segments               1
+Allocation             inherit
+Read ahead sectors     auto
+- currently <span class="nb">set </span>to     256
+Block device           253:2
+</pre></div>
+
+
+<p>To delete the logical volume you would use the LV Name listed in the results of lvdisplay:</p>
+<div class="highlight"><pre>~<span class="o">]</span> lvremove /dev/MyVolGroup/lvol0
+Do you really want to remove active logical volume lvol0? <span class="o">[</span>y/n<span class="o">]</span>: y
+Logical volume <span class="s2">&quot;lvol0&quot;</span> successfully removed
+</pre></div>
+        </div><!-- /.entry-content -->
+
+</article>
+</section>
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                            <h3>RHCSA</h3>
+
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li class="active"><a href="http://rhce.co/category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                   
+                           
+                                 
+                                   
+
+                            <h3>RHCE</h3>
+
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+
+                        </ul>
+                </div>
+
+
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+<!-- Piwik --> 
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.fhlabs.com/" : "http://piwik.fhlabs.com/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 14);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.fhlabs.com/piwik.php?idsite=14" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code --></body>
+</html>

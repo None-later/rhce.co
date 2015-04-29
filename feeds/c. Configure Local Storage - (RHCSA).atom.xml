@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>rhce.co</title><link href="http://rhce.co/" rel="alternate"></link><link href="http://rhce.co/feeds/c.%20Configure%20Local%20Storage%20-%20(RHCSA).atom.xml" rel="self"></link><id>http://rhce.co/</id><updated>2012-10-06T00:00:00+02:00</updated><entry><title>Add new partitions, logical volumes and swap to a system non-destructively</title><link href="http://rhce.co/add-new-partitions-logical-volumes-and-swap-to-a-system-non-destructively.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:add-new-partitions-logical-volumes-and-swap-to-a-system-non-destructively.html</id><summary type="html">&lt;p&gt;During the RHCSA / RHCE you may be asked to create new partitions on an already running system. This requires that you do so as not to disturb the already existing file systems, otherwise you may be reformatting halfway through the exam. &lt;/p&gt;
+&lt;h1&gt;Add new partitions&lt;/h1&gt;
+&lt;p&gt;Adding new partitions is fairly straightforward using tools like fdisk or parted. We will be using fdisk for this objective. &lt;/p&gt;
+&lt;p&gt;First step is to open the device that we want to make the partition on. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; fdisk -cu /dev/sdb 
+Device contains neither a valid DOS partition table, nor Sun, SGI or OSF disklabel
+Building a new DOS disklabel with disk identifier 0x110ea9fa.
+Changes will remain in memory only, &lt;span class="k"&gt;until &lt;/span&gt;you decide to write them.
+After that, of course, the previous content won&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;t be recoverable.
+
+Warning: invalid flag 0x0000 of partition table 4 will be corrected by w&lt;span class="o"&gt;(&lt;/span&gt;rite&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You generally want to print the current partition table on the device with the p command&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+255 heads, 63 sectors/track, 261 cylinders, total 4194304 sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If nothing shows up under the list of devices, then there are no partitions. To make the first partition we will use the n command, for new. Then follow the prompts to create the new partition. Here we are making a 50MB partition.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: n
+Command action
+e   extended
+p   primary partition &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;
+p
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;: 1
+First sector &lt;span class="o"&gt;(&lt;/span&gt;2048-4194303, default 2048&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 2048
+Last sector, +sectors or +size&lt;span class="o"&gt;{&lt;/span&gt;K,M,G&lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;2048-4194303, default 4194303&lt;span class="o"&gt;)&lt;/span&gt;: +50M
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once you've created the partition its a good idea to print the partition table. Once you are happy with the changes, write them to the disk with the w command. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+255 heads, 63 sectors/track, 261 cylinders, total 4194304 sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      104447       51200   83  Linux
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+The partition table has been altered!
+
+Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+Syncing disks.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Add new logical volumes&lt;/h1&gt;
+&lt;p&gt;To add a new logical volume you first need to create a new partition and set it to type Linux LVM.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; fdisk -cu /dev/sdb
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+255 heads, 63 sectors/track, 261 cylinders, total 4194304 sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: n
+Command action
+e   extended
+p   primary partition &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;
+p
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;: 1
+First sector &lt;span class="o"&gt;(&lt;/span&gt;2048-4194303, default 2048&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 2048
+Last sector, +sectors or +size&lt;span class="o"&gt;{&lt;/span&gt;K,M,G&lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;2048-4194303, default 4194303&lt;span class="o"&gt;)&lt;/span&gt;: +50M
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: t
+Selected partition 1
+Hex code &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;type &lt;/span&gt;L to list codes&lt;span class="o"&gt;)&lt;/span&gt;: L
+
+0  Empty           24  NEC DOS         81  Minix / old Lin bf  Solaris        
+1  FAT12           39  Plan 9          82  Linux swap / So c1  DRDOS/sec &lt;span class="o"&gt;(&lt;/span&gt;FAT-
+2  XENIX root      3c  PartitionMagic  83  Linux           c4  DRDOS/sec &lt;span class="o"&gt;(&lt;/span&gt;FAT-
+3  XENIX usr       40  Venix 80286     84  OS/2 hidden C:  c6  DRDOS/sec &lt;span class="o"&gt;(&lt;/span&gt;FAT-
+4  FAT16 &amp;lt;32M      41  PPC PReP Boot   85  Linux extended  c7  Syrinx         
+5  Extended        42  SFS             86  NTFS volume &lt;span class="nb"&gt;set &lt;/span&gt;da  Non-FS data    
+6  FAT16           4d  QNX4.x          87  NTFS volume &lt;span class="nb"&gt;set &lt;/span&gt;db  CP/M / CTOS / .
+7  HPFS/NTFS       4e  QNX4.x 2nd part 88  Linux plaintext de  Dell Utility   
+8  AIX             4f  QNX4.x 3rd part 8e  Linux LVM       df  BootIt         
+9  AIX bootable    50  OnTrack DM      93  Amoeba          e1  DOS access     
+a  OS/2 Boot Manag 51  OnTrack DM6 Aux 94  Amoeba BBT      e3  DOS R/O        
+b  W95 FAT32       52  CP/M            9f  BSD/OS          e4  SpeedStor      
+c  W95 FAT32 &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt; 53  OnTrack DM6 Aux a0  IBM Thinkpad hi eb  BeOS fs        
+e  W95 FAT16 &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt; 54  OnTrackDM6      a5  FreeBSD         ee  GPT            
+f  W95 Ext&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;d &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt; 55  EZ-Drive        a6  OpenBSD         ef  EFI &lt;span class="o"&gt;(&lt;/span&gt;FAT-12/16/
+10  OPUS            56  Golden Bow      a7  NeXTSTEP        f0  Linux/PA-RISC b
+11  Hidden FAT12    5c  Priam Edisk     a8  Darwin UFS      f1  SpeedStor      
+12  Compaq diagnost 61  SpeedStor       a9  NetBSD          f4  SpeedStor      
+14  Hidden FAT16 &amp;lt;3 63  GNU HURD or Sys ab  Darwin boot     f2  DOS secondary  
+16  Hidden FAT16    64  Novell Netware  af  HFS / HFS+      fb  VMware VMFS    
+17  Hidden HPFS/NTF 65  Novell Netware  b7  BSDI fs         &lt;span class="nb"&gt;fc  &lt;/span&gt;VMware VMKCORE 
+18  AST SmartSleep  70  DiskSecure Mult b8  BSDI swap       fd  Linux raid auto
+1b  Hidden W95 FAT3 75  PC/IX           bb  Boot Wizard hid fe  LANstep        
+1c  Hidden W95 FAT3 80  Old Minix       be  Solaris boot    ff  BBT            
+1e  Hidden W95 FAT1
+Hex code &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;type &lt;/span&gt;L to list codes&lt;span class="o"&gt;)&lt;/span&gt;: 8e
+Changed system &lt;span class="nb"&gt;type &lt;/span&gt;of partition 1 to 8e &lt;span class="o"&gt;(&lt;/span&gt;Linux LVM&lt;span class="o"&gt;)&lt;/span&gt;
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+255 heads, 63 sectors/track, 261 cylinders, total 4194304 sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      104447       51200   8e  Linux LVM
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+The partition table has been altered!
+
+Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+Syncing disks.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once you create the partition as Linux LVM type you can now create a physical volume with that partition. Keep in mind we are using small partitions in order to get the concept across, in real life these would be entire disks being added as physical volumes. &lt;/p&gt;
+&lt;p&gt;To create a physical volume we use pvcreate:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; pvcreate /dev/sdb1 physicalvol1
+Physical volume &lt;span class="s2"&gt;&amp;quot;/dev/sdb1&amp;quot;&lt;/span&gt; successfully created
+
+~&lt;span class="o"&gt;]&lt;/span&gt; pvdisplay
+
+&lt;span class="s2"&gt;&amp;quot;/dev/sdb1&amp;quot;&lt;/span&gt; is a new physical volume of &lt;span class="s2"&gt;&amp;quot;50.00 MiB&amp;quot;&lt;/span&gt;
+--- NEW Physical volume ---
+PV Name               /dev/sdb1
+VG Name               
+PV Size               50.00 MiB
+Allocatable           NO
+PE Size               0   
+Total PE              0
+Free PE               0
+Allocated PE          0
+PV UUID               ysMMtz-jYei-tNph-tvSU-3sSy-vemf-sjWxbO
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next we have to create the volume group and add the physical volume to it. We can do this with the vgcreate command. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; vgcreate MyNewVolGroup /dev/sdb1
+Volume group &lt;span class="s2"&gt;&amp;quot;MyNewVolGroup&amp;quot;&lt;/span&gt; successfully created
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now that we have a physical volume, and its part of a volume group, so we can make a logical volume. To create a logical volume named LogVol1 from the volume group MyNewVolGroup we would use the following command. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; lvcreate -L 28M -n LogVol1 MyNewVolGroup
+Logical volume &lt;span class="s2"&gt;&amp;quot;LogVol1&amp;quot;&lt;/span&gt; created
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now there is a lovical volume named "LogVol1" that is a part of MyNewVolGroup"&lt;/p&gt;
+&lt;p&gt;'''''Add new swap partition'''''&lt;/p&gt;
+&lt;p&gt;Adding a swap partition is like adding any other partition, just changing his type to Linux Swap.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; fdisk -cu /dev/sdb
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+128 heads, 57 sectors/track, 574 cylinders, total 4194304 sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      104447       51200   8e  Linux LVM
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: n
+Command action
+e   extended
+p   primary partition &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;
+p
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;: 2
+First sector &lt;span class="o"&gt;(&lt;/span&gt;104448-4194303, default 104448&lt;span class="o"&gt;)&lt;/span&gt;: +50M
+Value out of range.
+First sector &lt;span class="o"&gt;(&lt;/span&gt;104448-4194303, default 104448&lt;span class="o"&gt;)&lt;/span&gt;:     
+Using default value 104448
+Last sector, +sectors or +size&lt;span class="o"&gt;{&lt;/span&gt;K,M,G&lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;104448-4194303, default 4194303&lt;span class="o"&gt;)&lt;/span&gt;: ^C
+:::bash
+~&lt;span class="o"&gt;]&lt;/span&gt; fdisk -cu /dev/sdb
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: n
+Command action
+e   extended
+p   primary partition &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;
+p
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;: 2
+First sector &lt;span class="o"&gt;(&lt;/span&gt;104448-4194303, default 104448&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 104448
+Last sector, +sectors or +size&lt;span class="o"&gt;{&lt;/span&gt;K,M,G&lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;104448-4194303, default 4194303&lt;span class="o"&gt;)&lt;/span&gt;: +50M
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: t
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;: 2
+Hex code &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;type &lt;/span&gt;L to list codes&lt;span class="o"&gt;)&lt;/span&gt;: 82
+Changed system &lt;span class="nb"&gt;type &lt;/span&gt;of partition 2 to 82 &lt;span class="o"&gt;(&lt;/span&gt;Linux swap / Solaris&lt;span class="o"&gt;)&lt;/span&gt;
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+Disk /dev/sdb: 2147 MB, 2147483648 bytes
+128 heads, 57 sectors/track, 574 cylinders, total 4194304 sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+Disk identifier: 0x110ea9fa
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      104447       51200   8e  Linux LVM
+/dev/sdb2          104448      206847       51200   82  Linux swap / Solaris
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+The partition table has been altered!
+
+Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+Syncing disks.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To activate a swap partion.&lt;br /&gt;
+&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; swapon -v /dev/sdb2
+swapon on /dev/sdb2
+swapon: /dev/sdb2: found swap signature: version 1, page-size 4, same byte order
+swapon: /dev/sdb2: &lt;span class="nv"&gt;pagesize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;4096, &lt;span class="nv"&gt;swapsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;52428800, &lt;span class="nv"&gt;devsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;52428800
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Confirm that the swap was added. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; swapon -s
+Filename               Type        Size    Used    Priority
+/dev/dm-1                               partition  1015800 0   -1
+/dev/sdb2                               partition  51192   0   -2
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="RHCSA"></category></entry><entry><title>Configure systems to mount file systems at boot by Universally Unique ID (UUID) or label</title><link href="http://rhce.co/configure-systems-to-mount-file-systems-at-boot-by-universally-unique-id-uuid-or-label.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:configure-systems-to-mount-file-systems-at-boot-by-universally-unique-id-uuid-or-label.html</id><summary type="html">&lt;p&gt;Configuring a filesystem to mount via UUID or label is an essential part of managing filesystems and partitions on the Red Hat Enterprise Linux system, and will most probably be something you will see on an RHCSA/RHCE exam. &lt;/p&gt;
+&lt;p&gt;First we will configure mounting at boot time via UUID. &lt;em&gt;To find the UUID of a device you have to issue just one command:&lt;/em&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; blkid
+/dev/sda1: &lt;span class="nv"&gt;UUID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;183e5753-fbe7-4cf7-b974-f6cb9a326a33&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ext4&amp;quot;&lt;/span&gt; 
+/dev/sda2: &lt;span class="nv"&gt;UUID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;1OJDNK-4gpP-s3YE-cK7o-1urJ-cXHk-jPnuF7&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;LVM2_member&amp;quot;&lt;/span&gt; 
+/dev/sdb1: &lt;span class="nv"&gt;UUID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;1c1fa5a2-11e5-4d6b-89e9-61a15dcbe0f6&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;crypto_LUKS&amp;quot;&lt;/span&gt; 
+/dev/mapper/VolGroup-lv_swap: &lt;span class="nv"&gt;UUID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dc82e68f-f1b9-409d-a1f7-c556eb6eb78a&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;swap&amp;quot;&lt;/span&gt; 
+/dev/sdc: &lt;span class="nv"&gt;UUID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;vFLamh-rudP-T1jc-ZrrH-LTgD-FUuq-IHUBgM&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;LVM2_member&amp;quot;&lt;/span&gt; 
+/dev/mapper/VolGroup-lv_root: &lt;span class="nv"&gt;UUID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;5bbc084b-1af0-464f-8629-9490a75cacd9&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ext4&amp;quot;&lt;/span&gt; 
+/dev/mapper/mynew_data: &lt;span class="nv"&gt;UUID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;f8b694a6-916d-4ffa-8e5c-a7ed8ab25b5d&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ext4&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once you have the UUID you can head over to /etc/fstab to create the entry. Here we will pick our new luks partition.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; vim /etc/fstab
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Inside of fstab we need to add a line. (if you already have a line for this partition, comment it out with #)&lt;/p&gt;
+&lt;p&gt;UUID=f8b694a6-916d-4ffa-8e5c-a7ed8ab25b5d  /mynew_data ext4    defaults    1 2&lt;/p&gt;
+&lt;p&gt;Then write/save the file and quit :wq
+You can confirm that this is entered correctly by using the mount command:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mount -a
+
+~&lt;span class="o"&gt;]&lt;/span&gt; mount
+..ommitted data...
+/dev/mapper/mynew_data on /mynew_data &lt;span class="nb"&gt;type &lt;/span&gt;ext4 &lt;span class="o"&gt;(&lt;/span&gt;rw,relatime,seclabel,barrier&lt;span class="o"&gt;=&lt;/span&gt;1,data&lt;span class="o"&gt;=&lt;/span&gt;ordered&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;Now to mount a filesystem via label&lt;/em&gt; requires another step, to label the filesystem. Luckily this is done in one easy step using e2label. I am going to label the filesystem luksdrive&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; e2label /dev/mapper/mynew_data luksdrive
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we can unmount the filesystem, change our fstab to use a label, and run mount a again to see it mounted via label instead. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; umount /mynew_data/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Verify its unmounted&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mount
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then edit /etc/fstab this time using LABEL=luksdrive in place of UUID. So the line should look like:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;LABEL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;luksdrive         /mynew_data             ext4    defaults        1 2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Run mount -a and mount to confirm:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mount -a
+
+~&lt;span class="o"&gt;]&lt;/span&gt; mount
+..ommitted data...
+/dev/mapper/mynew_data on /mynew_data &lt;span class="nb"&gt;type &lt;/span&gt;ext4 &lt;span class="o"&gt;(&lt;/span&gt;rw,relatime,seclabel,barrier&lt;span class="o"&gt;=&lt;/span&gt;1,data&lt;span class="o"&gt;=&lt;/span&gt;ordered&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Thats all there is to that. I would try that out a number of times to make sure you have the process down. Repitition is key.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create and configure LUKS-encrypted partitions and logical volumes to prompt for password and mount a decrypted file system at boot</title><link href="http://rhce.co/create-and-configure-luks-encrypted-partitions-and-logical-volumes-to-prompt-for-password-and-mount-a-decrypted-file-system-at-boot.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:create-and-configure-luks-encrypted-partitions-and-logical-volumes-to-prompt-for-password-and-mount-a-decrypted-file-system-at-boot.html</id><summary type="html">&lt;p&gt;This is a brand new objective that was not present on the RHEL5 requirements. There are a few steps to this, but once you go through it a few times its not too bad. &lt;/p&gt;
+&lt;p&gt;First step is to create a partition with fdisk or parted. We will use fdisk here.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; fdisk -c -u /dev/sdb
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: n
+Command action
+e   extended
+p   primary partition &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;
+p
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4, default 1&lt;span class="o"&gt;)&lt;/span&gt;: 1
+First sector &lt;span class="o"&gt;(&lt;/span&gt;2048-8388607, default 2048&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 2048
+Last sector, +sectors or +size&lt;span class="o"&gt;{&lt;/span&gt;K,M,G&lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;2048-8388607, default 8388607&lt;span class="o"&gt;)&lt;/span&gt;: +200M
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: t
+Selected partition 1
+Hex code &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;type &lt;/span&gt;L to list codes&lt;span class="o"&gt;)&lt;/span&gt;: 83
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+The partition table has been altered!
+
+Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+Syncing disks.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now that the partition is created, we have to luks encrypt it. First we fill it with random data for security:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; ~&lt;span class="o"&gt;]&lt;/span&gt; dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/urandom &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/sdb1 &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M
+dd: writing &lt;span class="sb"&gt;`&lt;/span&gt;/dev/sdb1&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;: No space left on device
+201+0 records in
+200+0 records out
+209715200 bytes &lt;span class="o"&gt;(&lt;/span&gt;210 MB&lt;span class="o"&gt;)&lt;/span&gt; copied, 26.0497 s, 8.1 MB/s
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then we can encrypt the partition with luksFormat: &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; ~&lt;span class="o"&gt;]&lt;/span&gt; cryptsetup luksFormat /dev/sdb1
+
+WARNING!
+&lt;span class="o"&gt;========&lt;/span&gt;
+This will overwrite data on /dev/sdb1 irrevocably.
+
+Are you sure? &lt;span class="o"&gt;(&lt;/span&gt;Type uppercase yes&lt;span class="o"&gt;)&lt;/span&gt;: YES
+Enter LUKS passphrase: 
+Verify passphrase:
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now that the partition is encrypted, we open it and give it a label. The label is the name that it will show up as under /dev/mapper/&lt;br /&gt;
+&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; cryptsetup luksOpen /dev/sdb1 mynew_data 
+Enter passphrase &lt;span class="k"&gt;for&lt;/span&gt; /dev/sdb1:
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once the partition is setup and luks encrypted, it will be available in the /dev/mapper/ directory. You can do an ls on the /dev/mapper/ directory to confirm. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; ls /dev/mapper/
+control  mynew_data  VolGroup-lv_root  VolGroup-lv_swap
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next steps involve creating a filesystem, adding the partition into the /etc/crypttab file, as well as in the /etc/fstab file in order to configure automounting on boot. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mkfs.ext4 /dev/mapper/mynew_data 
+mke2fs 1.41.14 &lt;span class="o"&gt;(&lt;/span&gt;22-Dec-2010&lt;span class="o"&gt;)&lt;/span&gt;
+Filesystem &lt;span class="nv"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+OS &lt;span class="nb"&gt;type&lt;/span&gt;: Linux
+Block &lt;span class="nv"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1024 &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;log&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0&lt;span class="o"&gt;)&lt;/span&gt;
+Fragment &lt;span class="nv"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1024 &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;log&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;Stride&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0 blocks, Stripe &lt;span class="nv"&gt;width&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0 blocks
+50800 inodes, 202752 blocks
+10137 blocks &lt;span class="o"&gt;(&lt;/span&gt;5.00%&lt;span class="o"&gt;)&lt;/span&gt; reserved &lt;span class="k"&gt;for &lt;/span&gt;the super user
+First data &lt;span class="nv"&gt;block&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1
+Maximum filesystem &lt;span class="nv"&gt;blocks&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;67371008
+25 block groups
+8192 blocks per group, 8192 fragments per group
+2032 inodes per group
+Superblock backups stored on blocks: 
+8193, 24577, 40961, 57345, 73729
+Writing inode tables: &lt;span class="k"&gt;done                            &lt;/span&gt;
+Creating journal &lt;span class="o"&gt;(&lt;/span&gt;4096 blocks&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="k"&gt;done&lt;/span&gt;
+Writing superblocks and filesystem accounting information: &lt;span class="k"&gt;done&lt;/span&gt;
+
+This filesystem will be automatically checked every 25 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override
+~&lt;span class="o"&gt;]&lt;/span&gt; vim /etc/crypttab
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In the /etc/crypttab file you would simply place the name of the encrypted device, as well as the path to the device:&lt;/p&gt;
+&lt;p&gt;mynew_data      /dev/sdb1&lt;/p&gt;
+&lt;p&gt;Then we make the directory and add an entry into fstab, so that it mounts on boot:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mkdir /mynew_data
+~&lt;span class="o"&gt;]&lt;/span&gt; vim /etc/fstab
+
+&lt;span class="c"&gt;# Add the following:&lt;/span&gt;
+/dev/mapper/mynew_data /mynew_data ext4    defaults    1 2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Thats it. You should run the mount command in order to verify your entries are correct in fstab, to prevent any boot issues.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; mount -a
+
+~&lt;span class="o"&gt;]&lt;/span&gt; mount
+&lt;span class="c"&gt;# .... lots of data here that im leaving out&lt;/span&gt;
+/dev/mapper/mynew_data on /mynew_data &lt;span class="nb"&gt;type &lt;/span&gt;ext4 &lt;span class="o"&gt;(&lt;/span&gt;rw,relatime,seclabel,barrier&lt;span class="o"&gt;=&lt;/span&gt;1,data&lt;span class="o"&gt;=&lt;/span&gt;ordered&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Awesome, try that a few times and you should be good to go on setting up luks encrypted partitions.&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>Create and remove physical volumes, assign physical volumes to volume groups, create and delete logical volumes</title><link href="http://rhce.co/create-and-remove-physical-volumes-assign-physical-volumes-to-volume-groups-create-and-delete-logical-volumes.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:create-and-remove-physical-volumes-assign-physical-volumes-to-volume-groups-create-and-delete-logical-volumes.html</id><summary type="html">&lt;h1&gt;Create and remove physical volumes&lt;/h1&gt;
+&lt;p&gt;Creating a physical volume in LVM is the first step in the LVM setup. Its the part where you actually tell Red Hat Enterprise Linux that you want a disk to be used for LVM.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;code&gt;pvcreate&lt;/code&gt;&lt;/em&gt; is the command used to add the physical volumes, or physical partitions.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; pvcreate /dev/sdb
+~&lt;span class="o"&gt;]&lt;/span&gt; Physical volume &lt;span class="s2"&gt;&amp;quot;/dev/sdb&amp;quot;&lt;/span&gt; successfully created
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;&lt;code&gt;pvremove&lt;/code&gt;&lt;/em&gt; is used to disassociate the volume from LVM.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; pvremove /dev/sdb
+~&lt;span class="o"&gt;]&lt;/span&gt; Labels on physical volume &lt;span class="s2"&gt;&amp;quot;/dev/sdb&amp;quot;&lt;/span&gt; successfully wiped
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Assign physical volumes to volume groups&lt;/h1&gt;
+&lt;p&gt;Once that physical volume has been created we can add it to a volume group with the vgcreate or vgextend (if the volume group has already been created).&lt;/p&gt;
+&lt;p&gt;If the volume group does not exist, you can create it and add physical volumes in one shot:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; vgextend MyVolGroup /dev/sdc 
+No physical volume label &lt;span class="nb"&gt;read &lt;/span&gt;from /dev/sdc
+Physical volume &lt;span class="s2"&gt;&amp;quot;/dev/sdc&amp;quot;&lt;/span&gt; successfully created
+Volume group &lt;span class="s2"&gt;&amp;quot;MyVolGroup&amp;quot;&lt;/span&gt; successfully extended
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To assign a new physical volume to an existing volume group we use &lt;em&gt;&lt;code&gt;vgextend&lt;/code&gt;&lt;/em&gt;:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; vgextend MyVolGroup /dev/sdc 
+Volume group &lt;span class="s2"&gt;&amp;quot;MyVolGroup&amp;quot;&lt;/span&gt; successfully extended
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Similarly if we want to remove /dev/sdc from that group we would run ''vgreduce'':&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; vgreduce MyVolGroup /dev/sdc
+Removed &lt;span class="s2"&gt;&amp;quot;/dev/sdc&amp;quot;&lt;/span&gt; from volume group &lt;span class="s2"&gt;&amp;quot;MyVolGroup&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Create and delete logical volumes&lt;/h1&gt;
+&lt;p&gt;Logical Volumes have similar commands to create and delete as Volume Groups and Physical Volumes. &lt;/p&gt;
+&lt;p&gt;To create a new logical volume:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; lvcreate -L 100M MyVolGroup
+Logical volume &lt;span class="s2"&gt;&amp;quot;lvol0&amp;quot;&lt;/span&gt; created
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To display the volume after for confirmation:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;~&lt;span class="o"&gt;]&lt;/span&gt; lvdisplay MyVolGroup
+--- Logical volume ---
+LV Name                /dev/MyVolGroup/lvol0
+VG Name                MyVolGroup
+LV UUID                zwLMev-i63w-7Jpk-XuqZ-VGl7-89Ov-WpoewP
+LV Write Access        &lt;span class="nb"&gt;read&lt;/span&gt;/write
+LV Status              available
+&lt;span class="c"&gt;# open                 0&lt;/span&gt;
+LV Size                100.00 MiB
+Current LE             25
+Segments               1
+Allocation             inherit
+Read ahead sectors     auto
+- currently &lt;span class="nb"&gt;set &lt;/span&gt;to     256
+Block device           253:2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To delete the logical volume you would use the LV Name listed in the results of lvdisplay:&lt;/p&gt;
+&lt;p&gt;:::bash
+    ~] lvremove /dev/MyVolGroup/lvol0
+    Do you really want to remove active logical volume lvol0? [y/n]: y
+    Logical volume "lvol0" successfully removed&lt;/p&gt;</summary><category term="RHCSA"></category></entry><entry><title>List, create, delete and set partition type for primary, extended, and logical partitions</title><link href="http://rhce.co/list-create-delete-and-set-partition-type-for-primary-extended-and-logical-partitions.html" rel="alternate"></link><updated>2012-10-06T00:00:00+02:00</updated><author><name>David Johansen</name></author><id>tag:rhce.co,2012-10-06:list-create-delete-and-set-partition-type-for-primary-extended-and-logical-partitions.html</id><summary type="html">&lt;p&gt;The official tool is now parted, but you can still use fdisk to create partitions. I'm a fan of fdisk, so thats what I will be using here. &lt;/p&gt;
+&lt;h2&gt;&lt;b&gt;List partitions&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;To list all partitions that are on your server, you would issue the fdisk command, with the list switch.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;fdisk -l
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;Create new partitions&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;In order to create new partitions you would first have to open the device in fdisk. I will be opening /dev/sdb and creating both a primary and extended partition. We use the n command to create a new partition. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo fdisk /dev/sdb
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: n
+Command action
+e   extended
+p   primary partition &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;
+p
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4, default 1&lt;span class="o"&gt;)&lt;/span&gt;: 1
+First sector &lt;span class="o"&gt;(&lt;/span&gt;2048-8388607, default 2048&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 2048
+Last sector, +sectors or +size&lt;span class="o"&gt;{&lt;/span&gt;K,M,G&lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;2048-8388607, default 8388607&lt;span class="o"&gt;)&lt;/span&gt;: +250M
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+Disk /dev/sdb: 4294 MB, 4294967296 bytes
+255 heads, 63 sectors/track, 522 cylinders, total 8388608 sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+Disk identifier: 0xd26a7e50
+
+Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048      514047      256000   83  Linux
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: n
+Command action
+e   extended
+p   primary partition &lt;span class="o"&gt;(&lt;/span&gt;1-4&lt;span class="o"&gt;)&lt;/span&gt;
+e
+Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-4, default 2&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 2
+First sector &lt;span class="o"&gt;(&lt;/span&gt;514048-8388607, default 514048&lt;span class="o"&gt;)&lt;/span&gt;: 
+Using default value 514048
+Last sector, +sectors or +size&lt;span class="o"&gt;{&lt;/span&gt;K,M,G&lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;514048-8388607, default 8388607&lt;span class="o"&gt;)&lt;/span&gt;: +500M
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+The partition table has been altered!
+
+Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+Syncing disks.
+&lt;span class="nv"&gt;$ &lt;/span&gt;sudo partprobe
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;Delete partitions&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;Deleting partitions is even easier. You would just type d at the fdisk prompt, tell it which partition number you are deleting, and the write the changes with the w flag. &lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo fdisk /dev/sdb
+
+ Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+ Disk /dev/sdb: 4294 MB, 4294967296 bytes
+ 255 heads, 63 sectors/track, 522 cylinders, total 8388608 sectors
+ &lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+ Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+ I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+ Disk identifier: 0x08bafe2e
+
+   Device Boot      Start         End      Blocks   Id  System
+ /dev/sdb1            2048     1026047      512000   83  Linux
+ /dev/sdb2         1026048     1538047      256000    5  Extended
+
+ Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: d
+ Partition number &lt;span class="o"&gt;(&lt;/span&gt;1-5&lt;span class="o"&gt;)&lt;/span&gt;: 2
+
+ Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: p
+
+ Disk /dev/sdb: 4294 MB, 4294967296 bytes
+ 255 heads, 63 sectors/track, 522 cylinders, total 8388608 sectors
+ &lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of 1 * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 512 bytes
+ Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+ I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: 512 bytes / 512 bytes
+ Disk identifier: 0x08bafe2e
+
+   Device Boot      Start         End      Blocks   Id  System
+ /dev/sdb1            2048     1026047      512000   83  Linux
+
+ Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+ The partition table has been altered!
+
+ Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+ Syncing disks.
+ &lt;span class="nv"&gt;$ &lt;/span&gt;sudo partprobe
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;b&gt;Set partition type&lt;/b&gt;&lt;/h2&gt;
+&lt;p&gt;In order to use the disk we have to set a partition type. In this case we just make it a general Linux format #83. If it were going to be part of a raid array, we would make it Linux raid auto, #fd.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;fdisk /dev/sdb
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: t
+Selected partition 1
+Hex code &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;type &lt;/span&gt;L to list codes&lt;span class="o"&gt;)&lt;/span&gt;: L
+
+0  Empty           24  NEC DOS         81  Minix / old Lin bf  Solaris        
+1  FAT12           27  Hidden NTFS Win 82  Linux swap / So c1  DRDOS/sec &lt;span class="o"&gt;(&lt;/span&gt;FAT-
+2  XENIX root      39  Plan 9          83  Linux           c4  DRDOS/sec &lt;span class="o"&gt;(&lt;/span&gt;FAT-
+3  XENIX usr       3c  PartitionMagic  84  OS/2 hidden C:  c6  DRDOS/sec &lt;span class="o"&gt;(&lt;/span&gt;FAT-
+4  FAT16 &amp;lt;32M      40  Venix 80286     85  Linux extended  c7  Syrinx         
+5  Extended        41  PPC PReP Boot   86  NTFS volume &lt;span class="nb"&gt;set &lt;/span&gt;da  Non-FS data    
+6  FAT16           42  SFS             87  NTFS volume &lt;span class="nb"&gt;set &lt;/span&gt;db  CP/M / CTOS / .
+7  HPFS/NTFS/exFAT 4d  QNX4.x          88  Linux plaintext de  Dell Utility   
+8  AIX             4e  QNX4.x 2nd part 8e  Linux LVM       df  BootIt         
+9  AIX bootable    4f  QNX4.x 3rd part 93  Amoeba          e1  DOS access     
+a  OS/2 Boot Manag 50  OnTrack DM      94  Amoeba BBT      e3  DOS R/O        
+b  W95 FAT32       51  OnTrack DM6 Aux 9f  BSD/OS          e4  SpeedStor      
+c  W95 FAT32 &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt; 52  CP/M            a0  IBM Thinkpad hi eb  BeOS fs        
+e  W95 FAT16 &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt; 53  OnTrack DM6 Aux a5  FreeBSD         ee  GPT            
+f  W95 Ext&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;d &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt; 54  OnTrackDM6      a6  OpenBSD         ef  EFI &lt;span class="o"&gt;(&lt;/span&gt;FAT-12/16/
+10  OPUS            55  EZ-Drive        a7  NeXTSTEP        f0  Linux/PA-RISC b
+11  Hidden FAT12    56  Golden Bow      a8  Darwin UFS      f1  SpeedStor      
+12  Compaq diagnost 5c  Priam Edisk     a9  NetBSD          f4  SpeedStor      
+14  Hidden FAT16 &amp;lt;3 61  SpeedStor       ab  Darwin boot     f2  DOS secondary  
+16  Hidden FAT16    63  GNU HURD or Sys af  HFS / HFS+      fb  VMware VMFS    
+17  Hidden HPFS/NTF 64  Novell Netware  b7  BSDI fs         &lt;span class="nb"&gt;fc  &lt;/span&gt;VMware VMKCORE 
+18  AST SmartSleep  65  Novell Netware  b8  BSDI swap       fd  Linux raid auto
+1b  Hidden W95 FAT3 70  DiskSecure Mult bb  Boot Wizard hid fe  LANstep        
+1c  Hidden W95 FAT3 75  PC/IX           be  Solaris boot    ff  BBT            
+1e  Hidden W95 FAT1 80  Old Minix      
+Hex code &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;type &lt;/span&gt;L to list codes&lt;span class="o"&gt;)&lt;/span&gt;: 83
+
+Command &lt;span class="o"&gt;(&lt;/span&gt;m &lt;span class="k"&gt;for &lt;/span&gt;&lt;span class="nb"&gt;help&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;: w
+The partition table has been altered!
+
+Calling ioctl&lt;span class="o"&gt;()&lt;/span&gt; to re-read partition table.
+Syncing disks.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Redhat actually encourages the use of parted nowadays, with works a little differently. To see information about that, see this link &lt;a href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Storage_Administration_Guide/s1-disk-storage-parted.html"&gt;http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Storage_Administration_Guide/s1-disk-storage-parted.html&lt;/a&gt;&lt;/p&gt;</summary><category term="RHCSA"></category></entry></feed>

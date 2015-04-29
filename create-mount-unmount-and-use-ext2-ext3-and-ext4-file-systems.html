@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Create, mount, unmount and use ext2, ext3 and ext4 file systems</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://rhce.co/theme/css/main.css" type="text/css" />
+        <link href="http://rhce.co/" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie.css"/>
+                <script src="http://rhce.co/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/makewhatis/rhce.co">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="http://rhce.co/index.html">rhce.co </a></h1>
+                <nav><ul>
+                <li><a href="http://rhce.co/index.html">Home</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="create-mount-unmount-and-use-ext2-ext3-and-ext4-file-systems.html"
+        rel="bookmark" title="Permalink to Create, mount, unmount and use ext2, ext3 and ext4 file systems">Create, mount, unmount and use ext2, ext3 and ext4 file systems</a></h1>  </header>
+        <div class="entry-content">
+
+        <p>The default filesystem with Red Hat Enterprise Linux 6 is ext4, so that is the one we will use in the following example. The mkfs command can be used with the filesystem type as shown below. We are making a filesystem on a newly created partition, /dev/sdc1</p>
+<h1>Create file systems</h1>
+<div class="highlight"><pre>~<span class="o">]</span> mkfs.ext4 /dev/sdc1
+mke2fs 1.41.12 <span class="o">(</span>17-May-2010<span class="o">)</span>
+Filesystem <span class="nv">label</span><span class="o">=</span>
+OS <span class="nb">type</span>: Linux
+Block <span class="nv">size</span><span class="o">=</span>1024 <span class="o">(</span><span class="nv">log</span><span class="o">=</span>0<span class="o">)</span>
+Fragment <span class="nv">size</span><span class="o">=</span>1024 <span class="o">(</span><span class="nv">log</span><span class="o">=</span>0<span class="o">)</span>
+<span class="nv">Stride</span><span class="o">=</span>0 blocks, Stripe <span class="nv">width</span><span class="o">=</span>0 blocks
+64000 inodes, 256000 blocks
+12800 blocks <span class="o">(</span>5.00%<span class="o">)</span> reserved <span class="k">for </span>the super user
+First data <span class="nv">block</span><span class="o">=</span>1
+Maximum filesystem <span class="nv">blocks</span><span class="o">=</span>67371008
+32 block groups
+8192 blocks per group, 8192 fragments per group
+2000 inodes per group
+Superblock backups stored on blocks: 
+8193, 24577, 40961, 57345, 73729, 204801, 221185
+
+Writing inode tables: <span class="k">done                            </span>
+Creating journal <span class="o">(</span>4096 blocks<span class="o">)</span>: <span class="k">done</span>
+Writing superblocks and filesystem accounting information: <span class="k">done</span>
+
+This filesystem will be automatically checked every 37 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+</pre></div>
+
+
+<p>If we wanted to make an ext3 filesystem we would just run:</p>
+<div class="highlight"><pre>~<span class="o">]</span> mkfs.ext3 /dev/sdc1
+</pre></div>
+
+
+<h1>Mount Filesystems</h1>
+<p>To mount a newly created filesystem, we would use the mount command. First we have to create a mount point. </p>
+<div class="highlight"><pre>~<span class="o">]</span>  mkdir /new_mount_point
+
+~<span class="o">]</span>  mount -o rw -t ext4 /dev/sdc1 /new_mount_point/
+</pre></div>
+
+
+<p>To check that that partition was created and mounted correctly. </p>
+<div class="highlight"><pre>~<span class="o">]</span>  mount
+/dev/mapper/VolGroup-lv_root on / <span class="nb">type </span>ext4 <span class="o">(</span>rw<span class="o">)</span>
+...output omitted
+/dev/sdc1 on /new_mount_point <span class="nb">type </span>ext4 <span class="o">(</span>rw<span class="o">)</span>
+</pre></div>
+
+
+<p>The mount will not survive a reboot, unless you add the partition into /etc/fstab as we did on this page: http://rhce.co/configure-systems-to-mount-file-systems-at-boot-by-universally-unique-id-uuid-or-label.html</p>
+<h1>Unmount Filesystems</h1>
+<p>The command to unmount a filesystem is not unmount, but instead its umount. (no idea why they left out the n, but they did)</p>
+<div class="highlight"><pre>~<span class="o">]</span>  umount /dev/sdc1 
+:::bash
+~<span class="o">]</span>  mount
+<span class="c"># ... no /dev/sdc1 here</span>
+</pre></div>
+        </div><!-- /.entry-content -->
+
+</article>
+</section>
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                            <h3>RHCSA</h3>
+
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li class="active"><a href="http://rhce.co/category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                   
+                           
+                                 
+                                   
+
+                            <h3>RHCE</h3>
+
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+
+                        </ul>
+                </div>
+
+
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+<!-- Piwik --> 
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.fhlabs.com/" : "http://piwik.fhlabs.com/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 14);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.fhlabs.com/piwik.php?idsite=14" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code --></body>
+</html>

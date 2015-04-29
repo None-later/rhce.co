@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Create hard and soft links</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://rhce.co/theme/css/main.css" type="text/css" />
+        <link href="http://rhce.co/" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie.css"/>
+                <script src="http://rhce.co/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/makewhatis/rhce.co">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="http://rhce.co/index.html">rhce.co </a></h1>
+                <nav><ul>
+                <li><a href="http://rhce.co/index.html">Home</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="create-hard-and-soft-links.html"
+        rel="bookmark" title="Permalink to Create hard and soft links">Create hard and soft links</a></h1>  </header>
+        <div class="entry-content">
+
+        <h1>Hard Links</h1>
+<p>A <em>hard link</em> is a link where two files are really the same file. </p>
+<p>Watch how when we create a file, and link to it with a hard link, the inodes (exact location on the harddisk) are the same.</p>
+<div class="highlight"><pre><span class="nv">$ </span>touch file.txt
+<span class="nv">$ </span>ln file.txt file1.txt
+<span class="nv">$ </span>ls -li file*
+524594 -rw-r--r--. 2 root root 0 Mar 21 12:54 file1.txt
+524594 -rw-r--r--. 2 root root 0 Mar 21 12:54 file.txt
+</pre></div>
+
+
+<p>When we create a third file linking it to the original, we see the same thing. They all are have an inode of 524594. </p>
+<div class="highlight"><pre><span class="nv">$ </span>ln file.txt file2.txt
+<span class="nv">$ </span>ls -li file*
+524594 -rw-r--r--. 3 root root 0 Mar 21 12:54 file1.txt
+524594 -rw-r--r--. 3 root root 0 Mar 21 12:54 file2.txt
+524594 -rw-r--r--. 3 root root 0 Mar 21 12:54 file.txt
+</pre></div>
+
+
+<p>What happens if we delete the original file?</p>
+<div class="highlight"><pre><span class="nv">$ </span>rm file.txt
+rm: remove regular empty file <span class="s1">&#39;file.txt&#39;</span>? y
+<span class="nv">$ </span>ls -li file*
+524594 -rw-r--r--. 2 root root 0 Mar 21 12:54 file1.txt
+524594 -rw-r--r--. 2 root root 0 Mar 21 12:54 file2.txt
+</pre></div>
+
+
+<p>As you can see, the other two files are in tact and have not been removed, even though the original file is gone. That is because they are all the same file, when you make a hard link to it you are just putting another reference to it with a different name. Until the last file with that inode gets deleted, that file lives on.</p>
+<p>Lets put some text in file2.txt and see what happens</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;things&quot;</span> &gt;&gt; file2.txt
+<span class="nv">$ </span>ls -li file*
+524594 -rw-r--r--. 2 root root 7 Mar 21 13:01 file1.txt
+524594 -rw-r--r--. 2 root root 7 Mar 21 13:01 file2.txt
+<span class="nv">$ </span>cat file1.txt 
+things
+<span class="nv">$ </span>cat file2.txt 
+things
+</pre></div>
+
+
+<p>As you can see, the files both grew to 7 bytes, and when we look inside each one, they both have the same text. That's because they are the same.</p>
+<h1>Soft Links</h1>
+<p>A <em>soft link</em> is much different from a hard link. Most people relate hard links to shortcuts in Windows. When you put a shortcut on your Desktop, it is just a link to the something on your computer. If you delete it no biggie, its just a link. Soft links are the same way. </p>
+<div class="highlight"><pre><span class="nv">$ </span>touch testfile.txt
+<span class="nv">$ </span>ln -s testfile.txt testfile1.txt
+<span class="nv">$ </span>ls -li testfile*
+524726 lrwxrwxrwx. 1 root root 12 Mar 21 13:11 testfile1.txt -&gt; testfile.txt
+524725 -rw-r--r--. 1 root root  0 Mar 21 13:11 testfile.txt
+</pre></div>
+
+
+<p>Here we created a file, testfile.txt, and then ran <code>ln -s</code> to create a soft link. When we ran <code>ls -li</code> we see that now the inodes are different, and testfile1.txt shows highlighted with an arrow to testfile.txt.</p>
+<p>OK, so now lets repeat what we did above for hard links. I will make another soft link, linking to the original file testfile.txt and call it testfile2.txt. Then I'll delete the original and <code>ls -li</code></p>
+<div class="highlight"><pre><span class="nv">$ </span>ln -s testfile.txt testfile2.txt
+<span class="nv">$ </span>ls -li testfile*
+524726 lrwxrwxrwx. 1 root root 12 Mar 21 13:11 testfile1.txt -&gt; testfile.txt
+524727 lrwxrwxrwx. 1 root root 12 Mar 21 13:15 testfile2.txt -&gt; testfile.txt
+524725 -rw-r--r--. 1 root root  0 Mar 21 13:11 testfile.txt
+<span class="nv">$ </span>rm testfile.txt 
+rm: remove regular empty file <span class="s1">&#39;testfile.txt&#39;</span>? y
+<span class="nv">$ </span>ls -li testfile*
+524726 lrwxrwxrwx. 1 root root 12 Mar 21 13:11 testfile1.txt -&gt; testfile.txt <span class="c"># Imagine RED here</span>
+524727 lrwxrwxrwx. 1 root root 12 Mar 21 13:15 testfile2.txt -&gt; testfile.txt <span class="c"># Imagine RED here</span>
+</pre></div>
+
+
+<p>If we try and cat the two files, to see the contents, we get an error. We can no longer access these files, they are broken links. </p>
+<div class="highlight"><pre><span class="nv">$ </span>cat testfile*
+cat: testfile1.txt: No such file or directory
+cat: testfile2.txt: No such file or directory
+</pre></div>
+        </div><!-- /.entry-content -->
+
+</article>
+</section>
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                            <h3>RHCSA</h3>
+
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li class="active"><a href="http://rhce.co/category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                   
+                           
+                                 
+                                   
+
+                            <h3>RHCE</h3>
+
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+
+                        </ul>
+                </div>
+
+
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+<!-- Piwik --> 
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.fhlabs.com/" : "http://piwik.fhlabs.com/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 14);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.fhlabs.com/piwik.php?idsite=14" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code --></body>
+</html>

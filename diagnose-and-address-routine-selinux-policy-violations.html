@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Diagnose and address routine SELinux policy violations</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://rhce.co/theme/css/main.css" type="text/css" />
+        <link href="http://rhce.co/" type="application/atom+xml" rel="alternate" title="rhce.co ATOM Feed" />
+
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie.css"/>
+                <script src="http://rhce.co/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://rhce.co/css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/makewhatis/rhce.co">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="http://rhce.co/index.html">rhce.co </a></h1>
+                <nav><ul>
+                <li><a href="http://rhce.co/index.html">Home</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+<article>
+        <header> <h1 class="entry-title"><a href="diagnose-and-address-routine-selinux-policy-violations.html"
+        rel="bookmark" title="Permalink to Diagnose and address routine SELinux policy violations">Diagnose and address routine SELinux policy violations</a></h1>  </header>
+        <div class="entry-content">
+
+        <p>Going back to a previous example of trying to serve files from a directory other than the default apache directory, how would I be able to tell SELinux was the problem in that case?</p>
+<p>I see a 403 error when I visit the domain after enabling SELinux. So first I would look in the apache error logs for a message as to why I am being denied. </p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">crit</span><span class="p">]</span> <span class="p">[</span><span class="n">client</span> <span class="mf">127.0.0.1</span><span class="p">]</span> <span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="n">Permission</span> <span class="n">denied</span><span class="o">:</span> <span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">public_html</span><span class="o">/</span><span class="p">.</span><span class="n">htaccess</span> <span class="n">pcfg_openfile</span><span class="o">:</span> <span class="n">unable</span> <span class="n">to</span> <span class="n">check</span> <span class="n">htaccess</span> <span class="n">file</span><span class="p">,</span> <span class="n">ensure</span> <span class="n">it</span> <span class="n">is</span> <span class="n">readable</span>
+</pre></div>
+
+
+<p>At this point it would be best to check permissions on the .htaccess file, and sure enough permissions are good. Apache user and Apache group owns it, and it is readable.</p>
+<p>Next place to look would be the audit.log, which is the logfile that SELinux uses to log messages. </p>
+<div class="highlight"><pre><span class="n">type</span><span class="o">=</span><span class="n">AVC</span> <span class="n">msg</span><span class="o">=</span><span class="n">audit</span><span class="p">(</span><span class="mf">1323618414.869</span><span class="o">:</span><span class="mi">508</span><span class="p">)</span><span class="o">:</span> <span class="n">avc</span><span class="o">:</span>  <span class="n">denied</span>  <span class="p">{</span> <span class="n">read</span> <span class="p">}</span> <span class="k">for</span>  <span class="n">pid</span><span class="o">=</span><span class="mi">23407</span> <span class="n">comm</span><span class="o">=</span><span class="s">&quot;httpd&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;.htaccess&quot;</span> <span class="n">dev</span><span class="o">=</span><span class="n">dm</span><span class="o">-</span><span class="mi">2</span> <span class="n">ino</span><span class="o">=</span><span class="mi">1966097</span> <span class="n">scontext</span><span class="o">=</span><span class="n">system_u</span><span class="o">:</span><span class="n">system_r</span><span class="o">:</span><span class="kt">httpd_t</span><span class="o">:</span><span class="n">s0</span> <span class="n">tcontext</span><span class="o">=</span><span class="n">unconfined_u</span><span class="o">:</span><span class="n">object_r</span><span class="o">:</span><span class="kt">user_home_t</span><span class="o">:</span><span class="n">s0</span> <span class="n">tclass</span><span class="o">=</span><span class="n">file</span>
+<span class="n">type</span><span class="o">=</span><span class="n">SYSCALL</span> <span class="n">msg</span><span class="o">=</span><span class="n">audit</span><span class="p">(</span><span class="mf">1323618414.869</span><span class="o">:</span><span class="mi">508</span><span class="p">)</span><span class="o">:</span> <span class="n">arch</span><span class="o">=</span><span class="n">c000003e</span> <span class="n">syscall</span><span class="o">=</span><span class="mi">2</span> <span class="n">success</span><span class="o">=</span><span class="n">no</span> <span class="n">exit</span><span class="o">=-</span><span class="mi">13</span> <span class="n">a0</span><span class="o">=</span><span class="mf">7f</span><span class="n">a80ef2f358</span> <span class="n">a1</span><span class="o">=</span><span class="mi">80000</span> <span class="n">a2</span><span class="o">=</span><span class="mi">1</span><span class="n">b6</span> <span class="n">a3</span><span class="o">=</span><span class="mf">7469672f7777772f</span> <span class="n">items</span><span class="o">=</span><span class="mi">0</span> <span class="n">ppid</span><span class="o">=</span><span class="mi">1345</span> <span class="n">pid</span><span class="o">=</span><span class="mi">23407</span> <span class="n">auid</span><span class="o">=</span><span class="mi">4294967295</span> <span class="n">uid</span><span class="o">=</span><span class="mi">48</span> <span class="n">gid</span><span class="o">=</span><span class="mi">48</span> <span class="n">euid</span><span class="o">=</span><span class="mi">48</span> <span class="n">suid</span><span class="o">=</span><span class="mi">48</span> <span class="n">fsuid</span><span class="o">=</span><span class="mi">48</span> <span class="n">egid</span><span class="o">=</span><span class="mi">48</span> <span class="n">sgid</span><span class="o">=</span><span class="mi">48</span> <span class="n">fsgid</span><span class="o">=</span><span class="mi">48</span> <span class="n">tty</span><span class="o">=</span><span class="p">(</span><span class="n">none</span><span class="p">)</span> <span class="n">ses</span><span class="o">=</span><span class="mi">4294967295</span> <span class="n">comm</span><span class="o">=</span><span class="s">&quot;httpd&quot;</span> <span class="n">exe</span><span class="o">=</span><span class="s">&quot;/usr/sbin/httpd&quot;</span> <span class="n">subj</span><span class="o">=</span><span class="n">system_u</span><span class="o">:</span><span class="n">system_r</span><span class="o">:</span><span class="kt">httpd_t</span><span class="o">:</span><span class="n">s0</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="n">null</span><span class="p">)</span>
+</pre></div>
+
+
+<p>I can see that /usr/sbin/httpd was denied access to '.htaccess'. At this point we know SELinux is the problem. Looking at the message a little closer, the context can be seen in the log entry, tcontext=unconfined_u:object_r:user_home_t, which is not the httpd_sys_content_t that can be seen on files in the deafult apache directory. </p>
+<p>Lets look at the ftpd man page, which has the best example to pull from...</p>
+<div class="highlight"><pre>~<span class="o">]</span> man ftpd_selinux
+
+...
+semanage fcontext -a -t public_content_t <span class="s2">&quot;/var/ftp(/.*)?&quot;</span>
+restorecon -F -R -v /var/ftp
+...
+</pre></div>
+
+
+<p>Now replace the proper items in order to make this work:</p>
+<div class="highlight"><pre><span class="kt">public_content_t</span> <span class="o">&gt;&gt;</span> <span class="kt">httpd_sys_content_t</span>
+<span class="s">&quot;/var/ftp(/.*)?&quot;</span> <span class="o">&gt;&gt;</span> <span class="s">&quot;/www/test/public_html(/.*)?&quot;</span>
+<span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">ftp</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">public_html</span>
+</pre></div>
+
+
+<p>The commands we would end up running would be:</p>
+<div class="highlight"><pre>semanage fcontext -a -t httpd_sys_content_t <span class="s2">&quot;/www/test/public_html(/.*)?&quot;</span>
+</pre></div>
+
+
+<p>And</p>
+<div class="highlight"><pre>restorecon -F -R -v /www/test/public_html
+</pre></div>
+
+
+<p>Finally, check the context of that .htaccess file.</p>
+<div class="highlight"><pre>~<span class="o">]</span> ls -laZ /www/test/public_html
+ ...
+ -rw-rw-r--. apache apache system_u:object_r:httpd_sys_content_t:s0 .htaccess
+ ...
+</pre></div>
+
+
+<p>Looks good, now our page loads. This may seem kind of crazy, but practice with different application and after a while it will be second nature to troubleshoot this. This is a testable item now though, so you have to learn it.</p>
+        </div><!-- /.entry-content -->
+
+</article>
+</section>
+
+
+        <aside id="sidebar">
+                <div class="widget">
+                        <h2>Exam Objective Categories</h2>
+                        <ul>
+                            <h3>RHCSA</h3>
+
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/a-understand-and-use-essential-tools-rhcsa.html">Understand and Use Essential Tools </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/b-operate-running-systems-rhcsa.html">Operate Running Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/c-configure-local-storage-rhcsa.html">Configure Local Storage </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/d-create-and-configure-file-systems-rhcsa.html">Create and Configure File Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/e-deploy-configure-and-maintain-systems-rhcsa.html">Deploy, Configure, and Maintain Systems </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/f-manage-users-and-groups-rhcsa.html">Manage Users and Groups </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                        <li class="active"><a href="http://rhce.co/category/g-manage-security-rhcsa.html">Manage Security </a></li>
+                                   
+                           
+                                 
+                                   
+
+                            <h3>RHCE</h3>
+
+                           
+                                 
+                                        <li ><a href="http://rhce.co/category/a-system-configuration-and-management-rhce.html">System Configuration and Management </a></li>
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+                           
+                                 
+                                   
+
+                        </ul>
+                </div>
+
+
+        </aside><!-- /#sidebar -->
+
+        <footer id="footer" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>, which takes great advantages of <a href="http://python.org">python</a>.
+                </address><!-- /#about -->
+
+        </footer><!-- /#footer -->
+
+<!-- Piwik --> 
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.fhlabs.com/" : "http://piwik.fhlabs.com/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 14);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.fhlabs.com/piwik.php?idsite=14" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code --></body>
+</html>
